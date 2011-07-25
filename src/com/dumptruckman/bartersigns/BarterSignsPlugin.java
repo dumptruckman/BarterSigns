@@ -3,6 +3,7 @@ package com.dumptruckman.bartersigns;
 import com.dumptruckman.bartersigns.block.BarterSignsBlockListener;
 import com.dumptruckman.bartersigns.entity.BarterSignsEntityListener;
 import com.dumptruckman.bartersigns.entity.player.BarterSignsPlayerListener;
+import com.dumptruckman.util.io.ConfigIO;
 import com.dumptruckman.util.locale.Language;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -93,12 +94,13 @@ public class BarterSignsPlugin extends JavaPlugin {
         }
 
         // Load up language file
-        lang = new Language(new File(this.getDataFolder(), config.getString("settings.languagefile")));
+        //lang = new Language(new File(this.getDataFolder(), config.getString("settings.languagefile")));
 
         // Register command executor for main plugin command
         //getCommand("dchest").setExecutor(new DChestPluginCommand(this));
 
         // Register event listeners
+        pm.registerEvent(Type.BLOCK_PLACE, blockListener, Priority.Highest, this);
         pm.registerEvent(Type.PLAYER_INTERACT, new BarterSignsPlayerListener(this), Priority.Highest, this);
         pm.registerEvent(Type.BLOCK_DAMAGE, blockListener, Priority.Highest, this);
         pm.registerEvent(Type.BLOCK_BREAK, blockListener, Priority.Highest, this);
@@ -112,10 +114,31 @@ public class BarterSignsPlugin extends JavaPlugin {
     }
 
     final public void onDisable() {
-        
+        timer.cancel();
+        saveFiles();
+        log.info(this.getDescription().getName() + " " + getDescription().getVersion() + " disabled.");
     }
 
     final public void reload(boolean announce) {
-        
+        config = new ConfigIO(new File(this.getDataFolder(), "config.yml")).load();
+        data = new ConfigIO(new File(this.getDataFolder(), "data.yml")).load();
+    }
+
+    final public void saveConfig() {
+        new ConfigIO(config).save();
+    }
+
+    final public void saveData() {
+        new ConfigIO(data).save();
+    }
+
+    final public void saveConfigs() {
+        saveConfig();
+        saveData();
+    }
+
+    final public void saveFiles() {
+        saveConfig();
+        saveData();
     }
 }

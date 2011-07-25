@@ -1,6 +1,7 @@
 package com.dumptruckman.bartersigns.block;
 
 import com.dumptruckman.bartersigns.BarterSignsPlugin;
+import org.bukkit.block.Sign;
 
 /**
  * @author dumptruckman
@@ -8,4 +9,10 @@ import com.dumptruckman.bartersigns.BarterSignsPlugin;
 public class BarterSign {
 
     private BarterSignsPlugin plugin;
+
+    private Sign sign;
+
+    public BarterSign(BarterSignsPlugin plugin, Sign sign) {
+        
+    }
 }
