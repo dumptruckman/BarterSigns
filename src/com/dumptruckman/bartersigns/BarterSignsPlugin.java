@@ -6,6 +6,10 @@ import com.dumptruckman.bartersigns.entity.BarterSignsEntityListener;
 import com.dumptruckman.bartersigns.entity.player.BarterSignsPlayerListener;
 import com.dumptruckman.util.io.ConfigIO;
 import com.dumptruckman.util.locale.Language;
+import org.bukkit.block.Sign;
+import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
+import org.bukkit.event.block.SignChangeEvent;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.util.config.Configuration;
@@ -32,9 +36,9 @@ public class BarterSignsPlugin extends JavaPlugin {
 
     public Configuration config;
     public Configuration data;
+    public Language lang;
     public List<BarterSign> activeSigns = new ArrayList<BarterSign>();
 
-    private Language lang;
     private Timer timer;
 
     final public void onEnable() {
@@ -50,8 +54,8 @@ public class BarterSignsPlugin extends JavaPlugin {
         // Start save timer
         timer = new Timer();
         timer.scheduleAtFixedRate(new BarterSignsSaveTimer(this),
-                config.getInt("settings.datasavetimer", 300) * 1000,
-                config.getInt("settings.datasavetimer", 300) * 1000);
+                config.getInt("settings.datasavetimer", 30) * 1000,
+                config.getInt("settings.datasavetimer", 30) * 1000);
 
         // Extracts default english language file
         JarFile jar = null;
@@ -99,10 +103,10 @@ public class BarterSignsPlugin extends JavaPlugin {
         }
 
         // Load up language file
-        //lang = new Language(new File(this.getDataFolder(), config.getString("settings.languagefile")));
+        lang = new Language(new File(this.getDataFolder(), config.getString("settings.languagefile")));
 
         // Register command executor for main plugin command
-        //getCommand("dchest").setExecutor(new DChestPluginCommand(this));
+        
 
         // Register event listeners
         pm.registerEvent(Type.SIGN_CHANGE, blockListener, Priority.Highest, this);
@@ -127,6 +131,10 @@ public class BarterSignsPlugin extends JavaPlugin {
     final public void reload(boolean announce) {
         config = new ConfigIO(new File(this.getDataFolder(), "config.yml")).load();
         data = new ConfigIO(new File(this.getDataFolder(), "data.yml")).load();
+
+        if (config.getString("settings.languagefile") == null) {
+            config.setProperty("settings.languagefile", "english.yml");
+        }
     }
 
     final public void saveConfig() {
@@ -145,5 +153,32 @@ public class BarterSignsPlugin extends JavaPlugin {
     final public void saveFiles() {
         saveConfig();
         saveData();
+    }
+
+    public void signAndMessage(Sign sign, Player player, List<String> message) {
+        for (int i = 0; i < 4; i++) {
+            sign.setLine(i, message.get(0));
+            message.remove(0);
+        }
+        sign.update();
+        if (player != null)
+            lang.sendMessage(message, player);
+    }
+
+    public void signAndMessage(Sign sign, Player player, String path, String...args) {
+        List<String> message = lang.lang(path, args);
+        signAndMessage(sign, player, message);
+    }
+
+    public void signAndMessage(SignChangeEvent event, Player player, List<String> message) {
+        for (int i = 0; i < 4; i++) {
+            event.setLine(i, message.get(0));
+            message.remove(0);
+        }
+        lang.sendMessage(message, player);
+    }
+
+    public void sendMessage(CommandSender sender, String path, String...args) {
+        lang.sendMessage(lang.lang(path, args), sender);
     }
 }

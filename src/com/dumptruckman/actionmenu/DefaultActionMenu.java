@@ -13,7 +13,7 @@ public class DefaultActionMenu extends ActionMenu {
         super(title);
     }
 
-    public DefaultActionMenu(String title, List<Object> menuContents) {
+    public DefaultActionMenu(String title, List<ActionMenuItem> menuContents) {
         super(title);
         setContents(menuContents);
     }

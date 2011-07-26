@@ -7,3 +7,42 @@
 # Use %1, %2, %3, to indicate position of variables.. This is of course limited
 # to specific message
 
+sign:
+    stock:
+        setup:
+        - '%1'
+        - 'L-Click with'
+        - 'item you want'
+        - 'to sell'
+        - 'Hold the item (with amount you wish to sell) in your hand to and left-click the sign'
+        set:
+        - 'This sign will sell %1 %2.'
+    payment:
+        setup:
+        - '%1'
+        - 'L-Click with'
+        - 'item you want'
+        - 'for payment'
+        - 'Hold the item (with amount you wish for payment) in your hand to and left-click the sign'
+        set:
+        - 'This sign will accept %1 %2 as payment'
+    ready:
+        sign:
+        - 'Barter Shop'
+        - '(right-click)'
+        - 'owner:'
+        - '%1'
+        message:
+        - 'This sign is ready for business!  Just don''t forget to stock it!'
+    unfinishedsetup:
+    - '%1 has not finished setting up this sign!'
+    menu:
+        addstock:
+        - 'L-click to'
+        - 'add stock'
+        - 'contains:'
+        - '%1'
+general:
+    nohelditem:
+    - 'You must be holding an item!'
+    

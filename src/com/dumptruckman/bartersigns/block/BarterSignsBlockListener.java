@@ -1,6 +1,7 @@
 package com.dumptruckman.bartersigns.block;
 
 import com.dumptruckman.bartersigns.BarterSignsPlugin;
+import com.dumptruckman.bartersigns.locale.LanguagePath;
 import org.bukkit.event.block.BlockListener;
 import org.bukkit.event.block.SignChangeEvent;
 
@@ -23,9 +24,8 @@ public class BarterSignsBlockListener extends BlockListener {
         BarterSign barterSign = new BarterSign(plugin, event.getBlock());
         barterSign.clear();
         barterSign.init(event.getPlayer());
-        event.setLine(0, event.getPlayer().getName());
-        event.setLine(1, "L-click with");
-        event.setLine(2, "item you want");
-        event.setLine(3, "to sell");
+        plugin.signAndMessage(event, event.getPlayer(),
+                plugin.lang.lang(LanguagePath.SIGN_STOCK_SETUP.getPath(), event.getPlayer().getName()));
+        plugin.activeSigns.add(barterSign);
     }
 }

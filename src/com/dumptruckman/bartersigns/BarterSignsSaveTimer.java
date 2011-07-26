@@ -14,6 +14,6 @@ public class BarterSignsSaveTimer extends TimerTask {
     }
 
     public void run() {
-        
+        plugin.saveData();
     }
 }
