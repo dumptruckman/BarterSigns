@@ -1,5 +1,6 @@
 package com.dumptruckman.bartersigns;
 
+import com.dumptruckman.bartersigns.block.BarterSign;
 import com.dumptruckman.bartersigns.block.BarterSignsBlockListener;
 import com.dumptruckman.bartersigns.entity.BarterSignsEntityListener;
 import com.dumptruckman.bartersigns.entity.player.BarterSignsPlayerListener;
@@ -10,12 +11,15 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.util.config.Configuration;
 
 import java.io.*;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Timer;
 import java.util.jar.JarFile;
 import java.util.logging.Logger;
 import java.util.zip.ZipEntry;
 
-import static org.bukkit.event.Event.*;
+import static org.bukkit.event.Event.Priority;
+import static org.bukkit.event.Event.Type;
 
 /**
  * @author dumptruckman
@@ -28,6 +32,7 @@ public class BarterSignsPlugin extends JavaPlugin {
 
     public Configuration config;
     public Configuration data;
+    public List<BarterSign> activeSigns = new ArrayList<BarterSign>();
 
     private Language lang;
     private Timer timer;
@@ -100,7 +105,7 @@ public class BarterSignsPlugin extends JavaPlugin {
         //getCommand("dchest").setExecutor(new DChestPluginCommand(this));
 
         // Register event listeners
-        pm.registerEvent(Type.BLOCK_PLACE, blockListener, Priority.Highest, this);
+        pm.registerEvent(Type.SIGN_CHANGE, blockListener, Priority.Highest, this);
         pm.registerEvent(Type.PLAYER_INTERACT, new BarterSignsPlayerListener(this), Priority.Highest, this);
         pm.registerEvent(Type.BLOCK_DAMAGE, blockListener, Priority.Highest, this);
         pm.registerEvent(Type.BLOCK_BREAK, blockListener, Priority.Highest, this);

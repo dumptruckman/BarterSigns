@@ -3,6 +3,7 @@ package com.dumptruckman.actionmenu;
 import org.bukkit.command.CommandSender;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -17,7 +18,7 @@ public abstract class ActionMenu {
     protected String title;
 
     /**
-     * Creates an ActionMenu with the specified title
+     * Creates an actionmenu with the specified title
      * @param title
      */
     public ActionMenu(String title) {
@@ -41,8 +42,8 @@ public abstract class ActionMenu {
     }
 
     /**
-     * Specify the title for this menu.  If this ActionMenu is used as a menu item in another
-     * ActionMenu, this will be the String that appears in that menu.
+     * Specify the title for this menu.  If this actionmenu is used as a menu item in another
+     * actionmenu, this will be the String that appears in that menu.
      * @param title
      */
     public void setTitle(String title) {
@@ -50,7 +51,7 @@ public abstract class ActionMenu {
     }
 
     /**
-     * Retrieves the title of this ActionMenu.
+     * Retrieves the title of this actionmenu.
      * @return menu title
      */
     @Override public String toString() {
@@ -99,7 +100,7 @@ public abstract class ActionMenu {
 
     /**
      * Appends the specified item to the end of this menu.
-     * @param menuItem should be another ActionMenu or Runnable that override toString().
+     * @param menuItem should be another actionmenu or Runnable that override toString().
      * @return true (as specified by Collection.add)
      */
     public boolean addMenuItem(Object menuItem) {
@@ -109,11 +110,36 @@ public abstract class ActionMenu {
     /**
      * Replaces the item at the specified position in this menu with the specified item.
      * @param index index of the item to replace
-     * @param menuItem should be another ActionMenu or Runnable that override toString().
+     * @param menuItem should be another actionmenu or Runnable that override toString().
      * @return the item that was previously at this index
      */
     public Object setMenuItem(int index, Object menuItem) {
         return contents.set(index, menuItem);
+    }
+
+    /**
+     * Retrieves the item at the specified index in the menu
+     * @param index
+     * @return
+     */
+    public Object getMenuItem(int index) {
+        return contents.get(index);
+    }
+
+    /**
+     * Returns the menu item that is selected
+     * @return
+     */
+    public Object getSelectedMenuItem() {
+        return contents.get(selectedIndex);
+    }
+
+    /**
+     * Returns Iterator for the menu
+     * @return
+     */
+    public Iterator iterator() {
+        return contents.iterator();
     }
 
     /**
@@ -125,6 +151,13 @@ public abstract class ActionMenu {
         return contents.remove(menuItem);
     }
 
+    /**
+     * Returns true if this menu contains the specified item. More formally, returns true if
+     * and only if this menu contains at least one item i such that
+     * (menuItem==null ? i==null : menuItem.equals(i)).
+     * @param menuItem
+     * @return
+     */
     public boolean contains(Object menuItem) {
         return contents.contains(menuItem);
     }
@@ -163,31 +196,26 @@ public abstract class ActionMenu {
     }
 
     /**
-     * Perform menu item for sender at selectedIndex.  The menu item must be a Runnable or another ActionMenu.
+     * Perform menu item for sender at selectedIndex.  The menu item must be a Runnable or another actionmenu.
      * Runnables will be run and ActionMenus will be shown.
      * @param sender whoever is activating the menu item
      * @param index selectedIndex of the menu item
-     * @return
+     * @return the item performed
      */
-    public boolean doMenuItem(CommandSender sender, int index) {
+    public Object doMenuItem(CommandSender sender, int index) {
         Object selectedItem = contents.get(index);
         if (selectedItem instanceof Runnable) {
             ((Runnable)selectedItem).run();
-            return true;
         }
-        if (selectedItem instanceof ActionMenu) {
-            ((ActionMenu)selectedItem).showMenu(sender);
-            return true;
-        }
-        return false;
+        return selectedItem;
     }
 
     /**
      * Performs doMenuItem() on the currently selected menu item.
      * @param sender
-     * @return
+     * @return the item performed
      */
-    public boolean doSelectedMenuItem(CommandSender sender) {
+    public Object doSelectedMenuItem(CommandSender sender) {
         return doMenuItem(sender, selectedIndex);
     }
 

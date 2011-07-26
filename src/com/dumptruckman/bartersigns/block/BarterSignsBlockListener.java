@@ -1,9 +1,8 @@
 package com.dumptruckman.bartersigns.block;
 
 import com.dumptruckman.bartersigns.BarterSignsPlugin;
-import org.bukkit.block.Sign;
 import org.bukkit.event.block.BlockListener;
-import org.bukkit.event.block.BlockPlaceEvent;
+import org.bukkit.event.block.SignChangeEvent;
 
 /**
  * @author dumptruckman
@@ -16,14 +15,17 @@ public class BarterSignsBlockListener extends BlockListener {
         this.plugin = plugin;
     }
 
-    public void onBlockPlace(BlockPlaceEvent event) {
-        // Get some show stoppers out of the way
+    public void onSignChange(SignChangeEvent event) {
+        // Throw out unimportant events immediately
         if (event.isCancelled()) return;
-        if (!(event.getBlock().getState() instanceof Sign)) return;
-        Sign sign = (Sign)event.getBlock().getState();
-        System.out.println("test");
-        if (!sign.getLine(0).equalsIgnoreCase("[Barter]")) return;
+        if (!event.getLine(0).equalsIgnoreCase("[Barter]")) return;
 
-        
+        BarterSign barterSign = new BarterSign(plugin, event.getBlock());
+        barterSign.clear();
+        barterSign.init(event.getPlayer());
+        event.setLine(0, event.getPlayer().getName());
+        event.setLine(1, "L-click with");
+        event.setLine(2, "item you want");
+        event.setLine(3, "to sell");
     }
 }
