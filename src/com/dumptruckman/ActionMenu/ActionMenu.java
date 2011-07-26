@@ -11,7 +11,7 @@ import java.util.List;
  */
 public abstract class ActionMenu {
 
-    protected List<Object> contents = new ArrayList<Object>();
+    protected List<ActionMenuItem> contents = new ArrayList<ActionMenuItem>();
     protected int selectedIndex = 0;
     protected List<String> header = new ArrayList<String>();
     protected List<String> footer = new ArrayList<String>();
@@ -94,26 +94,26 @@ public abstract class ActionMenu {
      * Specify a list of contents for this menu
      * @param contents
      */
-    public void setContents(List<Object> contents) {
+    public void setContents(List<ActionMenuItem> contents) {
         this.contents = contents;
     }
 
     /**
      * Appends the specified item to the end of this menu.
-     * @param menuItem should be another actionmenu or Runnable that override toString().
+     * @param menuItem item to add to menu.
      * @return true (as specified by Collection.add)
      */
-    public boolean addMenuItem(Object menuItem) {
+    public boolean addMenuItem(ActionMenuItem menuItem) {
         return contents.add(menuItem);
     }
 
     /**
      * Replaces the item at the specified position in this menu with the specified item.
      * @param index index of the item to replace
-     * @param menuItem should be another actionmenu or Runnable that override toString().
+     * @param menuItem item to put at index
      * @return the item that was previously at this index
      */
-    public Object setMenuItem(int index, Object menuItem) {
+    public ActionMenuItem setMenuItem(int index, ActionMenuItem menuItem) {
         return contents.set(index, menuItem);
     }
 
@@ -122,7 +122,7 @@ public abstract class ActionMenu {
      * @param index
      * @return
      */
-    public Object getMenuItem(int index) {
+    public ActionMenuItem getMenuItem(int index) {
         return contents.get(index);
     }
 
@@ -130,7 +130,7 @@ public abstract class ActionMenu {
      * Returns the menu item that is selected
      * @return
      */
-    public Object getSelectedMenuItem() {
+    public ActionMenuItem getSelectedMenuItem() {
         return contents.get(selectedIndex);
     }
 
@@ -147,7 +147,7 @@ public abstract class ActionMenu {
      * @param menuItem
      * @return true if this menu contained the specified item
      */
-    public boolean removeMenuItem(Object menuItem) {
+    public boolean removeMenuItem(ActionMenuItem menuItem) {
         return contents.remove(menuItem);
     }
 
@@ -158,7 +158,7 @@ public abstract class ActionMenu {
      * @param menuItem
      * @return
      */
-    public boolean contains(Object menuItem) {
+    public boolean contains(ActionMenuItem menuItem) {
         return contents.contains(menuItem);
     }
 
@@ -196,17 +196,14 @@ public abstract class ActionMenu {
     }
 
     /**
-     * Perform menu item for sender at selectedIndex.  The menu item must be a Runnable or another actionmenu.
-     * Runnables will be run and ActionMenus will be shown.
+     * Perform menu item for sender at selectedIndex.  The menu item must implement Runnable.
      * @param sender whoever is activating the menu item
      * @param index selectedIndex of the menu item
      * @return the item performed
      */
-    public Object doMenuItem(CommandSender sender, int index) {
-        Object selectedItem = contents.get(index);
-        if (selectedItem instanceof Runnable) {
-            ((Runnable)selectedItem).run();
-        }
+    public ActionMenuItem doMenuItem(CommandSender sender, int index) {
+        ActionMenuItem selectedItem = contents.get(index);
+        selectedItem.run();
         return selectedItem;
     }
 
@@ -215,7 +212,7 @@ public abstract class ActionMenu {
      * @param sender
      * @return the item performed
      */
-    public Object doSelectedMenuItem(CommandSender sender) {
+    public ActionMenuItem doSelectedMenuItem(CommandSender sender) {
         return doMenuItem(sender, selectedIndex);
     }
 
