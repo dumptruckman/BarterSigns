@@ -20,6 +20,11 @@ public class BarterSign {
     private String name;
     private World world;
     private ActionMenu menu;
+    private SignPhase phase;
+
+    public enum SignPhase {
+        SETUP_STOCK, SETUP_PAYMENT
+    }
 
     public BarterSign(BarterSignsPlugin plugin, Block block) {
         this.plugin = plugin;
@@ -62,5 +67,14 @@ public class BarterSign {
 
     public void init(Player player) {
         plugin.data.setProperty(name + ".owner", player.getName());
+        phase = SignPhase.SETUP_STOCK;
+    }
+
+    public SignPhase getPhase() {
+        return phase;
+    }
+
+    public String getOwner() {
+        return plugin.data.getString(name + ".owner");
     }
 }

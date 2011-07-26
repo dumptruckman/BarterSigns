@@ -106,7 +106,7 @@ public class BarterSignsPlugin extends JavaPlugin {
 
         // Register event listeners
         pm.registerEvent(Type.SIGN_CHANGE, blockListener, Priority.Highest, this);
-        pm.registerEvent(Type.PLAYER_INTERACT, new BarterSignsPlayerListener(this), Priority.Highest, this);
+        pm.registerEvent(Type.PLAYER_INTERACT, new BarterSignsPlayerListener(this), Priority.Normal, this);
         pm.registerEvent(Type.BLOCK_DAMAGE, blockListener, Priority.Highest, this);
         pm.registerEvent(Type.BLOCK_BREAK, blockListener, Priority.Highest, this);
         pm.registerEvent(Type.BLOCK_FADE, blockListener, Priority.Highest, this);
