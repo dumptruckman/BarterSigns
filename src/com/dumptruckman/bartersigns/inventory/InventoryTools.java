@@ -24,25 +24,35 @@ public class InventoryTools {
     }
 
     public static boolean remove(Inventory inventory, Material type, short durability, int amount) {
-        HashMap<Integer, ItemStack> items = all(inventory, type, durability);
+        HashMap<Integer, ? extends ItemStack> allItems = inventory.all(type);
         HashMap<Integer, Integer> removeFrom = new HashMap<Integer, Integer>();
+        System.out.println("looking for " + amount);
         int foundAmount = 0;
-        for(Map.Entry<Integer, ItemStack> item : items.entrySet()) {
-            if (item.getValue().getAmount() >= amount - foundAmount) {
-                foundAmount = amount;
-                removeFrom.put(item.getKey(), amount - foundAmount);
-            } else {
-                foundAmount += item.getValue().getAmount();
-                removeFrom.put(item.getKey(), item.getValue().getAmount());
-            }
-            if (foundAmount >= amount) {
-                break;
+        for(Map.Entry<Integer, ? extends ItemStack> item : allItems.entrySet()) {
+            if (item.getValue().getDurability() == durability) {
+                if (item.getValue().getAmount() >= amount - foundAmount) {
+                    System.out.println(item.getKey() + " and " + (amount - foundAmount));
+                    removeFrom.put(item.getKey(), amount - foundAmount);
+                    foundAmount = amount;
+                } else {
+                    System.out.println(item.getKey()+ " and " + item.getValue().getAmount());
+                    foundAmount += item.getValue().getAmount();
+                    removeFrom.put(item.getKey(), item.getValue().getAmount());
+                }
+                if (foundAmount >= amount) {
+                    break;
+                }
             }
         }
         if (foundAmount == amount) {
             for (Map.Entry<Integer, Integer> toRemove : removeFrom.entrySet()) {
                 ItemStack item = inventory.getItem(toRemove.getKey());
-                item.setAmount(item.getAmount() - toRemove.getValue());
+                if (item.getAmount() - toRemove.getValue() <= 0) {
+                    inventory.clear(toRemove.getKey());
+                } else {
+                    item.setAmount(item.getAmount() - toRemove.getValue());
+                    inventory.setItem(toRemove.getKey(), item);
+                }
             }
             return true;
         }

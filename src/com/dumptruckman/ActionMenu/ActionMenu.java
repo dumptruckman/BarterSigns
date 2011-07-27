@@ -9,7 +9,7 @@ import java.util.List;
 /**
  * @author dumptruckman
  */
-public abstract class ActionMenu {
+public abstract class ActionMenu implements Iterable<ActionMenuItem> {
 
     protected List<ActionMenuItem> contents = new ArrayList<ActionMenuItem>();
     protected int selectedIndex = 0;

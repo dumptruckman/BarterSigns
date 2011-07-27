@@ -1,9 +1,12 @@
 package com.dumptruckman.bartersigns.block;
 
 import com.dumptruckman.actionmenu.ActionMenu;
+import com.dumptruckman.actionmenu.ActionMenuItem;
 import com.dumptruckman.actionmenu.SignActionMenu;
 import com.dumptruckman.bartersigns.BarterSignsPlugin;
 import com.dumptruckman.bartersigns.menu.AddStockMenuItem;
+import com.dumptruckman.bartersigns.menu.DefaultMenuItem;
+import com.dumptruckman.bartersigns.menu.RemoveStockMenuItem;
 import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockState;
@@ -18,13 +21,16 @@ import static com.dumptruckman.bartersigns.locale.LanguagePath.*;
  */
 public class BarterSign {
 
+    private static final int READY_MENU = 0;
+    private static final int ADD_STOCK_MENU = 1;
+    private static final int REMOVE_STOCK_MENU = 2;
+
     private BarterSignsPlugin plugin;
 
     private Block block;
     private String name;
     private World world;
     private SignActionMenu menu;
-    //private SignPhase phase;
 
     public enum SignPhase {
         SETUP_STOCK, SETUP_PAYMENT, READY;
@@ -39,6 +45,10 @@ public class BarterSign {
         this.block = block;
         this.world = block.getWorld();
         name = block.getWorld().getName() + "." + block.getX() + "," + block.getY() + "," + block.getZ();
+    }
+
+    public void removeFromData() {
+        plugin.data.removeProperty(name);
     }
 
     public String getName() {
@@ -81,12 +91,18 @@ public class BarterSign {
 
     public void setupMenu() {
         menu = new SignActionMenu("Barter Sign", getBlock());
+        menu.addMenuItem(new DefaultMenuItem(plugin.lang.lang(SIGN_READY_SIGN.getPath(), getOwner())));
         menu.addMenuItem(new AddStockMenuItem(plugin, this));
+        menu.addMenuItem(new RemoveStockMenuItem(plugin, this));
     }
 
     public ActionMenu getMenu() {
         if (menu == null) setupMenu();
         return menu;
+    }
+
+    public void showMenu(Player player) {
+        menu.showMenu(player);
     }
 
     public String getPhase() {
@@ -97,20 +113,36 @@ public class BarterSign {
         plugin.data.setProperty(name + ".phase", phase.toString());
     }
 
+    public void activateStockPhase(Player player) {
+        plugin.signAndMessage(getSign(), player, SIGN_PAYMENT_SETUP.getPath(), player.getName());
+    }
+
     public void activatePaymentPhase(Player player) {
         plugin.signAndMessage(getSign(), player, SIGN_PAYMENT_SETUP.getPath(), player.getName());
     }
 
     public void activateReadyPhase(Player player) {
+        resumeReadyPhase();
         plugin.sendMessage(player, SIGN_READY_MESSAGE.getPath());
     }
 
     public void resumeReadyPhase() {
-        plugin.signAndMessage(getSign(), null, SIGN_READY_SIGN.getPath(), getOwner());
+        menu.selectMenuItem(READY_MENU);
+        showMenu(null);
     }
 
     public String getOwner() {
         return plugin.data.getString(name + ".owner");
+    }
+
+    public void updateAllMenuItems() {
+        for (ActionMenuItem item : menu) {
+            item.update();
+        }
+    }
+
+    public void updateMenuItem(int index) {
+        menu.getMenuItem(index).update();
     }
 
     public void setStockItem(Player player, ItemStack item) {
@@ -120,6 +152,8 @@ public class BarterSign {
         if (item.getDurability() != 0) {
             itemName += "(" + item.getDurability() + ")";
         }
+        updateMenuItem(ADD_STOCK_MENU);
+        updateMenuItem(REMOVE_STOCK_MENU);
         plugin.sendMessage(player, SIGN_STOCK_SET.getPath(), Integer.toString(item.getAmount()), itemName);
     }
 
@@ -155,5 +189,6 @@ public class BarterSign {
 
     public void setStock(int stock) {
         plugin.data.setProperty(name + ".stock", stock);
+
     }
 }

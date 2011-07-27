@@ -6,6 +6,7 @@ import com.dumptruckman.bartersigns.entity.BarterSignsEntityListener;
 import com.dumptruckman.bartersigns.entity.player.BarterSignsPlayerListener;
 import com.dumptruckman.util.io.ConfigIO;
 import com.dumptruckman.util.locale.Language;
+import org.bukkit.block.Block;
 import org.bukkit.block.Sign;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -40,7 +41,7 @@ public class BarterSignsPlugin extends JavaPlugin {
     public List<BarterSign> activeSigns = new ArrayList<BarterSign>();
 
     private Timer timer;
-
+    
     final public void onEnable() {
         // Grab the PluginManager
         final PluginManager pm = getServer().getPluginManager();
@@ -120,6 +121,8 @@ public class BarterSignsPlugin extends JavaPlugin {
 
         // Display enable message/version info
         log.info(this.getDescription().getName() + " " + getDescription().getVersion() + " enabled.");
+
+        updateSigns();
     }
 
     final public void onDisable() {
@@ -145,14 +148,28 @@ public class BarterSignsPlugin extends JavaPlugin {
         new ConfigIO(data).save();
     }
 
-    final public void saveConfigs() {
+    final public void saveFiles() {
         saveConfig();
         saveData();
     }
 
-    final public void saveFiles() {
-        saveConfig();
-        saveData();
+    final public void updateSigns() {
+        for (String world : data.getKeys()) {
+            for (String loc : data.getKeys(world)) {
+                String[] locArray = loc.split(",");
+                int x = Integer.valueOf(locArray[0]);
+                int y = Integer.valueOf(locArray[1]);
+                int z = Integer.valueOf(locArray[2]);
+                Block block  = getServer().getWorld(world).getBlockAt(x, y, z);
+                BarterSign barterSign = new BarterSign(this, block);
+                if (block.getState() instanceof Sign) {
+                    activeSigns.add(barterSign);
+                    barterSign.setupMenu();
+                } else {
+                    barterSign.removeFromData();
+                }
+            }
+        }
     }
 
     public void signAndMessage(Sign sign, Player player, List<String> message) {

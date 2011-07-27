@@ -17,6 +17,11 @@ sign:
         - 'Hold the item (with amount you wish to sell) in your hand to and left-click the sign'
         set:
         - 'This sign will sell %1 %2.'
+        insufficient:
+        - 'Out of stock!'
+        collect:
+            leftover:
+            - 'Some items couldn''t be collected because you lack inventory space.'
     payment:
         setup:
         - '%1'
@@ -30,7 +35,7 @@ sign:
         sign:
         - 'Barter Shop'
         - '(right-click)'
-        - 'owner:'
+        - 'Owner:'
         - '%1'
         message:
         - 'This sign is ready for business!  Just don''t forget to stock it!'
@@ -38,11 +43,18 @@ sign:
     - '%1 has not finished setting up this sign!'
     menu:
         addstock:
-        - 'L-click to'
-        - 'add stock'
-        - 'contains:'
+        - 'Left click to'
+        - 'add stock.'
+        - 'Contains:'
         - '%1'
-general:
+        removestock:
+        - 'Left click to'
+        - 'remove stock.'
+        - 'Contains:'
+        - '%1'
+player:
     nohelditem:
     - 'You must be holding an item!'
+    insufficientamount:
+    - 'You do not have enough %1!'
     

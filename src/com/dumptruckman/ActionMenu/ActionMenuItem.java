@@ -8,11 +8,15 @@ public abstract class ActionMenuItem implements Runnable {
     private String text;
 
     public ActionMenuItem() {
-        text = "";
+        this("");
     }
 
     public ActionMenuItem(String text) {
         this.text = text;
+    }
+
+    public void update() {
+        
     }
 
     public void setText(String text) {
@@ -22,4 +26,5 @@ public abstract class ActionMenuItem implements Runnable {
     @Override public String toString() {
         return this.text;
     }
+
 }

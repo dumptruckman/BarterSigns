@@ -18,20 +18,28 @@ public class AddStockMenuItem extends SignActionMenuItem {
     private ItemStack sellableItem;
 
     public AddStockMenuItem(BarterSignsPlugin plugin, BarterSign barterSign) {
-        super(plugin.lang.lang(LanguagePath.SIGN_MENU_ADD.getPath(), barterSign.getStock().toString()));
+        super(plugin.lang.lang(LanguagePath.SIGN_MENU_ADD_STOCK.getPath(), barterSign.getStock().toString()));
         this.plugin = plugin;
         this.barterSign = barterSign;
-        sellableItem = barterSign.getSells();
+        update();
     }
 
-    public void updateSellableItem() {
+    @Override public void update() {
         sellableItem = barterSign.getSells();
     }
 
     public void run() {
-        System.out.println(player + " " + sellableItem);
-        InventoryTools.remove(player.getInventory(), sellableItem.getType(), sellableItem.getDurability(),
-                sellableItem.getAmount());
-        barterSign.setStock(barterSign.getStock() + sellableItem.getAmount());
+        if (InventoryTools.remove(player.getInventory(), sellableItem.getType(), sellableItem.getDurability(),
+                sellableItem.getAmount())) {
+            barterSign.setStock(barterSign.getStock() + sellableItem.getAmount());
+            this.setLines(plugin.lang.lang(LanguagePath.SIGN_MENU_ADD_STOCK.getPath(), barterSign.getStock().toString()));
+            barterSign.showMenu(player);
+        } else {
+            String item = sellableItem.getType().toString();
+            if (sellableItem.getDurability() != 0) {
+                item += sellableItem.getDurability();
+            }
+            plugin.sendMessage(player, LanguagePath.PLAYER_INSUFFICIENT_AMOUNT.getPath(), item);
+        }
     }
 }

@@ -78,9 +78,21 @@ public class BarterSignsPlayerListener extends PlayerListener {
             }
         } else if (event.getAction().equals(Action.RIGHT_CLICK_BLOCK)) {
             if (BarterSign.SignPhase.SETUP_STOCK.equalTo(barterSign.getPhase())) {
-
+                // @TODO or admin
+                if (player.getName().equals(barterSign.getOwner())) {
+                    
+                } else {
+                    plugin.sendMessage(player, SIGN_SETUP_UNFINISHED.getPath(), barterSign.getOwner());
+                    return;
+                }
             } else if (BarterSign.SignPhase.SETUP_PAYMENT.equalTo(barterSign.getPhase())) {
+                // @TODO or admin
+                if (player.getName().equals(barterSign.getOwner())) {
 
+                } else {
+                    plugin.sendMessage(player, SIGN_SETUP_UNFINISHED.getPath(), barterSign.getOwner());
+                    return;
+                }
             } else if (BarterSign.SignPhase.READY.equalTo(barterSign.getPhase())) {
                 // @TODO or admin
                 if (player.getName().equals(barterSign.getOwner())) {
