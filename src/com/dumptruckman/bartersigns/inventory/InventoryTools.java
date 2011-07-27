@@ -26,16 +26,13 @@ public class InventoryTools {
     public static boolean remove(Inventory inventory, Material type, short durability, int amount) {
         HashMap<Integer, ? extends ItemStack> allItems = inventory.all(type);
         HashMap<Integer, Integer> removeFrom = new HashMap<Integer, Integer>();
-        System.out.println("looking for " + amount);
         int foundAmount = 0;
         for(Map.Entry<Integer, ? extends ItemStack> item : allItems.entrySet()) {
             if (item.getValue().getDurability() == durability) {
                 if (item.getValue().getAmount() >= amount - foundAmount) {
-                    System.out.println(item.getKey() + " and " + (amount - foundAmount));
                     removeFrom.put(item.getKey(), amount - foundAmount);
                     foundAmount = amount;
                 } else {
-                    System.out.println(item.getKey()+ " and " + item.getValue().getAmount());
                     foundAmount += item.getValue().getAmount();
                     removeFrom.put(item.getKey(), item.getValue().getAmount());
                 }

@@ -135,6 +135,14 @@ public abstract class ActionMenu implements Iterable<ActionMenuItem> {
     }
 
     /**
+     * Get the index of the current menu selection
+     * @return the selected menu item's index
+     */
+    public Integer getSelectedMenuIndex() {
+        return selectedIndex;
+    }
+
+    /**
      * Returns Iterator for the menu
      * @return
      */
@@ -191,8 +199,16 @@ public abstract class ActionMenu implements Iterable<ActionMenuItem> {
      * Sets the current menu selection to selectedIndex
      * @param index
      */
-    public void selectMenuItem(int index) {
+    public void setMenuIndex(int index) {
         selectedIndex = index;
+    }
+
+    /**
+     * Returns the number of elements in this menu. If this list contains more than Integer.MAX_VALUE elements, returns Integer.MAX_VALUE.
+     * @return the number of elements in this menu
+     */
+    public Integer size() {
+        return contents.size();
     }
 
     /**

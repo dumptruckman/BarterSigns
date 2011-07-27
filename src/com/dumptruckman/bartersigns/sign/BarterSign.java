@@ -1,4 +1,4 @@
-package com.dumptruckman.bartersigns.block;
+package com.dumptruckman.bartersigns.sign;
 
 import com.dumptruckman.actionmenu.ActionMenu;
 import com.dumptruckman.actionmenu.ActionMenuItem;
@@ -61,17 +61,24 @@ public class BarterSign {
 
     public Sign getSign() {
         try {
-			BlockState sign = this.world.getBlockAt(block.getX(), block.getY(), block.getZ()).getState();
-			if (sign instanceof Sign) return (Sign)sign;
-			return null;
-		} catch (Exception e) {}
-		return null;
+            BlockState sign = this.world.getBlockAt(block.getX(), block.getY(), block.getZ()).getState();
+            if (sign instanceof Sign) return (Sign)sign;
+            return null;
+        } catch (Exception e) {}
+        return null;
     }
 
-    public boolean equals(Object obj) {
+    @Override public boolean equals(Object obj) {
         if (!(obj instanceof BarterSign)) return false;
-        if (((BarterSign)obj).getName().equals(this.getName())) return true;
-        return false;
+        return ((BarterSign)obj).getName().equals(this.getName());
+    }
+
+    @Override public String toString() {
+        return getName();
+    }
+
+    @Override public int hashCode() {
+        return getName().hashCode();
     }
 
     public boolean exists() {
@@ -81,12 +88,14 @@ public class BarterSign {
     public void clear() {
         if (this.exists()) plugin.data.removeProperty(name);
         menu = new SignActionMenu("Barter Sign", block);
+        plugin.signManager.remove(this);
     }
 
     public void init(Player player) {
         plugin.data.setProperty(name + ".owner", player.getName());
         setPhase(SignPhase.SETUP_STOCK);
         setupMenu();
+        plugin.signManager.add(this);
     }
 
     public void setupMenu() {
@@ -94,6 +103,31 @@ public class BarterSign {
         menu.addMenuItem(new DefaultMenuItem(plugin.lang.lang(SIGN_READY_SIGN.getPath(), getOwner())));
         menu.addMenuItem(new AddStockMenuItem(plugin, this));
         menu.addMenuItem(new RemoveStockMenuItem(plugin, this));
+    }
+
+    public void cycleMenu() {
+        plugin.signManager.scheduleSignRefresh(this);
+        menu.cycleMenu();
+        menu.getSelectedMenuItem().update();
+        
+        if (menu.getSelectedMenuIndex() != 0) {
+            // @TODO Start timer to reset menu
+        } else {
+        
+        }
+    }
+
+    public void doSelectedMenuItem(Player player) {
+        plugin.signManager.scheduleSignRefresh(this);
+        menu.doSelectedMenuItem(player);
+    }
+
+    public void setMenuIndex(int index) {
+        plugin.signManager.scheduleSignRefresh(this);
+        if (index >= menu.size()) {
+            index = menu.size() - 1;
+        }
+        menu.setMenuIndex(index);
     }
 
     public ActionMenu getMenu() {
@@ -127,7 +161,7 @@ public class BarterSign {
     }
 
     public void resumeReadyPhase() {
-        menu.selectMenuItem(READY_MENU);
+        menu.setMenuIndex(READY_MENU);
         showMenu(null);
     }
 
@@ -189,6 +223,5 @@ public class BarterSign {
 
     public void setStock(int stock) {
         plugin.data.setProperty(name + ".stock", stock);
-
     }
 }

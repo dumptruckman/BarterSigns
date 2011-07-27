@@ -1,12 +1,11 @@
 package com.dumptruckman.bartersigns;
 
-import com.dumptruckman.bartersigns.block.BarterSign;
 import com.dumptruckman.bartersigns.block.BarterSignsBlockListener;
 import com.dumptruckman.bartersigns.entity.BarterSignsEntityListener;
 import com.dumptruckman.bartersigns.entity.player.BarterSignsPlayerListener;
+import com.dumptruckman.bartersigns.sign.BarterSignManager;
 import com.dumptruckman.util.io.ConfigIO;
 import com.dumptruckman.util.locale.Language;
-import org.bukkit.block.Block;
 import org.bukkit.block.Sign;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -16,7 +15,6 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.util.config.Configuration;
 
 import java.io.*;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Timer;
 import java.util.jar.JarFile;
@@ -38,7 +36,7 @@ public class BarterSignsPlugin extends JavaPlugin {
     public Configuration config;
     public Configuration data;
     public Language lang;
-    public List<BarterSign> activeSigns = new ArrayList<BarterSign>();
+    public BarterSignManager signManager;
 
     private Timer timer;
     
@@ -112,6 +110,7 @@ public class BarterSignsPlugin extends JavaPlugin {
         // Register event listeners
         pm.registerEvent(Type.SIGN_CHANGE, blockListener, Priority.Highest, this);
         pm.registerEvent(Type.PLAYER_INTERACT, new BarterSignsPlayerListener(this), Priority.Normal, this);
+        pm.registerEvent(Type.PLAYER_ITEM_HELD, new BarterSignsPlayerListener(this), Priority.Normal, this);
         pm.registerEvent(Type.BLOCK_DAMAGE, blockListener, Priority.Highest, this);
         pm.registerEvent(Type.BLOCK_BREAK, blockListener, Priority.Highest, this);
         pm.registerEvent(Type.BLOCK_FADE, blockListener, Priority.Highest, this);
@@ -122,7 +121,7 @@ public class BarterSignsPlugin extends JavaPlugin {
         // Display enable message/version info
         log.info(this.getDescription().getName() + " " + getDescription().getVersion() + " enabled.");
 
-        updateSigns();
+        signManager = new BarterSignManager(this);
     }
 
     final public void onDisable() {
@@ -151,25 +150,6 @@ public class BarterSignsPlugin extends JavaPlugin {
     final public void saveFiles() {
         saveConfig();
         saveData();
-    }
-
-    final public void updateSigns() {
-        for (String world : data.getKeys()) {
-            for (String loc : data.getKeys(world)) {
-                String[] locArray = loc.split(",");
-                int x = Integer.valueOf(locArray[0]);
-                int y = Integer.valueOf(locArray[1]);
-                int z = Integer.valueOf(locArray[2]);
-                Block block  = getServer().getWorld(world).getBlockAt(x, y, z);
-                BarterSign barterSign = new BarterSign(this, block);
-                if (block.getState() instanceof Sign) {
-                    activeSigns.add(barterSign);
-                    barterSign.setupMenu();
-                } else {
-                    barterSign.removeFromData();
-                }
-            }
-        }
     }
 
     public void signAndMessage(Sign sign, Player player, List<String> message) {

@@ -1,12 +1,14 @@
 package com.dumptruckman.bartersigns.entity.player;
 
 import com.dumptruckman.bartersigns.BarterSignsPlugin;
-import com.dumptruckman.bartersigns.block.BarterSign;
+import com.dumptruckman.bartersigns.sign.BarterSign;
 import org.bukkit.Material;
+import org.bukkit.block.Block;
 import org.bukkit.block.Sign;
 import org.bukkit.entity.Player;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.event.player.PlayerItemHeldEvent;
 import org.bukkit.event.player.PlayerListener;
 import org.bukkit.inventory.ItemStack;
 
@@ -29,12 +31,9 @@ public class BarterSignsPlayerListener extends PlayerListener {
         if (event.isCancelled()) return;
         if (!(event.getClickedBlock().getState() instanceof Sign)) return;
 
-        BarterSign barterSign = new BarterSign(plugin, event.getClickedBlock());
+        BarterSign barterSign = plugin.signManager.getBarterSignFromBlock(event.getClickedBlock());
         if (!barterSign.exists()) return;
-        int index = plugin.activeSigns.indexOf(barterSign);
-        if (index != -1) {
-            barterSign = plugin.activeSigns.get(index);
-        }
+
         Player player = event.getPlayer();
 
         if (event.getAction().equals(Action.LEFT_CLICK_BLOCK)) {
@@ -71,7 +70,7 @@ public class BarterSignsPlayerListener extends PlayerListener {
             } else if (BarterSign.SignPhase.READY.equalTo(barterSign.getPhase())) {
                 // @TODO or admin
                 if (player.getName().equals(barterSign.getOwner())) {
-                    barterSign.getMenu().doSelectedMenuItem(player);
+                    barterSign.doSelectedMenuItem(player);
                 } else {
 
                 }
@@ -96,10 +95,27 @@ public class BarterSignsPlayerListener extends PlayerListener {
             } else if (BarterSign.SignPhase.READY.equalTo(barterSign.getPhase())) {
                 // @TODO or admin
                 if (player.getName().equals(barterSign.getOwner())) {
-                    barterSign.getMenu().cycleMenu();
-                    barterSign.getMenu().showMenu(player);
+                    barterSign.cycleMenu();
+                    barterSign.showMenu(player);
                 }
             }
+        }
+    }
+
+    public void onItemHeldChange(PlayerItemHeldEvent event) {
+        Block block = event.getPlayer().getTargetBlock(null, 5);
+        if (!(block.getState() instanceof Sign)) return;
+
+        BarterSign barterSign = plugin.signManager.getBarterSignFromBlock(block);
+        if (!barterSign.exists()) return;
+        if (!BarterSign.SignPhase.READY.equalTo(barterSign.getPhase())) return;
+        if (event.getNewSlot() == event.getPreviousSlot()) return;;
+
+        // @TODO or admin
+        if (event.getPlayer().getName().equals(barterSign.getOwner())) {
+            //@TODO change this to increase sell/accept amounts.. or something.
+            barterSign.setMenuIndex(event.getNewSlot());
+            barterSign.showMenu(event.getPlayer());
         }
     }
 }

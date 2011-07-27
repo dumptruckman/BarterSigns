@@ -2,8 +2,8 @@ package com.dumptruckman.bartersigns.menu;
 
 import com.dumptruckman.actionmenu.SignActionMenuItem;
 import com.dumptruckman.bartersigns.BarterSignsPlugin;
-import com.dumptruckman.bartersigns.block.BarterSign;
 import com.dumptruckman.bartersigns.locale.LanguagePath;
+import com.dumptruckman.bartersigns.sign.BarterSign;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.HashMap;
@@ -36,10 +36,8 @@ public class RemoveStockMenuItem extends SignActionMenuItem {
                     new ItemStack(sellableItem.getType(), sellableItem.getAmount(), sellableItem.getDurability()));
             int amountLeftOver = 0;
             for (Map.Entry<Integer, ItemStack> item : itemsLeftOver.entrySet()) {
-                System.out.println("oh");
                 amountLeftOver += item.getValue().getAmount();
             }
-            //System.out.println(amountLeftOver);
             barterSign.setStock(barterSign.getStock() - (sellableItem.getAmount() - amountLeftOver));
             if (amountLeftOver > 0) {
                 plugin.sendMessage(player, LanguagePath.SIGN_STOCK_COLLECT_LEFTOVER.getPath());
