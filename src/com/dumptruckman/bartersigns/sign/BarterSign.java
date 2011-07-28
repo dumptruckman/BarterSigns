@@ -4,7 +4,9 @@ import com.dumptruckman.actionmenu.ActionMenu;
 import com.dumptruckman.actionmenu.ActionMenuItem;
 import com.dumptruckman.actionmenu.SignActionMenu;
 import com.dumptruckman.bartersigns.BarterSignsPlugin;
+import com.dumptruckman.bartersigns.inventory.InventoryTools;
 import com.dumptruckman.bartersigns.menu.AddStockMenuItem;
+import com.dumptruckman.bartersigns.menu.CollectRevenueMenuItem;
 import com.dumptruckman.bartersigns.menu.DefaultMenuItem;
 import com.dumptruckman.bartersigns.menu.RemoveStockMenuItem;
 import org.bukkit.World;
@@ -24,6 +26,7 @@ public class BarterSign {
     private static final int READY_MENU = 0;
     private static final int ADD_STOCK_MENU = 1;
     private static final int REMOVE_STOCK_MENU = 2;
+    private static final int REVENUE_COLLECT_MENU = 3;
 
     private BarterSignsPlugin plugin;
 
@@ -31,6 +34,9 @@ public class BarterSign {
     private String name;
     private World world;
     private SignActionMenu menu;
+
+    private ItemStack sellableItem;
+    private ItemStack acceptableItem;
 
     public enum SignPhase {
         SETUP_STOCK, SETUP_PAYMENT, READY;
@@ -82,12 +88,15 @@ public class BarterSign {
     }
 
     public boolean exists() {
-        return plugin.data.getNode(name) != null;
+        if (plugin.data.getNode(name) != null) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
     public void clear() {
         if (this.exists()) plugin.data.removeProperty(name);
-        menu = new SignActionMenu("Barter Sign", block);
         plugin.signManager.remove(this);
     }
 
@@ -99,18 +108,21 @@ public class BarterSign {
     }
 
     public void setupMenu() {
-        menu = new SignActionMenu("Barter Sign", getBlock());
+        menu = new SignActionMenu(getBlock());
         menu.addMenuItem(new DefaultMenuItem(plugin.lang.lang(SIGN_READY_SIGN.getPath(), getOwner())));
         menu.addMenuItem(new AddStockMenuItem(plugin, this));
         menu.addMenuItem(new RemoveStockMenuItem(plugin, this));
+        menu.addMenuItem(new CollectRevenueMenuItem(plugin, this));
     }
 
     public void cycleMenu() {
-        plugin.signManager.scheduleSignRefresh(this);
         menu.cycleMenu();
+        if (menu.getMenuIndex() != 0) {
+            plugin.signManager.scheduleSignRefresh(this);
+        }
         menu.getSelectedMenuItem().update();
         
-        if (menu.getSelectedMenuIndex() != 0) {
+        if (menu.getMenuIndex() != 0) {
             // @TODO Start timer to reset menu
         } else {
         
@@ -118,16 +130,20 @@ public class BarterSign {
     }
 
     public void doSelectedMenuItem(Player player) {
-        plugin.signManager.scheduleSignRefresh(this);
+        if (menu.getMenuIndex() != 0) {
+            plugin.signManager.scheduleSignRefresh(this);
+        }
         menu.doSelectedMenuItem(player);
     }
 
     public void setMenuIndex(int index) {
-        plugin.signManager.scheduleSignRefresh(this);
         if (index >= menu.size()) {
             index = menu.size() - 1;
         }
         menu.setMenuIndex(index);
+        if (menu.getMenuIndex() != 0) {
+            plugin.signManager.scheduleSignRefresh(this);
+        }
     }
 
     public ActionMenu getMenu() {
@@ -169,6 +185,25 @@ public class BarterSign {
         return plugin.data.getString(name + ".owner");
     }
 
+    public void buy(Player player) {
+        if (getStock() >= getSellableItem().getAmount()) {
+            if (InventoryTools.remove(player.getInventory(), getAcceptableItem().getType(),
+                    getAcceptableItem().getDurability(), getAcceptableItem().getAmount())) {
+                player.getInventory().addItem(getSellableItem());
+                setStock(getStock() - getSellableItem().getAmount());
+                setRevenue(getAcceptableItem(), getRevenue(getAcceptableItem()) + getAcceptableItem().getAmount());
+            } else {
+                String item = getAcceptableItem().getType().toString();
+                if (getAcceptableItem().getDurability() > 0) {
+                    item += "(" + getAcceptableItem().getDurability() + ")";
+                }
+                plugin.sendMessage(player, PLAYER_INSUFFICIENT_AMOUNT.getPath(), item);
+            }
+        } else {
+            plugin.sendMessage(player, SIGN_INSUFFICIENT_STOCK.getPath());
+        }
+    }
+
     public void updateAllMenuItems() {
         for (ActionMenuItem item : menu) {
             item.update();
@@ -179,42 +214,59 @@ public class BarterSign {
         menu.getMenuItem(index).update();
     }
 
-    public void setStockItem(Player player, ItemStack item) {
+    public void setSellableItem(Player player, ItemStack item) {
         String itemString = item.getAmount() + " " + item.getTypeId() + ":" + item.getDurability();
         plugin.data.setProperty(name + ".sells", itemString);
         String itemName = item.getType().toString();
         if (item.getDurability() != 0) {
             itemName += "(" + item.getDurability() + ")";
         }
+        initSellableItem();
         updateMenuItem(ADD_STOCK_MENU);
         updateMenuItem(REMOVE_STOCK_MENU);
         plugin.sendMessage(player, SIGN_STOCK_SET.getPath(), Integer.toString(item.getAmount()), itemName);
     }
 
-    public void setPaymentItem(Player player, ItemStack item) {
+    public void setAcceptableItem(Player player, ItemStack item) {
         String itemString = item.getAmount() + " " + item.getTypeId() + ":" + item.getDurability();
         plugin.data.setProperty(name + ".accepts", itemString);
         String itemName = item.getType().toString();
         if (item.getDurability() != 0) {
             itemName += "(" + item.getDurability() + ")";
         }
+        initAcceptableItem();
         plugin.sendMessage(player, SIGN_PAYMENT_SET.getPath(), Integer.toString(item.getAmount()), itemName);
     }
 
-    public ItemStack getSells() {
-        String item = plugin.data.getString(name + ".sells");
-        if (item == null) return null;
-        String[] sellInfo = item.split("\\s");
-        String[] itemData = sellInfo[1].split(":");
-        return new ItemStack(Integer.valueOf(itemData[0]), Integer.valueOf(sellInfo[0]), Short.valueOf(itemData[1]));
+    public ItemStack getSellableItem() {
+        return sellableItem;
     }
 
-    public ItemStack getAccepts() {
+    private void initSellableItem() {
+        String item = plugin.data.getString(name + ".sells");
+        if (item == null) return;
+        String[] sellInfo = item.split("\\s");
+        String[] itemData = sellInfo[1].split(":");
+        sellableItem = new ItemStack(Integer.valueOf(itemData[0]), Integer.valueOf(sellInfo[0]), Short.valueOf(itemData[1]));
+    }
+
+    public ItemStack getAcceptableItem() {
+        return acceptableItem;
+    }
+
+    private void initAcceptableItem() {
         String item = plugin.data.getString(name + ".accepts");
-        if (item == null) return null;
+        if (item == null) return;
         String[] buyInfo = item.split("\\s");
         String[] itemData = buyInfo[1].split(":");
-        return new ItemStack(Integer.valueOf(itemData[0]), Integer.valueOf(buyInfo[0]), Short.valueOf(itemData[1]));
+        acceptableItem = new ItemStack(Integer.valueOf(itemData[0]), Integer.valueOf(buyInfo[0]), Short.valueOf(itemData[1]));
+    }
+
+    public void initItems() {
+        if (SignPhase.READY.equalTo(getPhase())) {
+            initSellableItem();
+            initAcceptableItem();
+        }
     }
 
     public Integer getStock() {
@@ -223,5 +275,15 @@ public class BarterSign {
 
     public void setStock(int stock) {
         plugin.data.setProperty(name + ".stock", stock);
+    }
+
+    public Integer getRevenue(ItemStack item) {
+        String dataKey = item.getAmount() + " " + item.getTypeId() + ":" + item.getDurability();
+        return plugin.data.getInt(name + ".revenue." + dataKey, 0);
+    }
+
+    public void setRevenue(ItemStack item, int revenue) {
+        String dataKey = item.getAmount() + " " + item.getTypeId() + ":" + item.getDurability();
+        plugin.data.setProperty(name + ".revenue." + dataKey, revenue);
     }
 }

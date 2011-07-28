@@ -16,33 +16,27 @@ public class RemoveStockMenuItem extends SignActionMenuItem {
 
     private BarterSignsPlugin plugin;
     private BarterSign barterSign;
-    private ItemStack sellableItem;
 
     public RemoveStockMenuItem(BarterSignsPlugin plugin, BarterSign barterSign) {
         super(plugin.lang.lang(LanguagePath.SIGN_MENU_REMOVE_STOCK.getPath(), barterSign.getStock().toString()));
         this.plugin = plugin;
         this.barterSign = barterSign;
-        update();
-    }
-
-    @Override public void update() {
-        sellableItem = barterSign.getSells();
     }
 
     public void run() {
-        if (barterSign.getStock() >= sellableItem.getAmount()) {
-            System.out.println(sellableItem);
+        if (barterSign.getStock() >= barterSign.getSellableItem().getAmount()) {
             HashMap<Integer, ItemStack> itemsLeftOver = player.getInventory().addItem(
-                    new ItemStack(sellableItem.getType(), sellableItem.getAmount(), sellableItem.getDurability()));
+                    new ItemStack(barterSign.getSellableItem().getType(), barterSign.getSellableItem().getAmount(),
+                    barterSign.getSellableItem().getDurability()));
             int amountLeftOver = 0;
             for (Map.Entry<Integer, ItemStack> item : itemsLeftOver.entrySet()) {
                 amountLeftOver += item.getValue().getAmount();
             }
-            barterSign.setStock(barterSign.getStock() - (sellableItem.getAmount() - amountLeftOver));
+            barterSign.setStock(barterSign.getStock() - (barterSign.getSellableItem().getAmount() - amountLeftOver));
             if (amountLeftOver > 0) {
-                plugin.sendMessage(player, LanguagePath.SIGN_STOCK_COLLECT_LEFTOVER.getPath());
+                plugin.sendMessage(player, LanguagePath.SIGN_COLLECT_LEFTOVER.getPath());
             }
-            if (amountLeftOver != sellableItem.getAmount()) {
+            if (amountLeftOver != barterSign.getSellableItem().getAmount()) {
                 this.setLines(plugin.lang.lang(LanguagePath.SIGN_MENU_ADD_STOCK.getPath(), barterSign.getStock().toString()));
             }
             barterSign.showMenu(player);

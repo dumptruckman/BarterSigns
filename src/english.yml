@@ -8,6 +8,8 @@
 # to specific message
 
 sign:
+    info:
+    - 'Left-Click to trade %2 for %3 %1.'
     stock:
         setup:
         - '%1'
@@ -19,9 +21,27 @@ sign:
         - 'This sign will sell %1 %2.'
         insufficient:
         - 'Out of stock!'
+        add:
+        - 'Left click to'
+        - 'add stock.'
+        - 'Contains:'
+        - '%1'
+        remove:
+        - 'Left click to'
+        - 'remove stock.'
+        - 'Contains:'
+        - '%1'
+    collect:
+        leftover:
+        - 'Some items couldn''t be collected because you lack inventory space.'
+    revenue:
         collect:
-            leftover:
-            - 'Some items couldn''t be collected because you lack inventory space.'
+        - 'Collect'
+        - 'revenue'
+        - ' '
+        - ' '
+        emtpy:
+        - 'There is no revenue to collect!'
     payment:
         setup:
         - '%1'
@@ -41,17 +61,6 @@ sign:
         - 'This sign is ready for business!  Just don''t forget to stock it!'
     unfinishedsetup:
     - '%1 has not finished setting up this sign!'
-    menu:
-        addstock:
-        - 'Left click to'
-        - 'add stock.'
-        - 'Contains:'
-        - '%1'
-        removestock:
-        - 'Left click to'
-        - 'remove stock.'
-        - 'Contains:'
-        - '%1'
 player:
     nohelditem:
     - 'You must be holding an item!'

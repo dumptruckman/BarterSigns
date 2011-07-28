@@ -16,7 +16,6 @@ public class SignRefreshTask implements Runnable {
     }
 
     public void run() {
-        System.out.println("poop");
         barterSign.setMenuIndex(0);
         barterSign.showMenu(null);
     }

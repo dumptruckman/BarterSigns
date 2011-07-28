@@ -15,15 +15,15 @@ public abstract class ActionMenu implements Iterable<ActionMenuItem> {
     protected int selectedIndex = 0;
     protected List<String> header = new ArrayList<String>();
     protected List<String> footer = new ArrayList<String>();
-    protected String title;
+    //protected String title;
 
     /**
      * Creates an actionmenu with the specified title
      * @param title
      */
-    public ActionMenu(String title) {
-        this.title = title;
-    }
+    //public ActionMenu(String title) {
+    //    this.title = title;
+    //}
 
     /**
      * Set's the text to go before the menu options
@@ -46,17 +46,17 @@ public abstract class ActionMenu implements Iterable<ActionMenuItem> {
      * actionmenu, this will be the String that appears in that menu.
      * @param title
      */
-    public void setTitle(String title) {
-        this.title = title;
-    }
+    //public void setTitle(String title) {
+    //    this.title = title;
+    //}
 
     /**
      * Retrieves the title of this actionmenu.
      * @return menu title
      */
-    @Override public String toString() {
-        return title;
-    }
+    //@Override public String toString() {
+    //    return title;
+    //}
 
     /**
      * Returns the header for this menu
@@ -138,7 +138,7 @@ public abstract class ActionMenu implements Iterable<ActionMenuItem> {
      * Get the index of the current menu selection
      * @return the selected menu item's index
      */
-    public Integer getSelectedMenuIndex() {
+    public Integer getMenuIndex() {
         return selectedIndex;
     }
 

@@ -12,8 +12,7 @@ public class SignActionMenu extends ActionMenu {
 
     protected Block sign;
 
-    public SignActionMenu(String title, Block sign) {
-        super(title);
+    public SignActionMenu(Block sign) {
         this.sign = sign;
     }
 

@@ -40,7 +40,10 @@ public class BarterSignManager {
                 if (block.getState() instanceof Sign) {
                     add(barterSign);
                     barterSign.setupMenu();
-                    barterSign.showMenu(null);
+                    if (BarterSign.SignPhase.READY.equalTo(barterSign.getPhase())) {
+                        barterSign.initItems();
+                        barterSign.showMenu(null);
+                    }
                 } else {
                     barterSign.removeFromData();
                 }
@@ -74,7 +77,6 @@ public class BarterSignManager {
     public void scheduleSignRefresh(BarterSign barterSign) {
         int taskId = (Integer)activeSigns.get(barterSign).get(REFRESH_TASK_ID);
         if (taskId != -1) {
-            System.out.println("hmm");
             plugin.getServer().getScheduler().cancelTask(taskId);
         }
         taskId = plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin,

@@ -9,12 +9,14 @@ import java.util.List;
  */
 public class DefaultActionMenu extends ActionMenu {
 
-    public DefaultActionMenu(String title) {
-        super(title);
+    /**
+     * Creates a pretty crappy looking text based menu.
+     * I suggest extending ActionMenu yourself!
+     */
+    public DefaultActionMenu() {
     }
 
-    public DefaultActionMenu(String title, List<ActionMenuItem> menuContents) {
-        super(title);
+    public DefaultActionMenu(List<ActionMenuItem> menuContents) {
         setContents(menuContents);
     }
 
