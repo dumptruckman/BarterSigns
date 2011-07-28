@@ -3,6 +3,7 @@ package com.dumptruckman.bartersigns.block;
 import com.dumptruckman.bartersigns.BarterSignsPlugin;
 import com.dumptruckman.bartersigns.locale.LanguagePath;
 import com.dumptruckman.bartersigns.sign.BarterSign;
+import org.bukkit.event.block.BlockDamageEvent;
 import org.bukkit.event.block.BlockListener;
 import org.bukkit.event.block.SignChangeEvent;
 
@@ -27,5 +28,9 @@ public class BarterSignsBlockListener extends BlockListener {
         barterSign.init(event.getPlayer());
         plugin.signAndMessage(event, event.getPlayer(),
                 plugin.lang.lang(LanguagePath.SIGN_STOCK_SETUP.getPath(), event.getPlayer().getName()));
+    }
+
+    public void onBlockDamage(BlockDamageEvent event) {
+        System.out.println("Test");
     }
 }

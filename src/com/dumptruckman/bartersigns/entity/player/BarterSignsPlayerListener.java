@@ -12,9 +12,9 @@ import org.bukkit.event.player.PlayerItemHeldEvent;
 import org.bukkit.event.player.PlayerListener;
 import org.bukkit.inventory.ItemStack;
 
-import static com.dumptruckman.bartersigns.locale.LanguagePath.NO_ITEM_IN_HAND;
-import static com.dumptruckman.bartersigns.locale.LanguagePath.SIGN_INFO;
-import static com.dumptruckman.bartersigns.locale.LanguagePath.SIGN_SETUP_UNFINISHED;
+import java.util.List;
+
+import static com.dumptruckman.bartersigns.locale.LanguagePath.*;
 
 
 /**
@@ -46,21 +46,20 @@ public class BarterSignsPlayerListener extends PlayerListener {
                         return;
                     }
                     barterSign.setSellableItem(player, heldItem);
-                    barterSign.setPhase(BarterSign.SignPhase.SETUP_PAYMENT);
-                    barterSign.activatePaymentPhase(player);
+                    barterSign.activateReadyPhase(player);
                 } else {
                     plugin.sendMessage(player, SIGN_SETUP_UNFINISHED.getPath(), barterSign.getOwner());
                     return;
                 }
             } else if (BarterSign.SignPhase.SETUP_PAYMENT.equalTo(barterSign.getPhase())) {
+                // This part is probably useless now.
                 if (player.getName().equals(barterSign.getOwner()) || player.hasPermission("bartersign.admin")) {
                     ItemStack heldItem = player.getItemInHand();
                     if (heldItem == null || heldItem.getType() == Material.AIR) {
                         plugin.sendMessage(player, NO_ITEM_IN_HAND.getPath());
                         return;
                     }
-                    barterSign.setAcceptableItem(player, heldItem);
-                    barterSign.setPhase(BarterSign.SignPhase.READY);
+                    barterSign.addAcceptableItem(player, heldItem);
                     barterSign.activateReadyPhase(player);
                 } else {
                     plugin.sendMessage(player, SIGN_SETUP_UNFINISHED.getPath(), barterSign.getOwner());
@@ -82,6 +81,7 @@ public class BarterSignsPlayerListener extends PlayerListener {
                     return;
                 }
             } else if (BarterSign.SignPhase.SETUP_PAYMENT.equalTo(barterSign.getPhase())) {
+                // This part is probably useless now.
                 if (player.getName().equals(barterSign.getOwner()) || player.hasPermission("bartersign.admin")) {
                     return;
                 } else {
@@ -94,17 +94,23 @@ public class BarterSignsPlayerListener extends PlayerListener {
                     barterSign.showMenu(player);
                 } else {
                     ItemStack sellItem = barterSign.getSellableItem();
-                    ItemStack acceptItem = barterSign.getAcceptableItem();
-                    String sellItemString = sellItem.getType().toString();
+                    String sellItemString = sellItem.getAmount() + " " + sellItem.getType().toString();
                     if (sellItem.getDurability() != 0) {
                         sellItemString += "(" + sellItem.getDurability() + ")";
                     }
-                    String acceptItemString = acceptItem.getAmount() + " " + acceptItem.getType().toString();
-                    if (acceptItem.getDurability() != 0) {
-                        acceptItemString += "(" + acceptItem.getDurability() + ")";
+                    List<ItemStack> acceptItems = barterSign.getAcceptableItems();
+                    String acceptItemsString = "";
+                    for (int i = 0; i < acceptItems.size(); i++) {
+                        if (i > 0) {
+                            acceptItemsString += " or ";
+                        }
+                        acceptItemsString += acceptItems.get(i).getAmount() + " "
+                                + acceptItems.get(i).getType().toString();
+                        if (acceptItems.get(i).getDurability() != 0) {
+                            acceptItemsString += "(" + acceptItems.get(i).getDurability() + ")";
+                        }
                     }
-                    plugin.sendMessage(player, SIGN_INFO.getPath(), sellItemString, acceptItemString,
-                            Integer.toString(sellItem.getAmount()));
+                    plugin.sendMessage(player, SIGN_INFO.getPath(), sellItemString, acceptItemsString);
                 }
             }
         }

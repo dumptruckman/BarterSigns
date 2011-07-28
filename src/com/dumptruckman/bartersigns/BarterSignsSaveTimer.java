@@ -1,11 +1,9 @@
 package com.dumptruckman.bartersigns;
 
-import java.util.TimerTask;
-
 /**
  * @author dumptruckman
  */
-public class BarterSignsSaveTimer extends TimerTask {
+public class BarterSignsSaveTimer implements Runnable {
 
     private BarterSignsPlugin plugin;
 

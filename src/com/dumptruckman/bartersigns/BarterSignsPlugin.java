@@ -10,13 +10,13 @@ import org.bukkit.block.Sign;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.event.block.SignChangeEvent;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.util.config.Configuration;
 
 import java.io.*;
 import java.util.List;
-import java.util.Timer;
 import java.util.jar.JarFile;
 import java.util.logging.Logger;
 import java.util.zip.ZipEntry;
@@ -37,8 +37,7 @@ public class BarterSignsPlugin extends JavaPlugin {
     public Configuration data;
     public Language lang;
     public BarterSignManager signManager;
-
-    private Timer timer;
+    private int saveTaskId;
     
     final public void onEnable() {
         // Grab the PluginManager
@@ -51,10 +50,9 @@ public class BarterSignsPlugin extends JavaPlugin {
         reload(false);
 
         // Start save timer
-        timer = new Timer();
-        timer.scheduleAtFixedRate(new BarterSignsSaveTimer(this),
-                config.getInt("settings.datasavetimer", 30) * 1000,
-                config.getInt("settings.datasavetimer", 30) * 1000);
+        saveTaskId = getServer().getScheduler().scheduleSyncRepeatingTask(this, new BarterSignsSaveTimer(this),
+                (long) (config.getInt("settings.datasavetimer", 15) * 20),
+                (long) (config.getInt("settings.datasavetimer", 15) * 20));
 
         // Extracts default english language file
         JarFile jar = null;
@@ -125,7 +123,7 @@ public class BarterSignsPlugin extends JavaPlugin {
     }
 
     final public void onDisable() {
-        timer.cancel();
+        getServer().getScheduler().cancelTask(saveTaskId);
         saveFiles();
         log.info(this.getDescription().getName() + " " + getDescription().getVersion() + " disabled.");
     }
@@ -177,5 +175,31 @@ public class BarterSignsPlugin extends JavaPlugin {
 
     public void sendMessage(CommandSender sender, String path, String...args) {
         lang.sendMessage(lang.lang(path, args), sender);
+    }
+
+    public String itemToDataString(ItemStack item) {
+        return item.getAmount() + " " + item.getTypeId() + ":" + item.getDurability();
+    }
+
+    public ItemStack stringToItem(String item) {
+        String[] sellInfo = item.split("\\s");
+        String[] itemData = sellInfo[1].split(":");
+        return new ItemStack(Integer.valueOf(itemData[0]), Integer.valueOf(sellInfo[0]), Short.valueOf(itemData[1]));
+    }
+
+    public String itemToString(ItemStack item) {
+        return itemToString(item, true);
+    }
+
+    public String itemToString(ItemStack s, boolean withAmount) {
+        String item = "";
+        if (withAmount) {
+            item += s.getAmount() + " ";
+        }
+        item += s.getType().toString();
+        if (s.getDurability() > 0) {
+            item += "(" + s.getDurability() + ")";
+        }
+        return item;
     }
 }

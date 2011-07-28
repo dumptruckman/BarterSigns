@@ -23,6 +23,10 @@ public class RemoveStockMenuItem extends SignActionMenuItem {
         this.barterSign = barterSign;
     }
 
+    public void update() {
+        setLines(plugin.lang.lang(LanguagePath.SIGN_MENU_REMOVE_STOCK.getPath(), barterSign.getStock().toString()));
+    }
+
     public void run() {
         if (barterSign.getStock() >= barterSign.getSellableItem().getAmount()) {
             HashMap<Integer, ItemStack> itemsLeftOver = player.getInventory().addItem(

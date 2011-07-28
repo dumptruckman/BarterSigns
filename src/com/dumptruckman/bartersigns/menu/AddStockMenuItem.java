@@ -5,7 +5,6 @@ import com.dumptruckman.bartersigns.BarterSignsPlugin;
 import com.dumptruckman.bartersigns.inventory.InventoryTools;
 import com.dumptruckman.bartersigns.locale.LanguagePath;
 import com.dumptruckman.bartersigns.sign.BarterSign;
-import org.bukkit.inventory.ItemStack;
 
 
 /**
@@ -22,6 +21,10 @@ public class AddStockMenuItem extends SignActionMenuItem {
         this.barterSign = barterSign;
     }
 
+    public void update() {
+        setLines(plugin.lang.lang(LanguagePath.SIGN_MENU_ADD_STOCK.getPath(), barterSign.getStock().toString()));
+    }
+
     public void run() {
         if (InventoryTools.remove(player.getInventory(), barterSign.getSellableItem().getType(),
                 barterSign.getSellableItem().getDurability(), barterSign.getSellableItem().getAmount())) {
@@ -29,10 +32,7 @@ public class AddStockMenuItem extends SignActionMenuItem {
             this.setLines(plugin.lang.lang(LanguagePath.SIGN_MENU_ADD_STOCK.getPath(), barterSign.getStock().toString()));
             barterSign.showMenu(player);
         } else {
-            String item = barterSign.getSellableItem().getType().toString();
-            if (barterSign.getSellableItem().getDurability() != 0) {
-                item += barterSign.getSellableItem().getDurability();
-            }
+            String item = plugin.itemToString(barterSign.getSellableItem(), false);
             plugin.sendMessage(player, LanguagePath.PLAYER_INSUFFICIENT_AMOUNT.getPath(), item);
         }
     }

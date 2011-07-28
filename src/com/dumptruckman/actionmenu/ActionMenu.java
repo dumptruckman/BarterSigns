@@ -233,6 +233,15 @@ public abstract class ActionMenu implements Iterable<ActionMenuItem> {
     }
 
     /**
+     * Runs the update method on all menu items.
+     */
+    public void updateMenuItems() {
+        for (ActionMenuItem item : contents) {
+            item.update();
+        }
+    }
+
+    /**
      * Shows the menu to a CommandSender
      * @param sender
      */

@@ -1,20 +1,18 @@
 package com.dumptruckman.bartersigns.sign;
 
-import com.dumptruckman.actionmenu.ActionMenu;
-import com.dumptruckman.actionmenu.ActionMenuItem;
 import com.dumptruckman.actionmenu.SignActionMenu;
 import com.dumptruckman.bartersigns.BarterSignsPlugin;
 import com.dumptruckman.bartersigns.inventory.InventoryTools;
-import com.dumptruckman.bartersigns.menu.AddStockMenuItem;
-import com.dumptruckman.bartersigns.menu.CollectRevenueMenuItem;
-import com.dumptruckman.bartersigns.menu.DefaultMenuItem;
-import com.dumptruckman.bartersigns.menu.RemoveStockMenuItem;
+import com.dumptruckman.bartersigns.menu.*;
 import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockState;
 import org.bukkit.block.Sign;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import static com.dumptruckman.bartersigns.locale.LanguagePath.*;
 
@@ -24,9 +22,6 @@ import static com.dumptruckman.bartersigns.locale.LanguagePath.*;
 public class BarterSign {
 
     private static final int READY_MENU = 0;
-    private static final int ADD_STOCK_MENU = 1;
-    private static final int REMOVE_STOCK_MENU = 2;
-    private static final int REVENUE_COLLECT_MENU = 3;
 
     private BarterSignsPlugin plugin;
 
@@ -35,8 +30,8 @@ public class BarterSign {
     private World world;
     private SignActionMenu menu;
 
-    private ItemStack sellableItem;
-    private ItemStack acceptableItem;
+    private ItemStack sellableItem = null;
+    private List<ItemStack> acceptableItems = null;
 
     public enum SignPhase {
         SETUP_STOCK, SETUP_PAYMENT, READY;
@@ -102,31 +97,29 @@ public class BarterSign {
 
     public void init(Player player) {
         plugin.data.setProperty(name + ".owner", player.getName());
-        setPhase(SignPhase.SETUP_STOCK);
-        setupMenu();
+        activateStockPhase(player);
         plugin.signManager.add(this);
     }
 
     public void setupMenu() {
         menu = new SignActionMenu(getBlock());
         menu.addMenuItem(new DefaultMenuItem(plugin.lang.lang(SIGN_READY_SIGN.getPath(), getOwner())));
+        menu.addMenuItem(new CollectRevenueMenuItem(plugin, this));
         menu.addMenuItem(new AddStockMenuItem(plugin, this));
         menu.addMenuItem(new RemoveStockMenuItem(plugin, this));
-        menu.addMenuItem(new CollectRevenueMenuItem(plugin, this));
+        menu.addMenuItem(new AddPaymentMenuItem(plugin, this));
+        menu.addMenuItem(new RemovePaymentMenuItem(plugin, this));
+        menu.addMenuItem(new IncreaseSellableMenuItem(plugin, this));
+        menu.addMenuItem(new DecreaseSellableMenuItem(plugin, this));
     }
 
     public void cycleMenu() {
+        menu.updateMenuItems();
         menu.cycleMenu();
         if (menu.getMenuIndex() != 0) {
             plugin.signManager.scheduleSignRefresh(this);
         }
         menu.getSelectedMenuItem().update();
-        
-        if (menu.getMenuIndex() != 0) {
-            // @TODO Start timer to reset menu
-        } else {
-        
-        }
     }
 
     public void doSelectedMenuItem(Player player) {
@@ -142,13 +135,9 @@ public class BarterSign {
         }
         menu.setMenuIndex(index);
         if (menu.getMenuIndex() != 0) {
+            menu.updateMenuItems();
             plugin.signManager.scheduleSignRefresh(this);
         }
-    }
-
-    public ActionMenu getMenu() {
-        if (menu == null) setupMenu();
-        return menu;
     }
 
     public void showMenu(Player player) {
@@ -164,14 +153,14 @@ public class BarterSign {
     }
 
     public void activateStockPhase(Player player) {
-        plugin.signAndMessage(getSign(), player, SIGN_PAYMENT_SETUP.getPath(), player.getName());
-    }
-
-    public void activatePaymentPhase(Player player) {
+        setPhase(SignPhase.SETUP_STOCK);
         plugin.signAndMessage(getSign(), player, SIGN_PAYMENT_SETUP.getPath(), player.getName());
     }
 
     public void activateReadyPhase(Player player) {
+        setPhase(SignPhase.READY);
+        initAcceptableItems();
+        setupMenu();
         resumeReadyPhase();
         plugin.sendMessage(player, SIGN_READY_MESSAGE.getPath());
     }
@@ -187,85 +176,146 @@ public class BarterSign {
 
     public void buy(Player player) {
         if (getStock() >= getSellableItem().getAmount()) {
-            if (InventoryTools.remove(player.getInventory(), getAcceptableItem().getType(),
-                    getAcceptableItem().getDurability(), getAcceptableItem().getAmount())) {
-                player.getInventory().addItem(getSellableItem());
-                setStock(getStock() - getSellableItem().getAmount());
-                setRevenue(getAcceptableItem(), getRevenue(getAcceptableItem()) + getAcceptableItem().getAmount());
-            } else {
-                String item = getAcceptableItem().getType().toString();
-                if (getAcceptableItem().getDurability() > 0) {
-                    item += "(" + getAcceptableItem().getDurability() + ")";
+            ItemStack playerItem = player.getItemInHand();
+            ItemStack acceptItem = null;
+            for (ItemStack item : getAcceptableItems()) {
+                if (item.getTypeId() == playerItem.getTypeId() &&
+                        item.getDurability() == playerItem.getDurability()) {
+                    acceptItem = item;
+                    break;
                 }
-                plugin.sendMessage(player, PLAYER_INSUFFICIENT_AMOUNT.getPath(), item);
+            }
+            if (acceptItem != null) {
+                if (InventoryTools.remove(player.getInventory(), acceptItem.getType(),
+                        acceptItem.getDurability(), acceptItem.getAmount())) {
+                    player.getInventory().addItem(getSellableItem());
+                    setStock(getStock() - getSellableItem().getAmount());
+                    setRevenue(acceptItem, getRevenue(acceptItem) + acceptItem.getAmount());
+                } else {
+                    plugin.sendMessage(player, PLAYER_INSUFFICIENT_AMOUNT.getPath(),
+                            plugin.itemToString(acceptItem, false));
+                }
+            } else {
+                plugin.sendMessage(player, PLAYER_UNACCEPTABLE_ITEM.getPath());
             }
         } else {
             plugin.sendMessage(player, SIGN_INSUFFICIENT_STOCK.getPath());
         }
     }
 
-    public void updateAllMenuItems() {
-        for (ActionMenuItem item : menu) {
-            item.update();
-        }
-    }
-
-    public void updateMenuItem(int index) {
-        menu.getMenuItem(index).update();
-    }
-
     public void setSellableItem(Player player, ItemStack item) {
-        String itemString = item.getAmount() + " " + item.getTypeId() + ":" + item.getDurability();
-        plugin.data.setProperty(name + ".sells", itemString);
-        String itemName = item.getType().toString();
-        if (item.getDurability() != 0) {
-            itemName += "(" + item.getDurability() + ")";
-        }
+        plugin.data.setProperty(name + ".sells", plugin.itemToDataString(item));
+        String itemName = plugin.itemToString(item, false);
         initSellableItem();
-        updateMenuItem(ADD_STOCK_MENU);
-        updateMenuItem(REMOVE_STOCK_MENU);
         plugin.sendMessage(player, SIGN_STOCK_SET.getPath(), Integer.toString(item.getAmount()), itemName);
     }
 
-    public void setAcceptableItem(Player player, ItemStack item) {
-        String itemString = item.getAmount() + " " + item.getTypeId() + ":" + item.getDurability();
-        plugin.data.setProperty(name + ".accepts", itemString);
-        String itemName = item.getType().toString();
-        if (item.getDurability() != 0) {
-            itemName += "(" + item.getDurability() + ")";
-        }
-        initAcceptableItem();
-        plugin.sendMessage(player, SIGN_PAYMENT_SET.getPath(), Integer.toString(item.getAmount()), itemName);
+    public void addAcceptableItem(Player player, ItemStack item) {
+        List<String> items = getAcceptableItemsString();
+        item.setAmount(1);
+        items.add(plugin.itemToDataString(item));
+        plugin.data.setProperty(name + ".accepts", items);
+        initAcceptableItems();
+        plugin.sendMessage(player, SIGN_PAYMENT_ADDED.getPath(), plugin.itemToString(item));
+    }
+
+    public void removeAcceptableItem(Player player, ItemStack item) {
+        item = getAcceptableItems().get(indexOf(item));
+        getAcceptableItems().remove(item);
+        List<String> items = getAcceptableItemsString();
+        items.remove(plugin.itemToDataString(item));
+        plugin.data.setProperty(name + ".accepts", items);
+        plugin.sendMessage(player, SIGN_PAYMENT_REMOVED.getPath(), plugin.itemToString(item));
+    }
+
+    public int increaseAcceptableItemAmount(ItemStack item) {
+        int index = indexOf(item);
+        List<String> items = getAcceptableItemsString();
+        int stringIndex = items.indexOf(plugin.itemToDataString(item));
+        item.setAmount(item.getAmount() + 1);
+        acceptableItems.set(index, item);
+        items.set(stringIndex, plugin.itemToDataString(item));
+        plugin.data.setProperty(name + ".accepts", items);
+        return item.getAmount();
+    }
+
+    public int decreaseAcceptableItemAmount(ItemStack item) {
+        int index = indexOf(item);
+        List<String> items = getAcceptableItemsString();
+        int stringIndex = items.indexOf(plugin.itemToDataString(item));
+        item.setAmount(item.getAmount() - 1);
+        acceptableItems.set(index, item);
+        items.set(stringIndex, plugin.itemToDataString(item));
+        plugin.data.setProperty(name + ".accepts", items);
+        return item.getAmount();
+    }
+
+    public int increaseSellableItemAmount() {
+        sellableItem.setAmount(sellableItem.getAmount() + 1);
+        plugin.data.setProperty(name + ".sells", plugin.itemToDataString(sellableItem));
+        return sellableItem.getAmount();
+    }
+
+    public int decreaseSellableItemAmount() {
+        sellableItem.setAmount(sellableItem.getAmount() - 1);
+        plugin.data.setProperty(name + ".sells", plugin.itemToDataString(sellableItem));
+        return sellableItem.getAmount();
     }
 
     public ItemStack getSellableItem() {
         return sellableItem;
     }
 
+    public String getSellableItemString() {
+        return plugin.data.getString(name + ".sells");
+    }
+
     private void initSellableItem() {
-        String item = plugin.data.getString(name + ".sells");
+        String item = getSellableItemString();
         if (item == null) return;
-        String[] sellInfo = item.split("\\s");
-        String[] itemData = sellInfo[1].split(":");
-        sellableItem = new ItemStack(Integer.valueOf(itemData[0]), Integer.valueOf(sellInfo[0]), Short.valueOf(itemData[1]));
+        sellableItem = plugin.stringToItem(item);
     }
 
-    public ItemStack getAcceptableItem() {
-        return acceptableItem;
+    public List<ItemStack> getAcceptableItems() {
+        return acceptableItems;
     }
 
-    private void initAcceptableItem() {
-        String item = plugin.data.getString(name + ".accepts");
-        if (item == null) return;
-        String[] buyInfo = item.split("\\s");
-        String[] itemData = buyInfo[1].split(":");
-        acceptableItem = new ItemStack(Integer.valueOf(itemData[0]), Integer.valueOf(buyInfo[0]), Short.valueOf(itemData[1]));
+    public List<String> getAcceptableItemsString() {
+        return plugin.data.getStringList(name + ".accepts", new ArrayList<String>());
+    }
+
+    public boolean contains(ItemStack i) {
+        for (ItemStack item : getAcceptableItems()) {
+            if (i.getType() == item.getType() && (i.getDurability() == item.getDurability())) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public int indexOf(ItemStack s) {
+        for (int i = 0; i < getAcceptableItems().size(); i++) {
+            ItemStack item = getAcceptableItems().get(i);
+            if (s.getType() == item.getType() && (s.getDurability() == item.getDurability())) {
+                return i;
+            }
+        }
+        return -1;
+    }
+
+    private void initAcceptableItems() {
+        acceptableItems = new ArrayList<ItemStack>();
+        List<String> items = getAcceptableItemsString();
+        if (items == null) return;
+        for (Object item : items) {
+            acceptableItems.add(plugin.stringToItem(item.toString()));
+        }
     }
 
     public void initItems() {
         if (SignPhase.READY.equalTo(getPhase())) {
             initSellableItem();
-            initAcceptableItem();
+            initAcceptableItems();
         }
     }
 
@@ -278,12 +328,10 @@ public class BarterSign {
     }
 
     public Integer getRevenue(ItemStack item) {
-        String dataKey = item.getAmount() + " " + item.getTypeId() + ":" + item.getDurability();
-        return plugin.data.getInt(name + ".revenue." + dataKey, 0);
+        return plugin.data.getInt(name + ".revenue." + plugin.itemToDataString(item), 0);
     }
 
     public void setRevenue(ItemStack item, int revenue) {
-        String dataKey = item.getAmount() + " " + item.getTypeId() + ":" + item.getDurability();
-        plugin.data.setProperty(name + ".revenue." + dataKey, revenue);
+        plugin.data.setProperty(name + ".revenue." + plugin.itemToDataString(item), revenue);
     }
 }

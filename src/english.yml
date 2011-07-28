@@ -9,7 +9,9 @@
 
 sign:
     info:
-    - 'Left-Click to trade %2 for %3 %1.'
+    - 'This sign sells %1.'
+    - 'Acceptable payment: %2'
+    - 'Left-click with the payment you wish to use to make a purchase'
     stock:
         setup:
         - '%1'
@@ -31,6 +33,7 @@ sign:
         - 'remove stock.'
         - 'Contains:'
         - '%1'
+        item:
     collect:
         leftover:
         - 'Some items couldn''t be collected because you lack inventory space.'
@@ -40,17 +43,41 @@ sign:
         - 'revenue'
         - ' '
         - ' '
-        emtpy:
+        empty:
         - 'There is no revenue to collect!'
     payment:
-        setup:
-        - '%1'
+        add:
         - 'L-Click with'
         - 'item you want'
-        - 'for payment'
-        - 'Hold the item (with amount you wish for payment) in your hand to and left-click the sign'
-        set:
-        - 'This sign will accept %1 %2 as payment'
+        - 'as payment'
+        - '%1'
+        added:
+        - 'Added %1 as an acceptable form of payment!'
+        - 'If you would like more than 1, keep left-clicking with that item.'
+        remove:
+        - 'L-Click with'
+        - 'payable item'
+        - 'to remove'
+        - '%1'
+        removed:
+        - 'Removed %1 as an acceptable form of payment!'
+        contains:
+        - 'This sign already contains that item as a form of payment!'
+        notcontains:
+        - 'This sign does not contain that item!'
+    sellable:
+        increase:
+        - 'Left click to'
+        - 'increase'
+        - 'amount sold'
+        - '%1'
+        decrease:
+        - 'Left click to'
+        - 'decrease'
+        - 'amount sold'
+        - '%1'
+        minimum:
+        - 'You cannot decrease the amount below 1!'
     ready:
         sign:
         - 'Barter Shop'
@@ -58,7 +85,7 @@ sign:
         - 'Owner:'
         - '%1'
         message:
-        - 'This sign is ready for business!  Just don''t forget to stock it!'
+        - 'Make sure to stock this sign and set up forms of payment.'
     unfinishedsetup:
     - '%1 has not finished setting up this sign!'
 player:
@@ -66,4 +93,6 @@ player:
     - 'You must be holding an item!'
     insufficientamount:
     - 'You do not have enough %1!'
+    unacceptableitem:
+    - 'The item you are holding is not an acceptable form of payment.'
     

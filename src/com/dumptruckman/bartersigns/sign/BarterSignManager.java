@@ -14,7 +14,7 @@ import java.util.Map;
  */
 public class BarterSignManager {
 
-    private static final int SIGN_MENU_DURATION = 10;
+    private static final int SIGN_MENU_DURATION = 15;
 
     public static final int BARTER_SIGN = 0;
     public static final int REFRESH_TASK = 1;
@@ -39,11 +39,12 @@ public class BarterSignManager {
                 BarterSign barterSign = new BarterSign(plugin, block);
                 if (block.getState() instanceof Sign) {
                     add(barterSign);
-                    barterSign.setupMenu();
+                    barterSign.initItems();
                     if (BarterSign.SignPhase.READY.equalTo(barterSign.getPhase())) {
-                        barterSign.initItems();
+                        barterSign.setupMenu();
                         barterSign.showMenu(null);
                     }
+
                 } else {
                     barterSign.removeFromData();
                 }
