@@ -9,26 +9,17 @@ import java.util.List;
 /**
  * @author dumptruckman
  */
-public abstract class ActionMenu implements Iterable<ActionMenuItem> {
+public abstract class ActionMenu {
 
     protected List<ActionMenuItem> contents = new ArrayList<ActionMenuItem>();
     protected int selectedIndex = 0;
     protected List<String> header = new ArrayList<String>();
     protected List<String> footer = new ArrayList<String>();
-    //protected String title;
 
     /**
-     * Creates an actionmenu with the specified title
-     * @param title
-     */
-    //public ActionMenu(String title) {
-    //    this.title = title;
-    //}
-
-    /**
-     * Set's the text to go before the menu options
-     * @param firstLine first line of header
-     * @param additionalLines optional additional lines of header
+     * Set's the text to go before the menu options.
+     * @param firstLine First line of header.
+     * @param additionalLines Optional additional lines of header.
      */
     public void setHeader(String firstLine, String...additionalLines) {
         header.clear();
@@ -40,36 +31,19 @@ public abstract class ActionMenu implements Iterable<ActionMenuItem> {
             }
         }
     }
-
+    
     /**
-     * Specify the title for this menu.  If this actionmenu is used as a menu item in another
-     * actionmenu, this will be the String that appears in that menu.
-     * @param title
-     */
-    //public void setTitle(String title) {
-    //    this.title = title;
-    //}
-
-    /**
-     * Retrieves the title of this actionmenu.
-     * @return menu title
-     */
-    //@Override public String toString() {
-    //    return title;
-    //}
-
-    /**
-     * Returns the header for this menu
-     * @return list of header lines
+     * Returns the header for this menu.
+     * @return List of header lines.
      */
     public List<String> getHeader() {
         return header;
     }
 
     /**
-     * Set's the text to go after the menu options
-     * @param firstLine first line of footer
-     * @param additionalLines optional additional lines of footer
+     * Set's the text to go after the menu options.
+     * @param firstLine First line of footer.
+     * @param additionalLines Optional additional lines of footer.
      */
     public void setFooter(String firstLine, String...additionalLines) {
         footer.clear();
@@ -83,52 +57,24 @@ public abstract class ActionMenu implements Iterable<ActionMenuItem> {
     }
 
     /**
-     * Returns the footer for this menu
-     * @return list of footer lines
+     * Returns the footer for this menu.
+     * @return List of footer lines.
      */
     public List<String> getFooter() {
         return footer;
     }
 
     /**
-     * Specify a list of contents for this menu
-     * @param contents
+     * Specify a list of contents for this menu.
+     * @param contents List of menu items to set for this menu.
      */
     public void setContents(List<ActionMenuItem> contents) {
         this.contents = contents;
     }
 
     /**
-     * Appends the specified item to the end of this menu.
-     * @param menuItem item to add to menu.
-     * @return true (as specified by Collection.add)
-     */
-    public boolean addMenuItem(ActionMenuItem menuItem) {
-        return contents.add(menuItem);
-    }
-
-    /**
-     * Replaces the item at the specified position in this menu with the specified item.
-     * @param index index of the item to replace
-     * @param menuItem item to put at index
-     * @return the item that was previously at this index
-     */
-    public ActionMenuItem setMenuItem(int index, ActionMenuItem menuItem) {
-        return contents.set(index, menuItem);
-    }
-
-    /**
-     * Retrieves the item at the specified index in the menu
-     * @param index
-     * @return menu item at index
-     */
-    public ActionMenuItem getMenuItem(int index) {
-        return contents.get(index);
-    }
-
-    /**
      * Retrieve the underlying ArrayList of menu items.
-     * @return menu item list
+     * @return Menu item list.
      */
     public List<ActionMenuItem> getContents() {
         return contents;
@@ -144,28 +90,10 @@ public abstract class ActionMenu implements Iterable<ActionMenuItem> {
 
     /**
      * Get the index of the current menu selection.
-     * @return the selected menu item's index.
+     * @return The selected menu item's index.
      */
     public Integer getMenuIndex() {
         return selectedIndex;
-    }
-
-    /**
-     * Removes an item from this menu.
-     * @param menuItem Menu item to remove.
-     * @return true if this menu contained the specified item.
-     */
-    public boolean removeMenuItem(ActionMenuItem menuItem) {
-        return contents.remove(menuItem);
-    }
-
-    /**
-     * Removes a menu item specific by the index.
-     * @param index Index of the menu item to remove.
-     * @return Removed menu item.
-     */
-    public ActionMenuItem removeMenuItem(int index) {
-        return contents.remove(index);
     }
 
     /**
@@ -202,14 +130,6 @@ public abstract class ActionMenu implements Iterable<ActionMenuItem> {
     }
 
     /**
-     * Returns the number of elements in this menu. If this list contains more than Integer.MAX_VALUE elements, returns Integer.MAX_VALUE.
-     * @return The number of elements in this menu.
-     */
-    public Integer size() {
-        return contents.size();
-    }
-
-    /**
      * Perform doMenuItem() of the menu at specific index for the sender.
      * @param sender Whoever is activating the menu item. This could be null if the sender is not important for the task.
      * @param index Index of the menu item to perform.
@@ -240,8 +160,8 @@ public abstract class ActionMenu implements Iterable<ActionMenuItem> {
     }
 
     /**
-     * Shows the menu to a CommandSender
-     * @param sender
+     * Shows the menu to a CommandSender.
+     * @param sender CommandSender to show menu to.  Possibly null depending on implementation.
      */
     public abstract void showMenu(CommandSender sender);
 }

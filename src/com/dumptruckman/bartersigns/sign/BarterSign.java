@@ -103,14 +103,14 @@ public class BarterSign {
 
     public void setupMenu() {
         menu = new SignActionMenu(getBlock());
-        menu.addMenuItem(new DefaultMenuItem(plugin.lang.lang(SIGN_READY_SIGN.getPath(), getOwner())));
-        menu.addMenuItem(new CollectRevenueMenuItem(plugin, this));
-        menu.addMenuItem(new AddStockMenuItem(plugin, this));
-        menu.addMenuItem(new RemoveStockMenuItem(plugin, this));
-        menu.addMenuItem(new AddPaymentMenuItem(plugin, this));
-        menu.addMenuItem(new RemovePaymentMenuItem(plugin, this));
-        menu.addMenuItem(new IncreaseSellableMenuItem(plugin, this));
-        menu.addMenuItem(new DecreaseSellableMenuItem(plugin, this));
+        menu.getContents().add(new DefaultMenuItem(plugin.lang.lang(SIGN_READY_SIGN.getPath(), getOwner())));
+        menu.getContents().add(new CollectRevenueMenuItem(plugin, this));
+        menu.getContents().add(new AddStockMenuItem(plugin, this));
+        menu.getContents().add(new RemoveStockMenuItem(plugin, this));
+        menu.getContents().add(new AddPaymentMenuItem(plugin, this));
+        menu.getContents().add(new RemovePaymentMenuItem(plugin, this));
+        menu.getContents().add(new IncreaseSellableMenuItem(plugin, this));
+        menu.getContents().add(new DecreaseSellableMenuItem(plugin, this));
     }
 
     public void cycleMenu() {
@@ -130,8 +130,8 @@ public class BarterSign {
     }
 
     public void setMenuIndex(int index) {
-        if (index >= menu.size()) {
-            index = menu.size() - 1;
+        if (index >= menu.getContents().size()) {
+            index = menu.getContents().size() - 1;
         }
         menu.setMenuIndex(index);
         if (menu.getMenuIndex() != 0) {

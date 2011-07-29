@@ -27,7 +27,7 @@ public abstract class ActionMenuItem implements Runnable {
         return text;
     }
 
-    @Override public String toString() {
-        return this.text;
+    public boolean equals(Object o) {
+        return (o instanceof ActionMenuItem && ((ActionMenuItem)o).getText().equals(this.getText()));
     }
 }
