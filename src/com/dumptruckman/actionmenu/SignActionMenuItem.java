@@ -1,5 +1,6 @@
 package com.dumptruckman.actionmenu;
 
+import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import java.util.List;
@@ -10,12 +11,11 @@ import java.util.List;
 public abstract class SignActionMenuItem extends ActionMenuItem {
 
     protected List<String> lines;
+    protected Player player;
 
     public SignActionMenuItem(List<String> lines) {
         this.lines = lines;
     }
-
-    protected Player player;
 
     public void setInteractingPlayer(Player player) {
         this.player = player;
@@ -23,6 +23,16 @@ public abstract class SignActionMenuItem extends ActionMenuItem {
 
     public List<String> getLines() {
         return lines;
+    }
+
+    @Override
+    public void onCycle(CommandSender sender) {
+        setInteractingPlayer((sender instanceof Player ? (Player) sender : null));
+    }
+
+    @Override
+    public void onSelect(CommandSender sender) {
+        setInteractingPlayer((sender instanceof Player ? (Player) sender : null));
     }
 
     public String getLine(int index) {

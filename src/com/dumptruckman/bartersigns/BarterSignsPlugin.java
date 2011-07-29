@@ -1,8 +1,8 @@
 package com.dumptruckman.bartersigns;
 
-import com.dumptruckman.bartersigns.block.BarterSignsBlockListener;
-import com.dumptruckman.bartersigns.entity.BarterSignsEntityListener;
-import com.dumptruckman.bartersigns.entity.player.BarterSignsPlayerListener;
+import com.dumptruckman.bartersigns.listener.BarterSignsBlockListener;
+import com.dumptruckman.bartersigns.listener.BarterSignsEntityListener;
+import com.dumptruckman.bartersigns.listener.BarterSignsPlayerListener;
 import com.dumptruckman.bartersigns.sign.BarterSignManager;
 import com.dumptruckman.util.io.ConfigIO;
 import com.dumptruckman.util.locale.Language;
@@ -21,6 +21,7 @@ import java.util.jar.JarFile;
 import java.util.logging.Logger;
 import java.util.zip.ZipEntry;
 
+import static com.dumptruckman.bartersigns.config.ConfigPath.*;
 import static org.bukkit.event.Event.Priority;
 import static org.bukkit.event.Event.Type;
 
@@ -38,7 +39,7 @@ public class BarterSignsPlugin extends JavaPlugin {
     public Language lang;
     public BarterSignManager signManager;
     private int saveTaskId;
-    
+
     final public void onEnable() {
         // Grab the PluginManager
         final PluginManager pm = getServer().getPluginManager();
@@ -51,8 +52,8 @@ public class BarterSignsPlugin extends JavaPlugin {
 
         // Start save timer
         saveTaskId = getServer().getScheduler().scheduleSyncRepeatingTask(this, new BarterSignsSaveTimer(this),
-                (long) (config.getInt("settings.datasavetimer", 15) * 20),
-                (long) (config.getInt("settings.datasavetimer", 15) * 20));
+                (long) (config.getInt(DATA_SAVE.getPath(), (Integer)DATA_SAVE.getDefault()) * 20),
+                (long) (config.getInt(DATA_SAVE.getPath(), (Integer)DATA_SAVE.getDefault()) * 20));
 
         // Extracts default english language file
         JarFile jar = null;
@@ -66,7 +67,7 @@ public class BarterSignsPlugin extends JavaPlugin {
             in = new BufferedInputStream(jar.getInputStream(entry));
             out = new BufferedOutputStream(new FileOutputStream(efile));
             byte[] buffer = new byte[2048];
-            for (;;)  {
+            for (; ; ) {
                 int nBytes = in.read(buffer);
                 if (nBytes <= 0) break;
                 out.write(buffer, 0, nBytes);
@@ -74,8 +75,8 @@ public class BarterSignsPlugin extends JavaPlugin {
             out.flush();
         } catch (IOException e) {
             log.warning("Could not extract default language file!");
-            if (config.getString("settings.languagefile")
-                    .equalsIgnoreCase("english.yml")) {
+            if (config.getString(LANGUAGE_FILE.getPath())
+                    .equalsIgnoreCase(LANGUAGE_FILE.getDefault().toString())) {
                 log.severe("No alternate language file set!  Disabling "
                         + this.getDescription().getName());
                 pm.disablePlugin(this);
@@ -85,35 +86,37 @@ public class BarterSignsPlugin extends JavaPlugin {
             if (jar != null) {
                 try {
                     jar.close();
-                } catch (IOException e) {}
+                } catch (IOException e) {
+                }
             }
             if (in != null) {
                 try {
                     in.close();
-                } catch (IOException e) {}
+                } catch (IOException e) {
+                }
             }
             if (out != null) {
                 try {
                     out.close();
-                } catch (IOException e) {}
+                } catch (IOException e) {
+                }
             }
         }
 
         // Load up language file
-        lang = new Language(new File(this.getDataFolder(), config.getString("settings.languagefile")));
+        lang = new Language(new File(this.getDataFolder(), config.getString(LANGUAGE_FILE.getPath())));
 
         // Register command executor for main plugin command
-        
+
 
         // Register event listeners
-        pm.registerEvent(Type.SIGN_CHANGE, blockListener, Priority.Highest, this);
+        pm.registerEvent(Type.SIGN_CHANGE, blockListener, Priority.Normal, this);
+        pm.registerEvent(Type.BLOCK_PLACE, blockListener, Priority.Highest, this);
         pm.registerEvent(Type.PLAYER_INTERACT, new BarterSignsPlayerListener(this), Priority.Normal, this);
-        pm.registerEvent(Type.PLAYER_ITEM_HELD, new BarterSignsPlayerListener(this), Priority.Normal, this);
         pm.registerEvent(Type.BLOCK_DAMAGE, blockListener, Priority.Highest, this);
         pm.registerEvent(Type.BLOCK_BREAK, blockListener, Priority.Highest, this);
         pm.registerEvent(Type.BLOCK_FADE, blockListener, Priority.Highest, this);
         pm.registerEvent(Type.BLOCK_BURN, blockListener, Priority.Highest, this);
-        pm.registerEvent(Type.REDSTONE_CHANGE, blockListener, Priority.Highest, this);
         pm.registerEvent(Type.ENTITY_EXPLODE, new BarterSignsEntityListener(this), Priority.Highest, this);
 
         // Display enable message/version info
@@ -160,7 +163,7 @@ public class BarterSignsPlugin extends JavaPlugin {
             lang.sendMessage(message, player);
     }
 
-    public void signAndMessage(Sign sign, Player player, String path, String...args) {
+    public void signAndMessage(Sign sign, Player player, String path, String... args) {
         List<String> message = lang.lang(path, args);
         signAndMessage(sign, player, message);
     }
@@ -173,12 +176,21 @@ public class BarterSignsPlugin extends JavaPlugin {
         lang.sendMessage(message, player);
     }
 
-    public void sendMessage(CommandSender sender, String path, String...args) {
+    public void sendMessage(CommandSender sender, String path, String... args) {
         lang.sendMessage(lang.lang(path, args), sender);
     }
 
     public String itemToDataString(ItemStack item) {
-        return item.getAmount() + " " + item.getTypeId() + ":" + item.getDurability();
+        return itemToDataString(item, true);
+    }
+
+    public String itemToDataString(ItemStack s, boolean withAmount) {
+        String item = "";
+        if (withAmount) {
+            item += s.getAmount() + " ";
+        }
+        item += s.getTypeId() + ":" + s.getDurability();
+        return item;
     }
 
     public ItemStack stringToItem(String item) {

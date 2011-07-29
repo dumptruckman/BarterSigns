@@ -15,7 +15,7 @@ public class InventoryTools {
     public static HashMap<Integer, ItemStack> all(Inventory inventory, Material type, short durability) {
         HashMap<Integer, ? extends ItemStack> allItems = inventory.all(type);
         HashMap<Integer, ItemStack> items = new HashMap<Integer, ItemStack>();
-        for(Map.Entry<Integer, ? extends ItemStack> item : allItems.entrySet()) {
+        for (Map.Entry<Integer, ? extends ItemStack> item : allItems.entrySet()) {
             if (item.getValue().getDurability() == durability) {
                 items.put(item.getKey(), item.getValue());
             }
@@ -27,7 +27,7 @@ public class InventoryTools {
         HashMap<Integer, ? extends ItemStack> allItems = inventory.all(type);
         HashMap<Integer, Integer> removeFrom = new HashMap<Integer, Integer>();
         int foundAmount = 0;
-        for(Map.Entry<Integer, ? extends ItemStack> item : allItems.entrySet()) {
+        for (Map.Entry<Integer, ? extends ItemStack> item : allItems.entrySet()) {
             if (item.getValue().getDurability() == durability) {
                 if (item.getValue().getAmount() >= amount - foundAmount) {
                     removeFrom.put(item.getKey(), amount - foundAmount);

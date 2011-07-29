@@ -1,4 +1,4 @@
-package com.dumptruckman.bartersigns.entity.player;
+package com.dumptruckman.bartersigns.listener;
 
 import com.dumptruckman.bartersigns.BarterSignsPlugin;
 import com.dumptruckman.bartersigns.sign.BarterSign;
@@ -12,9 +12,9 @@ import org.bukkit.event.player.PlayerItemHeldEvent;
 import org.bukkit.event.player.PlayerListener;
 import org.bukkit.inventory.ItemStack;
 
-import java.util.List;
-
-import static com.dumptruckman.bartersigns.locale.LanguagePath.*;
+import static com.dumptruckman.bartersigns.locale.LanguagePath.NO_ITEM_IN_HAND;
+import static com.dumptruckman.bartersigns.locale.LanguagePath.NO_PERMISSION;
+import static com.dumptruckman.bartersigns.locale.LanguagePath.SIGN_SETUP_UNFINISHED;
 
 
 /**
@@ -36,10 +36,14 @@ public class BarterSignsPlayerListener extends PlayerListener {
         if (!barterSign.exists()) return;
 
         Player player = event.getPlayer();
+        if (!event.getPlayer().hasPermission("bartersigns.use")) {
+            plugin.sendMessage(player, NO_PERMISSION.getPath());
+            return;
+        }
 
         if (event.getAction().equals(Action.LEFT_CLICK_BLOCK)) {
             if (BarterSign.SignPhase.SETUP_STOCK.equalTo(barterSign.getPhase())) {
-                if (player.getName().equals(barterSign.getOwner()) || player.hasPermission("bartersign.admin")) {
+                if (player.getName().equals(barterSign.getOwner()) || player.hasPermission("bartersigns.admin")) {
                     ItemStack heldItem = player.getItemInHand();
                     if (heldItem == null || heldItem.getType() == Material.AIR) {
                         plugin.sendMessage(player, NO_ITEM_IN_HAND.getPath());
@@ -53,7 +57,7 @@ public class BarterSignsPlayerListener extends PlayerListener {
                 }
             } else if (BarterSign.SignPhase.SETUP_PAYMENT.equalTo(barterSign.getPhase())) {
                 // This part is probably useless now.
-                if (player.getName().equals(barterSign.getOwner()) || player.hasPermission("bartersign.admin")) {
+                if (player.getName().equals(barterSign.getOwner()) || player.hasPermission("bartersigns.admin")) {
                     ItemStack heldItem = player.getItemInHand();
                     if (heldItem == null || heldItem.getType() == Material.AIR) {
                         plugin.sendMessage(player, NO_ITEM_IN_HAND.getPath());
@@ -66,7 +70,7 @@ public class BarterSignsPlayerListener extends PlayerListener {
                     return;
                 }
             } else if (BarterSign.SignPhase.READY.equalTo(barterSign.getPhase())) {
-                if (player.getName().equals(barterSign.getOwner()) || player.hasPermission("bartersign.admin")) {
+                if (player.getName().equals(barterSign.getOwner()) || player.hasPermission("bartersigns.admin")) {
                     barterSign.doSelectedMenuItem(player);
                 } else {
                     barterSign.buy(player);
@@ -74,7 +78,7 @@ public class BarterSignsPlayerListener extends PlayerListener {
             }
         } else if (event.getAction().equals(Action.RIGHT_CLICK_BLOCK)) {
             if (BarterSign.SignPhase.SETUP_STOCK.equalTo(barterSign.getPhase())) {
-                if (player.getName().equals(barterSign.getOwner()) || player.hasPermission("bartersign.admin")) {
+                if (player.getName().equals(barterSign.getOwner()) || player.hasPermission("bartersigns.admin")) {
                     return;
                 } else {
                     plugin.sendMessage(player, SIGN_SETUP_UNFINISHED.getPath(), barterSign.getOwner());
@@ -82,35 +86,18 @@ public class BarterSignsPlayerListener extends PlayerListener {
                 }
             } else if (BarterSign.SignPhase.SETUP_PAYMENT.equalTo(barterSign.getPhase())) {
                 // This part is probably useless now.
-                if (player.getName().equals(barterSign.getOwner()) || player.hasPermission("bartersign.admin")) {
+                if (player.getName().equals(barterSign.getOwner()) || player.hasPermission("bartersigns.admin")) {
                     return;
                 } else {
                     plugin.sendMessage(player, SIGN_SETUP_UNFINISHED.getPath(), barterSign.getOwner());
                     return;
                 }
             } else if (BarterSign.SignPhase.READY.equalTo(barterSign.getPhase())) {
-                if (player.getName().equals(barterSign.getOwner()) || player.hasPermission("bartersign.admin")) {
-                    barterSign.cycleMenu();
+                if (player.getName().equals(barterSign.getOwner()) || player.hasPermission("bartersigns.admin")) {
+                    barterSign.cycleMenu(player);
                     barterSign.showMenu(player);
                 } else {
-                    ItemStack sellItem = barterSign.getSellableItem();
-                    String sellItemString = sellItem.getAmount() + " " + sellItem.getType().toString();
-                    if (sellItem.getDurability() != 0) {
-                        sellItemString += "(" + sellItem.getDurability() + ")";
-                    }
-                    List<ItemStack> acceptItems = barterSign.getAcceptableItems();
-                    String acceptItemsString = "";
-                    for (int i = 0; i < acceptItems.size(); i++) {
-                        if (i > 0) {
-                            acceptItemsString += " or ";
-                        }
-                        acceptItemsString += acceptItems.get(i).getAmount() + " "
-                                + acceptItems.get(i).getType().toString();
-                        if (acceptItems.get(i).getDurability() != 0) {
-                            acceptItemsString += "(" + acceptItems.get(i).getDurability() + ")";
-                        }
-                    }
-                    plugin.sendMessage(player, SIGN_INFO.getPath(), sellItemString, acceptItemsString);
+                    barterSign.showInfo(player);
                 }
             }
         }
@@ -127,7 +114,7 @@ public class BarterSignsPlayerListener extends PlayerListener {
 
         if (event.getPlayer().getName().equals(barterSign.getOwner()) || event.getPlayer().hasPermission("bartersign.admin")) {
             //@TODO change this to increase sell/accept amounts.. or something.
-            barterSign.setMenuIndex(event.getNewSlot());
+            barterSign.setMenuIndex(event.getPlayer(), event.getNewSlot());
             barterSign.showMenu(event.getPlayer());
         }
     }

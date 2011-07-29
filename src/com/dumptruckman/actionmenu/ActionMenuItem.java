@@ -1,5 +1,7 @@
 package com.dumptruckman.actionmenu;
 
+import org.bukkit.command.CommandSender;
+
 /**
  * @author dumptruckman
  */
@@ -16,7 +18,15 @@ public abstract class ActionMenuItem implements Runnable {
     }
 
     public void update() {
-        
+
+    }
+
+    public void onCycle(CommandSender sender) {
+
+    }
+
+    public void onSelect(CommandSender sender) {
+
     }
 
     public void setText(String text) {
@@ -25,9 +35,5 @@ public abstract class ActionMenuItem implements Runnable {
 
     public String getText() {
         return text;
-    }
-
-    public boolean equals(Object o) {
-        return (o instanceof ActionMenuItem && ((ActionMenuItem)o).getText().equals(this.getText()));
     }
 }

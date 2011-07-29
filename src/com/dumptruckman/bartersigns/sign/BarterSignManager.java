@@ -21,7 +21,7 @@ public class BarterSignManager {
     public static final int REFRESH_TASK_ID = 2;
 
     private Map<BarterSign, List<Object>> activeSigns = new HashMap<BarterSign, List<Object>>();
-    private BarterSignsPlugin plugin;
+    private static BarterSignsPlugin plugin;
 
     public BarterSignManager(BarterSignsPlugin plugin) {
         this.plugin = plugin;
@@ -35,7 +35,7 @@ public class BarterSignManager {
                 int x = Integer.valueOf(locArray[0]);
                 int y = Integer.valueOf(locArray[1]);
                 int z = Integer.valueOf(locArray[2]);
-                Block block  = plugin.getServer().getWorld(world).getBlockAt(x, y, z);
+                Block block = plugin.getServer().getWorld(world).getBlockAt(x, y, z);
                 BarterSign barterSign = new BarterSign(plugin, block);
                 if (block.getState() instanceof Sign) {
                     add(barterSign);
@@ -44,7 +44,6 @@ public class BarterSignManager {
                         barterSign.setupMenu();
                         barterSign.showMenu(null);
                     }
-
                 } else {
                     barterSign.removeFromData();
                 }
@@ -54,10 +53,10 @@ public class BarterSignManager {
 
     public BarterSign getBarterSignFromBlock(Block block) {
         BarterSign barterSign = new BarterSign(plugin, block);
-        if (barterSign.exists()) {
+        if (BarterSign.exists(plugin, block)) {
             List<Object> signData = activeSigns.get(barterSign);
             if (signData != null) {
-                barterSign = (BarterSign)signData.get(BARTER_SIGN);
+                barterSign = (BarterSign) signData.get(BARTER_SIGN);
             }
         }
         return barterSign;
@@ -76,12 +75,12 @@ public class BarterSignManager {
     }
 
     public void scheduleSignRefresh(BarterSign barterSign) {
-        int taskId = (Integer)activeSigns.get(barterSign).get(REFRESH_TASK_ID);
+        int taskId = (Integer) activeSigns.get(barterSign).get(REFRESH_TASK_ID);
         if (taskId != -1) {
             plugin.getServer().getScheduler().cancelTask(taskId);
         }
         taskId = plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin,
-                (SignRefreshTask)activeSigns.get(barterSign).get(REFRESH_TASK), (long)(SIGN_MENU_DURATION * 20));
+                (SignRefreshTask) activeSigns.get(barterSign).get(REFRESH_TASK), (long) (SIGN_MENU_DURATION * 20));
         activeSigns.get(barterSign).set(REFRESH_TASK_ID, taskId);
     }
 }

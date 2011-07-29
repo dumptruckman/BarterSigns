@@ -3,7 +3,6 @@ package com.dumptruckman.actionmenu;
 import org.bukkit.command.CommandSender;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -18,10 +17,11 @@ public abstract class ActionMenu {
 
     /**
      * Set's the text to go before the menu options.
-     * @param firstLine First line of header.
+     *
+     * @param firstLine       First line of header.
      * @param additionalLines Optional additional lines of header.
      */
-    public void setHeader(String firstLine, String...additionalLines) {
+    public void setHeader(String firstLine, String... additionalLines) {
         header.clear();
         header.add(firstLine);
 
@@ -31,9 +31,10 @@ public abstract class ActionMenu {
             }
         }
     }
-    
+
     /**
      * Returns the header for this menu.
+     *
      * @return List of header lines.
      */
     public List<String> getHeader() {
@@ -42,10 +43,11 @@ public abstract class ActionMenu {
 
     /**
      * Set's the text to go after the menu options.
-     * @param firstLine First line of footer.
+     *
+     * @param firstLine       First line of footer.
      * @param additionalLines Optional additional lines of footer.
      */
-    public void setFooter(String firstLine, String...additionalLines) {
+    public void setFooter(String firstLine, String... additionalLines) {
         footer.clear();
         footer.add(firstLine);
 
@@ -58,6 +60,7 @@ public abstract class ActionMenu {
 
     /**
      * Returns the footer for this menu.
+     *
      * @return List of footer lines.
      */
     public List<String> getFooter() {
@@ -66,14 +69,16 @@ public abstract class ActionMenu {
 
     /**
      * Specify a list of contents for this menu.
+     *
      * @param contents List of menu items to set for this menu.
      */
-    public void setContents(List<ActionMenuItem> contents) {
+    protected void setContents(List<ActionMenuItem> contents) {
         this.contents = contents;
     }
 
     /**
      * Retrieve the underlying ArrayList of menu items.
+     *
      * @return Menu item list.
      */
     public List<ActionMenuItem> getContents() {
@@ -82,6 +87,7 @@ public abstract class ActionMenu {
 
     /**
      * Returns the menu item that is selected.
+     *
      * @return Selected menu item.
      */
     public ActionMenuItem getSelectedMenuItem() {
@@ -89,7 +95,19 @@ public abstract class ActionMenu {
     }
 
     /**
+     * Adds a menu item to the end of the menu.
+     *
+     * @param item Menu item to add to the menu.
+     * @return Index of the new menu item.
+     */
+    public Integer addMenuItem(ActionMenuItem item) {
+        contents.add(item);
+        return contents.size() - 1;
+    }
+
+    /**
      * Get the index of the current menu selection.
+     *
      * @return The selected menu item's index.
      */
     public Integer getMenuIndex() {
@@ -100,14 +118,25 @@ public abstract class ActionMenu {
      * Cycles the selection through the menu options.
      */
     public void cycleMenu() {
-        cycleMenu(false);
+        cycleMenu(null, false);
+    }
+
+    /**
+     * Cycles the selection through the menu option.
+     *
+     * @param sender Person who activates the menu cycle.  This could be null if the sender is not important for the task.
+     */
+    public void cycleMenu(CommandSender sender) {
+        cycleMenu(sender, false);
     }
 
     /**
      * Cycles the selection through the menu options.
+     *
+     * @param sender  Person who activates the menu cycle.  This could be null if the sender is not important for the task.
      * @param reverse If set to true, cycles backwards.
      */
-    public void cycleMenu(boolean reverse) {
+    public void cycleMenu(CommandSender sender, boolean reverse) {
         if (reverse) {
             selectedIndex--;
         } else {
@@ -119,10 +148,24 @@ public abstract class ActionMenu {
         if (selectedIndex >= contents.size()) {
             selectedIndex = 0;
         }
+        triggerAllOnCycleEvent(sender);
+        contents.get(selectedIndex).onSelect(sender);
+    }
+
+    /**
+     * Calls onCycle() on each menu item in this menu
+     *
+     * @param sender Person who activates the menu cycle.  This could be null if the sender is not important for the task.
+     */
+    public void triggerAllOnCycleEvent(CommandSender sender) {
+        for (ActionMenuItem item : contents) {
+            item.onCycle(sender);
+        }
     }
 
     /**
      * Sets the current menu selection to specified index.
+     *
      * @param index Sets the selection index to this.
      */
     public void setMenuIndex(int index) {
@@ -130,9 +173,21 @@ public abstract class ActionMenu {
     }
 
     /**
+     * Sets the current menu selection to specified index.
+     *
+     * @param sender Person who activates the menu cycle.  This could be null if the sender is not important for the task.
+     * @param index  Sets the selection index to this.
+     */
+    public void setMenuIndex(CommandSender sender, int index) {
+        selectedIndex = index;
+        contents.get(selectedIndex).onSelect(sender);
+    }
+
+    /**
      * Perform doMenuItem() of the menu at specific index for the sender.
+     *
      * @param sender Whoever is activating the menu item. This could be null if the sender is not important for the task.
-     * @param index Index of the menu item to perform.
+     * @param index  Index of the menu item to perform.
      * @return The item performed.
      */
     public ActionMenuItem doMenuItem(CommandSender sender, int index) {
@@ -143,6 +198,7 @@ public abstract class ActionMenu {
 
     /**
      * Performs doMenuItem() on the currently selected menu item for the sender.
+     *
      * @param sender Whoever is activating the menu item. This could be null if the sender is not important for the task.
      * @return the item performed
      */
@@ -161,6 +217,7 @@ public abstract class ActionMenu {
 
     /**
      * Shows the menu to a CommandSender.
+     *
      * @param sender CommandSender to show menu to.  Possibly null depending on implementation.
      */
     public abstract void showMenu(CommandSender sender);

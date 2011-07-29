@@ -10,19 +10,17 @@ public enum LanguagePath {
 
     SIGN_COLLECT_LEFTOVER("sign.collect.leftover"),
 
-    SIGN_PAYMENT_SETUP("sign.payment.setup"),
-    //SIGN_PAYMENT_SET("sign.payment.set"),
     SIGN_PAYMENT_ADD("sign.payment.add"),
     SIGN_PAYMENT_ADDED("sign.payment.added"),
     SIGN_PAYMENT_REMOVE("sign.payment.remove"),
     SIGN_PAYMENT_REMOVED("sign.payment.removed"),
-    SIGN_PAYMENT_CONTAINS("sign.payment.contains"),
 
     SIGN_SELLABLE_INCREASE("sign.sellable.increase"),
     SIGN_SELLABLE_DECREASE("sign.sellable.decrease"),
     SIGN_SELLABLE_MINIMUM("sign.sellable.minimum"),
 
-    SIGN_MENU_COLLECT_REVENUE("sign.revenue.collect"),
+    SIGN_REVENUE_COLLECT("sign.revenue.collect"),
+    SIGN_REVENUE_COLLECTED("sign.revenue.collected"),
     SIGN_REVENUE_EMPTY("sign.revenue.empty"),
     SIGN_SETUP_UNFINISHED("sign.unfinishedsetup"),
     SIGN_READY_SIGN("sign.ready.sign"),
@@ -32,7 +30,11 @@ public enum LanguagePath {
     SIGN_INSUFFICIENT_STOCK("sign.stock.insufficient"),
     PLAYER_INSUFFICIENT_AMOUNT("player.insufficientamount"),
     PLAYER_UNACCEPTABLE_ITEM("player.unacceptableitem"),
+    PLAYER_PURCHASE("player.purchased"),
     SIGN_INFO("sign.info"),
+    OWNER_MESSAGE("sign.owner"),
+    REMOVE_SIGN("sign.remove"),
+    NO_PERMISSION("player.nopermission"),
     ;
 
     private String path;

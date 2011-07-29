@@ -45,6 +45,8 @@ sign:
         - ' '
         empty:
         - 'There is no revenue to collect!'
+        collected:
+        - 'You collected %1!'
     payment:
         add:
         - 'L-Click with'
@@ -61,8 +63,6 @@ sign:
         - '%1'
         removed:
         - 'Removed %1 as an acceptable form of payment!'
-        contains:
-        - 'This sign already contains that item as a form of payment!'
         notcontains:
         - 'This sign does not contain that item!'
     sellable:
@@ -88,6 +88,13 @@ sign:
         - 'Make sure to stock this sign and set up forms of payment.'
     unfinishedsetup:
     - '%1 has not finished setting up this sign!'
+    owner:
+    - 'You may left-click this menu item to see what the sign sells/accepts.'
+    remove:
+    - 'You may'
+    - 'destroy the'
+    - 'sign right'
+    - 'now'
 player:
     nohelditem:
     - 'You must be holding an item!'
@@ -95,4 +102,8 @@ player:
     - 'You do not have enough %1!'
     unacceptableitem:
     - 'The item you are holding is not an acceptable form of payment.'
+    purchased:
+    - 'You purchased %1 for %2!'
+    nopermission:
+    - 'You do not have permission to access this sign.'
     

@@ -6,6 +6,7 @@ import com.dumptruckman.bartersigns.locale.LanguagePath;
 import com.dumptruckman.bartersigns.sign.BarterSign;
 import org.bukkit.inventory.ItemStack;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -19,7 +20,7 @@ public class CollectRevenueMenuItem extends SignActionMenuItem {
     private BarterSign barterSign;
 
     public CollectRevenueMenuItem(BarterSignsPlugin plugin, BarterSign barterSign) {
-        super(plugin.lang.lang(LanguagePath.SIGN_MENU_COLLECT_REVENUE.getPath()));
+        super(plugin.lang.lang(LanguagePath.SIGN_REVENUE_COLLECT.getPath()));
         this.plugin = plugin;
         this.barterSign = barterSign;
     }
@@ -27,6 +28,7 @@ public class CollectRevenueMenuItem extends SignActionMenuItem {
     public void run() {
         List<ItemStack> acceptItems = barterSign.getAcceptableItems();
         boolean hasRevenue = false;
+        List<String> itemList = new ArrayList<String>();
         for (ItemStack acceptItem : acceptItems) {
             if (barterSign.getRevenue(acceptItem) > 0) {
                 if (!hasRevenue) hasRevenue = true;
@@ -38,6 +40,10 @@ public class CollectRevenueMenuItem extends SignActionMenuItem {
                 for (Map.Entry<Integer, ItemStack> item : itemsLeftOver.entrySet()) {
                     amountLeftOver += item.getValue().getAmount();
                 }
+                itemList.add(plugin.itemToString(new ItemStack(
+                        acceptItem.getType(),
+                        barterSign.getRevenue(acceptItem) - amountLeftOver,
+                        acceptItem.getDurability())));
                 barterSign.setRevenue(acceptItem, barterSign.getRevenue(acceptItem)
                         - (barterSign.getRevenue(acceptItem) - amountLeftOver));
                 if (amountLeftOver > 0) {
@@ -48,6 +54,15 @@ public class CollectRevenueMenuItem extends SignActionMenuItem {
         }
         if (!hasRevenue) {
             plugin.sendMessage(player, LanguagePath.SIGN_REVENUE_EMPTY.getPath());
+        } else {
+            String items = "";
+            for (int i = 0; i < itemList.size(); i++) {
+                if (i != 0) {
+                    items += ", ";
+                }
+                items += itemList.get(i);
+            }
+            plugin.sendMessage(player, LanguagePath.SIGN_REVENUE_COLLECTED.getPath(), items);
         }
     }
 }

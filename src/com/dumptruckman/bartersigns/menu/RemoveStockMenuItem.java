@@ -31,7 +31,7 @@ public class RemoveStockMenuItem extends SignActionMenuItem {
         if (barterSign.getStock() >= barterSign.getSellableItem().getAmount()) {
             HashMap<Integer, ItemStack> itemsLeftOver = player.getInventory().addItem(
                     new ItemStack(barterSign.getSellableItem().getType(), barterSign.getSellableItem().getAmount(),
-                    barterSign.getSellableItem().getDurability()));
+                            barterSign.getSellableItem().getDurability()));
             int amountLeftOver = 0;
             for (Map.Entry<Integer, ItemStack> item : itemsLeftOver.entrySet()) {
                 amountLeftOver += item.getValue().getAmount();
