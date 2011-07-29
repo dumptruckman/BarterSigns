@@ -120,66 +120,64 @@ public abstract class ActionMenu implements Iterable<ActionMenuItem> {
     /**
      * Retrieves the item at the specified index in the menu
      * @param index
-     * @return
+     * @return menu item at index
      */
     public ActionMenuItem getMenuItem(int index) {
         return contents.get(index);
     }
 
     /**
-     * Returns the menu item that is selected
-     * @return
+     * Retrieve the underlying ArrayList of menu items.
+     * @return menu item list
+     */
+    public List<ActionMenuItem> getContents() {
+        return contents;
+    }
+
+    /**
+     * Returns the menu item that is selected.
+     * @return Selected menu item.
      */
     public ActionMenuItem getSelectedMenuItem() {
         return contents.get(selectedIndex);
     }
 
     /**
-     * Get the index of the current menu selection
-     * @return the selected menu item's index
+     * Get the index of the current menu selection.
+     * @return the selected menu item's index.
      */
     public Integer getMenuIndex() {
         return selectedIndex;
     }
 
     /**
-     * Returns Iterator for the menu
-     * @return
-     */
-    public Iterator iterator() {
-        return contents.iterator();
-    }
-
-    /**
      * Removes an item from this menu.
-     * @param menuItem
-     * @return true if this menu contained the specified item
+     * @param menuItem Menu item to remove.
+     * @return true if this menu contained the specified item.
      */
     public boolean removeMenuItem(ActionMenuItem menuItem) {
         return contents.remove(menuItem);
     }
 
     /**
-     * Returns true if this menu contains the specified item. More formally, returns true if
-     * and only if this menu contains at least one item i such that
-     * (menuItem==null ? i==null : menuItem.equals(i)).
-     * @param menuItem
-     * @return
+     * Removes a menu item specific by the index.
+     * @param index Index of the menu item to remove.
+     * @return Removed menu item.
      */
-    public boolean contains(ActionMenuItem menuItem) {
-        return contents.contains(menuItem);
+    public ActionMenuItem removeMenuItem(int index) {
+        return contents.remove(index);
     }
 
     /**
-     * Cycles the selection through the menu options
+     * Cycles the selection through the menu options.
      */
     public void cycleMenu() {
         cycleMenu(false);
     }
 
     /**
-     * Cycles the selection through the menu options
-     * @param reverse if set to true, cycles backwards
+     * Cycles the selection through the menu options.
+     * @param reverse If set to true, cycles backwards.
      */
     public void cycleMenu(boolean reverse) {
         if (reverse) {
@@ -196,8 +194,8 @@ public abstract class ActionMenu implements Iterable<ActionMenuItem> {
     }
 
     /**
-     * Sets the current menu selection to selectedIndex
-     * @param index
+     * Sets the current menu selection to specified index.
+     * @param index Sets the selection index to this.
      */
     public void setMenuIndex(int index) {
         selectedIndex = index;
@@ -205,17 +203,17 @@ public abstract class ActionMenu implements Iterable<ActionMenuItem> {
 
     /**
      * Returns the number of elements in this menu. If this list contains more than Integer.MAX_VALUE elements, returns Integer.MAX_VALUE.
-     * @return the number of elements in this menu
+     * @return The number of elements in this menu.
      */
     public Integer size() {
         return contents.size();
     }
 
     /**
-     * Perform menu item for sender at selectedIndex.  The menu item must implement Runnable.
-     * @param sender whoever is activating the menu item
-     * @param index selectedIndex of the menu item
-     * @return the item performed
+     * Perform doMenuItem() of the menu at specific index for the sender.
+     * @param sender Whoever is activating the menu item. This could be null if the sender is not important for the task.
+     * @param index Index of the menu item to perform.
+     * @return The item performed.
      */
     public ActionMenuItem doMenuItem(CommandSender sender, int index) {
         ActionMenuItem selectedItem = contents.get(index);
@@ -224,8 +222,8 @@ public abstract class ActionMenu implements Iterable<ActionMenuItem> {
     }
 
     /**
-     * Performs doMenuItem() on the currently selected menu item.
-     * @param sender
+     * Performs doMenuItem() on the currently selected menu item for the sender.
+     * @param sender Whoever is activating the menu item. This could be null if the sender is not important for the task.
      * @return the item performed
      */
     public ActionMenuItem doSelectedMenuItem(CommandSender sender) {
