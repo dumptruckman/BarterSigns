@@ -1,6 +1,6 @@
 package com.dumptruckman.bartersigns.menu;
 
-import com.dumptruckman.actionmenu.SignActionMenuItem;
+import com.dumptruckman.bartersigns.actionmenu.SignActionMenuItem;
 import com.dumptruckman.bartersigns.BarterSignsPlugin;
 import com.dumptruckman.bartersigns.config.ConfigPath;
 import com.dumptruckman.bartersigns.inventory.InventoryTools;
