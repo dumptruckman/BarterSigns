@@ -4,9 +4,7 @@ import com.dumptruckman.bartersigns.BarterSignsPlugin;
 import com.dumptruckman.bartersigns.locale.LanguagePath;
 import org.bukkit.block.Block;
 import org.bukkit.block.Sign;
-import org.bukkit.event.block.BlockListener;
 
-import java.security.SignatureSpi;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -80,7 +78,6 @@ public class BarterSignManager {
 
     public static void remove(Block block) {
         if (BarterSign.exists(plugin, block)) {
-            System.out.println(block.toString());
             plugin.data.removeProperty(BarterSign.genName(block));
             cancelSignRefresh(BarterSign.genName(block));
             activeSigns.remove(block.toString());

@@ -5,8 +5,6 @@ import com.dumptruckman.bartersigns.locale.LanguagePath;
 import com.dumptruckman.bartersigns.sign.BarterSign;
 import org.bukkit.command.CommandSender;
 
-import java.util.List;
-
 /**
  * @author dumptruckman
  */
@@ -16,7 +14,11 @@ public class RemoveSignMenuItem extends MainMenuItem {
         super(plugin, barterSign, plugin.lang.lang(LanguagePath.REMOVE_SIGN.getPath()));
     }
 
-    @Override public void onSelect(CommandSender send) { }
+    @Override
+    public void onSelect(CommandSender send) {
+    }
 
-    @Override public void run() { }
+    @Override
+    public void run() {
+    }
 }

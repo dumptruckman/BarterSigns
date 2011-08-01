@@ -6,7 +6,6 @@ import com.dumptruckman.bartersigns.config.ConfigPath;
 import com.dumptruckman.bartersigns.inventory.InventoryTools;
 import com.dumptruckman.bartersigns.locale.LanguagePath;
 import com.dumptruckman.bartersigns.sign.BarterSign;
-import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -51,7 +50,7 @@ public class AlterStockMenuItem extends SignActionMenuItem {
     public void run() {
         if (!player.isSneaking()) {
             int limit = plugin.config.getInt(ConfigPath.SIGN_STORAGE_LIMIT.getPath(),
-                    (Integer)ConfigPath.SIGN_STORAGE_LIMIT.getDefault());
+                    (Integer) ConfigPath.SIGN_STORAGE_LIMIT.getDefault());
 
             if (limit != 0 && barterSign.getStock() == limit) {
                 plugin.sendMessage(player, LanguagePath.SIGN_STOCK_LIMIT.getPath());
@@ -63,7 +62,7 @@ public class AlterStockMenuItem extends SignActionMenuItem {
                 if (limit != 0 && barterSign.getStock() > limit) {
                     barterSign.getWorld().dropItem(barterSign.getLocation(),
                             new ItemStack(barterSign.getSellableItem().getType(), barterSign.getSellableItem().getAmount(),
-                            barterSign.getSellableItem().getDurability()));
+                                    barterSign.getSellableItem().getDurability()));
                     barterSign.setStock(limit);
                     plugin.sendMessage(player, LanguagePath.SIGN_STOCK_LIMIT.getPath());
                 }
@@ -81,7 +80,7 @@ public class AlterStockMenuItem extends SignActionMenuItem {
                 }
                 HashMap<Integer, ItemStack> itemsLeftOver = player.getInventory().addItem(
                         new ItemStack(barterSign.getSellableItem().getType(), amount,
-                        barterSign.getSellableItem().getDurability()));
+                                barterSign.getSellableItem().getDurability()));
                 int amountLeftOver = 0;
                 for (Map.Entry<Integer, ItemStack> item : itemsLeftOver.entrySet()) {
                     amountLeftOver += item.getValue().getAmount();

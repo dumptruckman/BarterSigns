@@ -10,8 +10,7 @@ public enum ConfigPath {
 
     SIGN_STORAGE_LIMIT("signs.storagelimit", 0),
     SIGN_INDESTRUCTIBLE("signs.indestructible", true),
-    SIGN_DROPS_ITEMS("signs.dropitemsonbreak", true),
-    ;
+    SIGN_DROPS_ITEMS("signs.dropitemsonbreak", true),;
 
     private String path;
     private Object def;

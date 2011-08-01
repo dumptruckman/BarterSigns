@@ -4,8 +4,8 @@ import com.dumptruckman.bartersigns.listener.BarterSignsBlockListener;
 import com.dumptruckman.bartersigns.listener.BarterSignsEntityListener;
 import com.dumptruckman.bartersigns.listener.BarterSignsPlayerListener;
 import com.dumptruckman.bartersigns.sign.BarterSignManager;
-import com.dumptruckman.util.io.ConfigIO;
-import com.dumptruckman.util.locale.Language;
+import com.dumptruckman.bartersigns.config.ConfigIO;
+import com.dumptruckman.bartersigns.locale.Language;
 import org.bukkit.block.Sign;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -15,6 +15,7 @@ import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.util.config.Configuration;
 
+import javax.xml.crypto.Data;
 import java.io.*;
 import java.util.List;
 import java.util.jar.JarFile;
@@ -52,8 +53,8 @@ public class BarterSignsPlugin extends JavaPlugin {
 
         // Start save timer
         saveTaskId = getServer().getScheduler().scheduleSyncRepeatingTask(this, new BarterSignsSaveTimer(this),
-                (long) (config.getInt(DATA_SAVE.getPath(), (Integer)DATA_SAVE.getDefault()) * 20),
-                (long) (config.getInt(DATA_SAVE.getPath(), (Integer)DATA_SAVE.getDefault()) * 20));
+                (long) (config.getInt(DATA_SAVE.getPath(), (Integer) DATA_SAVE.getDefault()) * 20),
+                (long) (config.getInt(DATA_SAVE.getPath(), (Integer) DATA_SAVE.getDefault()) * 20));
 
         // Extracts default english language file
         JarFile jar = null;
@@ -86,17 +87,20 @@ public class BarterSignsPlugin extends JavaPlugin {
             if (jar != null) {
                 try {
                     jar.close();
-                } catch (IOException e) {}
+                } catch (IOException e) {
+                }
             }
             if (in != null) {
                 try {
                     in.close();
-                } catch (IOException e) {}
+                } catch (IOException e) {
+                }
             }
             if (out != null) {
                 try {
                     out.close();
-                } catch (IOException e) {}
+                } catch (IOException e) {
+                }
             }
         }
 
@@ -137,6 +141,12 @@ public class BarterSignsPlugin extends JavaPlugin {
         if (config.getString("settings.languagefile") == null) {
             config.setProperty("settings.languagefile", "english.yml");
         }
+        config.getInt(DATA_SAVE.getPath(), (Integer) DATA_SAVE.getDefault());
+        config.getBoolean(USE_PERMS.getPath(), (Boolean) USE_PERMS.getDefault());
+        config.getInt(SIGN_STORAGE_LIMIT.getPath(), (Integer)SIGN_STORAGE_LIMIT.getDefault());
+        config.getBoolean(SIGN_INDESTRUCTIBLE.getPath(), (Boolean) SIGN_INDESTRUCTIBLE.getDefault());
+        config.getBoolean(SIGN_DROPS_ITEMS.getPath(), (Boolean) SIGN_DROPS_ITEMS.getDefault());
+        config.save();
     }
 
     final public void saveConfig() {
@@ -159,7 +169,7 @@ public class BarterSignsPlugin extends JavaPlugin {
         }
         if (player != null) {
             lang.sendMessage(message, player);
-            player.sendBlockChange(sign.getBlock().getLocation(), 0, (byte)0);
+            player.sendBlockChange(sign.getBlock().getLocation(), 0, (byte) 0);
         }
         sign.update(true);
     }

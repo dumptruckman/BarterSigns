@@ -10,14 +10,11 @@ import org.bukkit.block.Sign;
 import org.bukkit.entity.Player;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
-import org.bukkit.event.player.PlayerItemHeldEvent;
 import org.bukkit.event.player.PlayerListener;
 import org.bukkit.event.player.PlayerToggleSneakEvent;
 import org.bukkit.inventory.ItemStack;
 
-import static com.dumptruckman.bartersigns.locale.LanguagePath.NO_ITEM_IN_HAND;
-import static com.dumptruckman.bartersigns.locale.LanguagePath.NO_PERMISSION;
-import static com.dumptruckman.bartersigns.locale.LanguagePath.SIGN_SETUP_UNFINISHED;
+import static com.dumptruckman.bartersigns.locale.LanguagePath.*;
 
 
 /**
@@ -39,7 +36,7 @@ public class BarterSignsPlayerListener extends PlayerListener {
         if (barterSign == null) return;
 
         Player player = event.getPlayer();
-        if (plugin.config.getBoolean(ConfigPath.USE_PERMS.getPath(), (Boolean)ConfigPath.USE_PERMS.getDefault())) {
+        if (plugin.config.getBoolean(ConfigPath.USE_PERMS.getPath(), (Boolean) ConfigPath.USE_PERMS.getDefault())) {
             if (!event.getPlayer().hasPermission("bartersigns.use")) {
                 plugin.sendMessage(player, NO_PERMISSION.getPath());
                 return;
@@ -48,9 +45,9 @@ public class BarterSignsPlayerListener extends PlayerListener {
 
         if (event.getAction().equals(Action.LEFT_CLICK_BLOCK)) {
             if (BarterSign.SignPhase.SETUP_STOCK.equalTo(barterSign.getPhase())) {
-                if (player.getName().equals(barterSign.getOwner()) || player.isOp() 
+                if (player.getName().equals(barterSign.getOwner()) || player.isOp()
                         || (plugin.config.getBoolean(ConfigPath.USE_PERMS.getPath(),
-                        (Boolean)ConfigPath.USE_PERMS.getDefault()) && player.hasPermission("bartersigns.admin"))) {
+                        (Boolean) ConfigPath.USE_PERMS.getDefault()) && player.hasPermission("bartersigns.admin"))) {
                     ItemStack heldItem = player.getItemInHand();
                     if (heldItem == null || heldItem.getType() == Material.AIR) {
                         plugin.sendMessage(player, NO_ITEM_IN_HAND.getPath());
@@ -65,7 +62,7 @@ public class BarterSignsPlayerListener extends PlayerListener {
             } else if (BarterSign.SignPhase.READY.equalTo(barterSign.getPhase())) {
                 if (player.getName().equals(barterSign.getOwner()) || player.isOp()
                         || (plugin.config.getBoolean(ConfigPath.USE_PERMS.getPath(),
-                        (Boolean)ConfigPath.USE_PERMS.getDefault()) && player.hasPermission("bartersigns.admin"))) {
+                        (Boolean) ConfigPath.USE_PERMS.getDefault()) && player.hasPermission("bartersigns.admin"))) {
                     barterSign.doSelectedMenuItem(player);
                 } else {
                     barterSign.buy(player);
@@ -75,7 +72,7 @@ public class BarterSignsPlayerListener extends PlayerListener {
             if (BarterSign.SignPhase.SETUP_STOCK.equalTo(barterSign.getPhase())) {
                 if (player.getName().equals(barterSign.getOwner()) || player.isOp()
                         || (plugin.config.getBoolean(ConfigPath.USE_PERMS.getPath(),
-                        (Boolean)ConfigPath.USE_PERMS.getDefault()) && player.hasPermission("bartersigns.admin"))) {
+                        (Boolean) ConfigPath.USE_PERMS.getDefault()) && player.hasPermission("bartersigns.admin"))) {
                     return;
                 } else {
                     plugin.sendMessage(player, SIGN_SETUP_UNFINISHED.getPath(), barterSign.getOwner());
@@ -84,7 +81,7 @@ public class BarterSignsPlayerListener extends PlayerListener {
             } else if (BarterSign.SignPhase.READY.equalTo(barterSign.getPhase())) {
                 if (player.getName().equals(barterSign.getOwner()) || player.isOp()
                         || (plugin.config.getBoolean(ConfigPath.USE_PERMS.getPath(),
-                        (Boolean)ConfigPath.USE_PERMS.getDefault()) && player.hasPermission("bartersigns.admin"))) {
+                        (Boolean) ConfigPath.USE_PERMS.getDefault()) && player.hasPermission("bartersigns.admin"))) {
                     barterSign.cycleMenu(player, player.isSneaking());
                     barterSign.showMenu(player);
                 } else {

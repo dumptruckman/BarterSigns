@@ -4,7 +4,6 @@ import com.dumptruckman.actionmenu.SignActionMenuItem;
 import com.dumptruckman.bartersigns.BarterSignsPlugin;
 import com.dumptruckman.bartersigns.locale.LanguagePath;
 import com.dumptruckman.bartersigns.sign.BarterSign;
-import com.dumptruckman.bartersigns.sign.BarterSignManager;
 import org.bukkit.Material;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -52,11 +51,11 @@ public class AlterPaymentMenuItem extends SignActionMenuItem {
                     if (player.isSneaking()) {
                         setLines(plugin.lang.lang(LanguagePath.SIGN_PAYMENT_REMOVE.getPath(),
                                 Integer.toString(barterSign.getAcceptableItems()
-                                .get(index).getAmount())));
+                                        .get(index).getAmount())));
                     } else {
                         setLines(plugin.lang.lang(LanguagePath.SIGN_PAYMENT_ADD.getPath(),
                                 Integer.toString(barterSign.getAcceptableItems()
-                                .get(index).getAmount())));
+                                        .get(index).getAmount())));
                     }
                 }
                 barterSign.showMenu(player);

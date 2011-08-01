@@ -1,6 +1,6 @@
 name: BarterSigns
 main: com.dumptruckman.bartersigns.BarterSignsPlugin
-version: .9.0-beta
+version: 1.0
 author: dumptruckman
 
 permissions:

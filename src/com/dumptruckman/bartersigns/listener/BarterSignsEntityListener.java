@@ -3,7 +3,6 @@ package com.dumptruckman.bartersigns.listener;
 import com.dumptruckman.bartersigns.BarterSignsPlugin;
 import com.dumptruckman.bartersigns.config.ConfigPath;
 import com.dumptruckman.bartersigns.sign.BarterSign;
-import com.sun.org.apache.xpath.internal.operations.And;
 import org.bukkit.block.Block;
 import org.bukkit.block.Sign;
 import org.bukkit.event.entity.EntityExplodeEvent;
@@ -34,7 +33,7 @@ public class BarterSignsEntityListener extends EntityListener {
                 if (BarterSign.exists(plugin, block)) {
                     barterSigns.add(plugin.signManager.getBarterSignFromBlock(block));
                     if (plugin.config.getBoolean(ConfigPath.SIGN_INDESTRUCTIBLE.getPath(),
-                            (Boolean)ConfigPath.SIGN_INDESTRUCTIBLE.getDefault())) {
+                            (Boolean) ConfigPath.SIGN_INDESTRUCTIBLE.getDefault())) {
                         event.setCancelled(true);
                         return;
                     }
@@ -43,7 +42,7 @@ public class BarterSignsEntityListener extends EntityListener {
         }
 
         if (plugin.config.getBoolean(ConfigPath.SIGN_DROPS_ITEMS.getPath(),
-                (Boolean)ConfigPath.SIGN_DROPS_ITEMS.getDefault())) {
+                (Boolean) ConfigPath.SIGN_DROPS_ITEMS.getDefault())) {
             for (BarterSign sign : barterSigns) {
                 sign.drop();
             }

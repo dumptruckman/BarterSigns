@@ -1,7 +1,7 @@
 <component name="libraryTable">
-  <library name="dUtil">
+  <library name="ActionMenu">
     <CLASSES>
-      <root url="jar://$PROJECT_DIR$/../lib/dUtil/dUtil.jar!/" />
+      <root url="jar://$PROJECT_DIR$/../lib/ActionMenu/ActionMenu.jar!/" />
     </CLASSES>
     <JAVADOC />
     <SOURCES />

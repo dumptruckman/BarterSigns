@@ -14,9 +14,12 @@ public class BuyMenuItem extends MainMenuItem {
         super(plugin, barterSign, plugin.lang.lang(LanguagePath.SIGN_PURCHASE.getPath()));
     }
 
-    @Override public void onSelect(CommandSender send) { }
+    @Override
+    public void onSelect(CommandSender send) {
+    }
 
-    @Override public void run() {
+    @Override
+    public void run() {
 
     }
 }

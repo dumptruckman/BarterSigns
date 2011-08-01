@@ -78,14 +78,6 @@ public class BarterSign {
         return menu.getMenuIndex();
     }
 
-    /*public static BarterSign getActiveBarterSign(BarterSignsPlugin plugin, Block block) {
-        if (exists(plugin, block)) {
-            
-        } else {
-            return null;
-        }
-    }*/
-
     public void removeFromData() {
         plugin.data.removeProperty(name);
     }
@@ -110,8 +102,6 @@ public class BarterSign {
 
     @Override
     public boolean equals(Object obj) {
-        //if (!(obj instanceof BarterSign)) return false;
-        //return ((BarterSign) obj).getName().equals(this.getName());
         return this.toString().equals(obj.toString());
     }
 
@@ -129,10 +119,6 @@ public class BarterSign {
         return (plugin.data.getNode(name) != null);
     }
 
-    //public void clear() {
-    //    BarterSignManager.remove(getBlock());
-   // }
-
     public void init(Player player) {
         plugin.data.setProperty(name + ".owner", player.getName());
         activateStockPhase(player);
@@ -144,18 +130,10 @@ public class BarterSign {
         menu.addMenuItem(new MainMenuItem(plugin, this, plugin.lang.lang(SIGN_READY_SIGN.getPath(), getOwner())));
         menu.addMenuItem(new HelpMenuItem(plugin, this));
         menu.addMenuItem(new AlterStockMenuItem(plugin, this));
-        //menu.addMenuItem(new RemoveStockMenuItem(plugin, this));
         menu.addMenuItem(new AlterPaymentMenuItem(plugin, this));
-        //menu.addMenuItem(new HelpMenuItem(plugin, this));
         menu.addMenuItem(new AlterSellableMenuItem(plugin, this));
-        //menu.addMenuItem(new DecreaseSellableMenuItem(plugin, this));
-        //menu.addMenuItem(new BuyMenuItem(plugin, this));
         REMOVE = menu.addMenuItem(new RemoveSignMenuItem(plugin, this));
         menu.addMenuItem(new CollectRevenueMenuItem(plugin, this));
-    }
-
-    public void cycleMenu(Player player) {
-        cycleMenu(player, false);
     }
 
     public void cycleMenu(Player player, boolean reverse) {
@@ -163,7 +141,6 @@ public class BarterSign {
         if (menu.getMenuIndex() != 0) {
             BarterSignManager.scheduleSignRefresh(this.getName());
         }
-        //menu.getSelectedMenuItem().update();
     }
 
     public void doSelectedMenuItem(Player player) {
@@ -260,7 +237,6 @@ public class BarterSign {
                     break;
                 }
             }
-            System.out.println(playerItem + " vs " + acceptItem);
             if (acceptItem != null) {
                 if (InventoryTools.remove(player.getInventory(), acceptItem.getType(),
                         acceptItem.getDurability(), acceptItem.getAmount())) {
