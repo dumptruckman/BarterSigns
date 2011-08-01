@@ -5,8 +5,11 @@ package com.dumptruckman.bartersigns.locale;
  */
 public enum LanguagePath {
     NO_ITEM_IN_HAND("player.nohelditem"),
+    SIGN_HELP("sign.help"),
+    PLAYER_HELP("player.help"),
     SIGN_STOCK_SETUP("sign.stock.setup"),
     SIGN_STOCK_SET("sign.stock.set"),
+    SIGN_STOCK_LIMIT("sign.stock.limit"),
 
     SIGN_COLLECT_LEFTOVER("sign.collect.leftover"),
 
@@ -35,6 +38,7 @@ public enum LanguagePath {
     OWNER_MESSAGE("sign.owner"),
     REMOVE_SIGN("sign.remove"),
     NO_PERMISSION("player.nopermission"),
+    SIGN_PURCHASE("sign.purchase"),
     ;
 
     private String path;

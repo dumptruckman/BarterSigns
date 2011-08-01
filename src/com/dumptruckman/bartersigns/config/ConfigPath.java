@@ -6,6 +6,7 @@ package com.dumptruckman.bartersigns.config;
 public enum ConfigPath {
     LANGUAGE_FILE("settings.languagefile", "english.yml"),
     DATA_SAVE("settings.datasavetimer", 15),
+    USE_PERMS("settings.usepermissions", true),
 
     SIGN_STORAGE_LIMIT("signs.storagelimit", 0),
     SIGN_INDESTRUCTIBLE("signs.indestructible", true),

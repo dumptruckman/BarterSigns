@@ -1,4 +1,18 @@
 name: BarterSigns
 main: com.dumptruckman.bartersigns.BarterSignsPlugin
-version: 1.0-beta
+version: .9.0-beta
 author: dumptruckman
+
+permissions:
+    bartersigns.admin:
+        description: Allows user to access the owner menu of every sign.
+        children:
+            bartersigns.create: true
+            bartersigns.use: true
+        default: op
+    bartersigns.create:
+        description: Allows user to create Barter Signs
+        default: false
+    bartersigns.use:
+        description: Allows user to use Barter Signs
+        default: false

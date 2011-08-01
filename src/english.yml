@@ -9,101 +9,122 @@
 
 sign:
     info:
-    - 'This sign sells %1.'
-    - 'Acceptable payment: %2'
-    - 'Left-click with the payment you wish to use to make a purchase'
+    - 'This sign sells &9%1.'
+    - 'Acceptable payment: &6%2'
+    - 'Left-click with an &6acceptable item&f to purchase from this sign.'
+    help:
+    - 'Left-click to'
+    - 'view'
+    - 'BarterSigns'
+    - 'help'
     stock:
         setup:
-        - '%1'
+        - '&5%1'
         - 'L-Click with'
         - 'item you want'
         - 'to sell'
-        - 'Hold the item (with amount you wish to sell) in your hand to and left-click the sign'
+        - 'Hold the item you wish to sell and left-click the sign.'
         set:
-        - 'This sign will sell %1 %2.'
+        - 'This sign will sell &9%1 %2.'
         insufficient:
-        - 'Out of stock!'
+        - '&cOut of stock!'
         add:
         - 'Left click to'
-        - 'add stock.'
+        - '&2add stock.'
         - 'Contains:'
-        - '%1'
+        - '&3%1'
         remove:
         - 'Left click to'
-        - 'remove stock.'
+        - '&4remove stock.'
         - 'Contains:'
-        - '%1'
-        item:
+        - '&3%1'
+        limit:
+        - '&8This sign has reached the stock limit.'
     collect:
         leftover:
-        - 'Some items couldn''t be collected because you lack inventory space.'
+        - '&8Some items couldn''t be collected because you lack inventory space.'
     revenue:
         collect:
-        - 'Collect'
-        - 'revenue'
-        - ' '
+        - 'Left click to'
+        - '&6Collect'
+        - '&6revenue'
         - ' '
         empty:
-        - 'There is no revenue to collect!'
+        - '&8There is no revenue to collect!'
         collected:
-        - 'You collected %1!'
+        - 'You collected &6%1!'
     payment:
         add:
         - 'L-Click with'
         - 'item you want'
-        - 'as payment'
-        - '%1'
+        - '&2as payment'
+        - '&6%1'
         added:
         - 'Added %1 as an acceptable form of payment!'
         - 'If you would like more than 1, keep left-clicking with that item.'
         remove:
         - 'L-Click with'
         - 'payable item'
-        - 'to remove'
-        - '%1'
+        - '&4to remove'
+        - '&6%1'
         removed:
-        - 'Removed %1 as an acceptable form of payment!'
+        - 'Removed &6%1 &fas an acceptable form of payment!'
         notcontains:
-        - 'This sign does not contain that item!'
+        - '&8This sign does not contain that item!'
     sellable:
         increase:
         - 'Left click to'
-        - 'increase'
-        - 'amount sold'
-        - '%1'
+        - '&2increase sold'
+        - 'stack size'
+        - '&9%1'
         decrease:
         - 'Left click to'
-        - 'decrease'
-        - 'amount sold'
-        - '%1'
+        - '&4decrease sold'
+        - 'stack size'
+        - '&9%1'
         minimum:
-        - 'You cannot decrease the amount below 1!'
+        - '&8You cannot decrease the amount below 1!'
     ready:
         sign:
-        - 'Barter Shop'
+        - '&2Barter Shop'
         - '(right-click)'
         - 'Owner:'
-        - '%1'
+        - '&9%1'
         message:
-        - 'Make sure to stock this sign and set up forms of payment.'
+        - '&eMake sure to stock this sign and set up forms of payment.'
     unfinishedsetup:
-    - '%1 has not finished setting up this sign!'
+    - '&5%1 &8has not finished setting up this sign!'
     owner:
-    - 'You may left-click this menu item to see what the sign sells/accepts.'
+    - '&8You may left-click this menu item to see what the sign &9sells&8/&6accepts.'
+    - '&8Holding shift while left-clicking this option will allow you to purchase from the sign.'
     remove:
-    - 'You may'
-    - 'destroy the'
-    - 'sign right'
-    - 'now'
+    - '&cYou may'
+    - '&cdestroy the'
+    - '&csign right'
+    - '&cnow'
+    purchase:
+    - 'Left click to'
+    - '&epurchase'
+    - 'from this sign'
+    - ' '
 player:
     nohelditem:
-    - 'You must be holding an item!'
+    - '&8You must be holding an item!'
     insufficientamount:
-    - 'You do not have enough %1!'
+    - '&4You do not have enough %1!'
     unacceptableitem:
-    - 'The item you are holding is not an acceptable form of payment.'
+    - '&8The item you are holding is not an acceptable form of payment.'
     purchased:
-    - 'You purchased %1 for %2!'
+    - 'You purchased &9%1 &ffor &6%2&f!'
     nopermission:
-    - 'You do not have permission to access this sign.'
+    - '&8You do not have permission to access this sign.'
+    help:
+    - '&e===BarterSigns Help==='
+    - 'When you first set up a sign, it was set up to just sell 1 of what you were holding. Activating the correct menu option will change the amount sold.'
+    - 'Notice, it did not take any items from you.  You must stock the sign manually.'
+    - 'If you continue to right-click this sign you will discover all the menu options.'
+    - 'Menu options may do different things when you click them while sneaking. Try sneaking while viewing menu options.'
+    - 'To add the acceptable payment types, find the correct menu option and simply click with the item you wish in exchange for your goods until the amount suits you.'
+    - 'You may add more than 1 item to accept as payment.  However, each sign will only sell 1 item.'
+   
     

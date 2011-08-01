@@ -13,8 +13,8 @@ import java.util.List;
  */
 public class MainMenuItem extends SignActionMenuItem {
 
-    private BarterSignsPlugin plugin;
-    private BarterSign barterSign;
+    protected BarterSignsPlugin plugin;
+    protected BarterSign barterSign;
 
     public MainMenuItem(BarterSignsPlugin plugin, BarterSign barterSign, List<String> lines) {
         super(lines);
@@ -28,6 +28,10 @@ public class MainMenuItem extends SignActionMenuItem {
     }
 
     public void run() {
-        barterSign.showInfo(player);
+        if (!player.isSneaking()) {
+            barterSign.showInfo(player);
+        } else {
+            barterSign.buy(player);
+        }
     }
 }

@@ -9,7 +9,6 @@ import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockState;
 import org.bukkit.block.Sign;
-import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
@@ -40,7 +39,7 @@ public class BarterSign {
     private List<ItemStack> acceptableItems = null;
 
     public enum SignPhase {
-        SETUP_STOCK, SETUP_PAYMENT, READY;
+        SETUP_STOCK, READY;
 
         public boolean equalTo(Object o) {
             return this.toString().equals(o.toString());
@@ -51,39 +50,39 @@ public class BarterSign {
         this.plugin = plugin;
         this.block = block;
         this.world = block.getWorld();
-        name = block.getWorld().getName() + "." + block.getX() + "," + block.getY() + "," + block.getZ();
+        name = genName(block);
+    }
+
+    public static String genName(Block block) {
+        return "signs." + block.getWorld().getName() + "." + block.getX() + "," + block.getY() + "," + block.getZ();
     }
 
     public static boolean exists(BarterSignsPlugin plugin, Block block) {
-        return (plugin.data.getNode(
-                block.getWorld().getName() + "." + block.getX() + "," + block.getY() + "," + block.getZ()) != null);
-    }
-
-    public static void removeIfExists(BarterSignsPlugin plugin, Block block) {
-        if (exists(plugin, block)) {
-            plugin.data.removeProperty(
-                    block.getWorld().getName() + "." + block.getX() + "," + block.getY() + "," + block.getZ());
-        }
+        return (plugin.data.getNode(genName(block)) != null);
     }
 
     public void drop() {
-        sellableItem.setAmount(getStock());
         Location loc = block.getLocation();
-        world.dropItemNaturally(loc, sellableItem);
+        if (getStock() != 0)
+            world.dropItemNaturally(loc, new ItemStack(sellableItem.getType(), getStock(),
+                    sellableItem.getDurability()));
         for (ItemStack item : acceptableItems) {
-            item.setAmount(getRevenue(item));
-            world.dropItemNaturally(loc, item);
+            int revenue = getRevenue(item);
+            if (revenue != 0)
+                world.dropItemNaturally(loc, new ItemStack(item.getType(), revenue, item.getDurability()));
         }
+        BarterSignManager.remove(getBlock());
     }
 
     public Integer getMenuIndex() {
         return menu.getMenuIndex();
     }
 
-    /*public static BarterSign getBarterSign(BarterSignsPlugin plugin, Block block) {
-        if (plugin.data.getNode(
-                block.getWorld().getName() + "." + block.getX() + "," + block.getY() + "," + block.getZ()) != null) {
+    /*public static BarterSign getActiveBarterSign(BarterSignsPlugin plugin, Block block) {
+        if (exists(plugin, block)) {
             
+        } else {
+            return null;
         }
     }*/
 
@@ -111,8 +110,9 @@ public class BarterSign {
 
     @Override
     public boolean equals(Object obj) {
-        if (!(obj instanceof BarterSign)) return false;
-        return ((BarterSign) obj).getName().equals(this.getName());
+        //if (!(obj instanceof BarterSign)) return false;
+        //return ((BarterSign) obj).getName().equals(this.getName());
+        return this.toString().equals(obj.toString());
     }
 
     @Override
@@ -129,41 +129,46 @@ public class BarterSign {
         return (plugin.data.getNode(name) != null);
     }
 
-    public void clear() {
-        if (this.exists()) plugin.data.removeProperty(name);
-        plugin.signManager.remove(this);
-    }
+    //public void clear() {
+    //    BarterSignManager.remove(getBlock());
+   // }
 
     public void init(Player player) {
         plugin.data.setProperty(name + ".owner", player.getName());
         activateStockPhase(player);
-        plugin.signManager.add(this);
+        BarterSignManager.add(this);
     }
 
     public void setupMenu() {
         menu = new SignActionMenu(getBlock());
         menu.addMenuItem(new MainMenuItem(plugin, this, plugin.lang.lang(SIGN_READY_SIGN.getPath(), getOwner())));
-        menu.addMenuItem(new CollectRevenueMenuItem(plugin, this));
-        menu.addMenuItem(new AddStockMenuItem(plugin, this));
-        menu.addMenuItem(new RemoveStockMenuItem(plugin, this));
-        menu.addMenuItem(new AddPaymentMenuItem(plugin, this));
-        menu.addMenuItem(new RemovePaymentMenuItem(plugin, this));
-        menu.addMenuItem(new IncreaseSellableMenuItem(plugin, this));
-        menu.addMenuItem(new DecreaseSellableMenuItem(plugin, this));
+        menu.addMenuItem(new HelpMenuItem(plugin, this));
+        menu.addMenuItem(new AlterStockMenuItem(plugin, this));
+        //menu.addMenuItem(new RemoveStockMenuItem(plugin, this));
+        menu.addMenuItem(new AlterPaymentMenuItem(plugin, this));
+        //menu.addMenuItem(new HelpMenuItem(plugin, this));
+        menu.addMenuItem(new AlterSellableMenuItem(plugin, this));
+        //menu.addMenuItem(new DecreaseSellableMenuItem(plugin, this));
+        //menu.addMenuItem(new BuyMenuItem(plugin, this));
         REMOVE = menu.addMenuItem(new RemoveSignMenuItem(plugin, this));
+        menu.addMenuItem(new CollectRevenueMenuItem(plugin, this));
     }
 
     public void cycleMenu(Player player) {
-        menu.cycleMenu(player);
+        cycleMenu(player, false);
+    }
+
+    public void cycleMenu(Player player, boolean reverse) {
+        menu.cycleMenu(player, reverse);
         if (menu.getMenuIndex() != 0) {
-            plugin.signManager.scheduleSignRefresh(this);
+            BarterSignManager.scheduleSignRefresh(this.getName());
         }
-        menu.getSelectedMenuItem().update();
+        //menu.getSelectedMenuItem().update();
     }
 
     public void doSelectedMenuItem(Player player) {
         if (menu.getMenuIndex() != 0) {
-            plugin.signManager.scheduleSignRefresh(this);
+            BarterSignManager.scheduleSignRefresh(this.getName());
         }
         menu.doSelectedMenuItem(player);
     }
@@ -174,12 +179,24 @@ public class BarterSign {
         }
         menu.setMenuIndex(player, index);
         if (menu.getMenuIndex() != 0) {
-            plugin.signManager.scheduleSignRefresh(this);
+            BarterSignManager.scheduleSignRefresh(this.getName());
         }
     }
 
     public void showMenu(Player player) {
-        menu.showMenu(player);
+        if (block.getState() instanceof Sign) {
+            menu.showMenu(player);
+        } else {
+            BarterSignManager.remove(getBlock());
+        }
+    }
+
+    public World getWorld() {
+        return world;
+    }
+
+    public Location getLocation() {
+        return block.getLocation();
     }
 
     public void showInfo(Player player) {
@@ -213,7 +230,6 @@ public class BarterSign {
 
     public void activateStockPhase(Player player) {
         setPhase(SignPhase.SETUP_STOCK);
-        plugin.signAndMessage(getSign(), player, SIGN_STOCK_SETUP.getPath(), player.getName());
     }
 
     public void activateReadyPhase(Player player) {
@@ -244,6 +260,7 @@ public class BarterSign {
                     break;
                 }
             }
+            System.out.println(playerItem + " vs " + acceptItem);
             if (acceptItem != null) {
                 if (InventoryTools.remove(player.getInventory(), acceptItem.getType(),
                         acceptItem.getDurability(), acceptItem.getAmount())) {

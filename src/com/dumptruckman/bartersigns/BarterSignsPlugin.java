@@ -30,7 +30,7 @@ import static org.bukkit.event.Event.Type;
  */
 public class BarterSignsPlugin extends JavaPlugin {
 
-    public static final Logger log = Logger.getLogger("Minecraft.dChest");
+    public static final Logger log = Logger.getLogger("Minecraft.BarterSigns");
 
     private final BarterSignsBlockListener blockListener = new BarterSignsBlockListener(this);
 
@@ -86,20 +86,17 @@ public class BarterSignsPlugin extends JavaPlugin {
             if (jar != null) {
                 try {
                     jar.close();
-                } catch (IOException e) {
-                }
+                } catch (IOException e) {}
             }
             if (in != null) {
                 try {
                     in.close();
-                } catch (IOException e) {
-                }
+                } catch (IOException e) {}
             }
             if (out != null) {
                 try {
                     out.close();
-                } catch (IOException e) {
-                }
+                } catch (IOException e) {}
             }
         }
 
@@ -113,8 +110,10 @@ public class BarterSignsPlugin extends JavaPlugin {
         pm.registerEvent(Type.SIGN_CHANGE, blockListener, Priority.Normal, this);
         pm.registerEvent(Type.BLOCK_PLACE, blockListener, Priority.Highest, this);
         pm.registerEvent(Type.PLAYER_INTERACT, new BarterSignsPlayerListener(this), Priority.Normal, this);
+        pm.registerEvent(Type.PLAYER_TOGGLE_SNEAK, new BarterSignsPlayerListener(this), Priority.Normal, this);
         pm.registerEvent(Type.BLOCK_DAMAGE, blockListener, Priority.Highest, this);
         pm.registerEvent(Type.BLOCK_BREAK, blockListener, Priority.Highest, this);
+        pm.registerEvent(Type.BLOCK_PHYSICS, blockListener, Priority.Highest, this);
         pm.registerEvent(Type.BLOCK_FADE, blockListener, Priority.Highest, this);
         pm.registerEvent(Type.BLOCK_BURN, blockListener, Priority.Highest, this);
         pm.registerEvent(Type.ENTITY_EXPLODE, new BarterSignsEntityListener(this), Priority.Highest, this);
@@ -127,7 +126,7 @@ public class BarterSignsPlugin extends JavaPlugin {
 
     final public void onDisable() {
         getServer().getScheduler().cancelTask(saveTaskId);
-        saveFiles();
+        saveData();
         log.info(this.getDescription().getName() + " " + getDescription().getVersion() + " disabled.");
     }
 
@@ -158,9 +157,11 @@ public class BarterSignsPlugin extends JavaPlugin {
             sign.setLine(i, message.get(0));
             message.remove(0);
         }
-        sign.update();
-        if (player != null)
+        if (player != null) {
             lang.sendMessage(message, player);
+            player.sendBlockChange(sign.getBlock().getLocation(), 0, (byte)0);
+        }
+        sign.update(true);
     }
 
     public void signAndMessage(Sign sign, Player player, String path, String... args) {

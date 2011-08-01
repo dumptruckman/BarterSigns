@@ -28,20 +28,24 @@ public class RemoveStockMenuItem extends SignActionMenuItem {
     }
 
     public void run() {
-        if (barterSign.getStock() >= barterSign.getSellableItem().getAmount()) {
+        if (barterSign.getStock() > 0) { //barterSign.getSellableItem().getAmount()
+            int amount = barterSign.getSellableItem().getAmount();
+            if (barterSign.getStock() < amount) {
+                amount = barterSign.getStock();
+            }
             HashMap<Integer, ItemStack> itemsLeftOver = player.getInventory().addItem(
-                    new ItemStack(barterSign.getSellableItem().getType(), barterSign.getSellableItem().getAmount(),
-                            barterSign.getSellableItem().getDurability()));
+                    new ItemStack(barterSign.getSellableItem().getType(), amount,
+                    barterSign.getSellableItem().getDurability()));
             int amountLeftOver = 0;
             for (Map.Entry<Integer, ItemStack> item : itemsLeftOver.entrySet()) {
                 amountLeftOver += item.getValue().getAmount();
             }
-            barterSign.setStock(barterSign.getStock() - (barterSign.getSellableItem().getAmount() - amountLeftOver));
+            barterSign.setStock(barterSign.getStock() - (amount - amountLeftOver));
             if (amountLeftOver > 0) {
                 plugin.sendMessage(player, LanguagePath.SIGN_COLLECT_LEFTOVER.getPath());
             }
             if (amountLeftOver != barterSign.getSellableItem().getAmount()) {
-                this.setLines(plugin.lang.lang(LanguagePath.SIGN_MENU_ADD_STOCK.getPath(), barterSign.getStock().toString()));
+                this.setLines(plugin.lang.lang(LanguagePath.SIGN_MENU_REMOVE_STOCK.getPath(), barterSign.getStock().toString()));
             }
             barterSign.showMenu(player);
         } else {
