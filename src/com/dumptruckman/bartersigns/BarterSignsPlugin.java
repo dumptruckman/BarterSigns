@@ -56,56 +56,60 @@ public class BarterSignsPlugin extends JavaPlugin {
                 (long) (config.getInt(DATA_SAVE.getPath(), (Integer) DATA_SAVE.getDefault()) * 20),
                 (long) (config.getInt(DATA_SAVE.getPath(), (Integer) DATA_SAVE.getDefault()) * 20));
 
-        // Extracts default english language file
-        JarFile jar = null;
-        InputStream in = null;
-        OutputStream out = null;
-        try {
-            jar = new JarFile(BarterSignsPlugin.class.getProtectionDomain().getCodeSource().getLocation().getPath());
-            ZipEntry entry = jar.getEntry("english.yml");
-            File efile = new File(getDataFolder(), entry.getName());
 
-            in = new BufferedInputStream(jar.getInputStream(entry));
-            out = new BufferedOutputStream(new FileOutputStream(efile));
-            byte[] buffer = new byte[2048];
-            for (; ; ) {
-                int nBytes = in.read(buffer);
-                if (nBytes <= 0) break;
-                out.write(buffer, 0, nBytes);
-            }
-            out.flush();
-        } catch (IOException e) {
-            log.warning("Could not extract default language file!");
-            if (config.getString(LANGUAGE_FILE.getPath())
-                    .equalsIgnoreCase(LANGUAGE_FILE.getDefault().toString())) {
-                log.severe("No alternate language file set!  Disabling "
-                        + this.getDescription().getName());
-                pm.disablePlugin(this);
-                return;
-            }
-        } finally {
-            if (jar != null) {
-                try {
-                    jar.close();
-                } catch (IOException e) {
+        if (config.getString(LANGUAGE_FILE.getPath())
+                .equalsIgnoreCase(LANGUAGE_FILE.getDefault().toString())) {
+            // Extracts default english language file
+            JarFile jar = null;
+            InputStream in = null;
+            OutputStream out = null;
+            try {
+                jar = new JarFile(BarterSignsPlugin.class.getProtectionDomain().getCodeSource().getLocation().getPath());
+                ZipEntry entry = jar.getEntry("english.yml");
+                File efile = new File(getDataFolder(), entry.getName());
+
+                in = new BufferedInputStream(jar.getInputStream(entry));
+                out = new BufferedOutputStream(new FileOutputStream(efile));
+                byte[] buffer = new byte[2048];
+                for (; ; ) {
+                    int nBytes = in.read(buffer);
+                    if (nBytes <= 0) break;
+                    out.write(buffer, 0, nBytes);
                 }
-            }
-            if (in != null) {
-                try {
-                    in.close();
-                } catch (IOException e) {
+                out.flush();
+            } catch (IOException e) {
+                log.warning("Could not extract default language file! Reason: " + e.getMessage());
+            } finally {
+                if (jar != null) {
+                    try {
+                        jar.close();
+                    } catch (IOException e) {
+                    }
                 }
-            }
-            if (out != null) {
-                try {
-                    out.close();
-                } catch (IOException e) {
+                if (in != null) {
+                    try {
+                        in.close();
+                    } catch (IOException e) {
+                    }
+                }
+                if (out != null) {
+                    try {
+                        out.close();
+                    } catch (IOException e) {
+                    }
                 }
             }
         }
 
         // Load up language file
-        lang = new Language(new File(this.getDataFolder(), config.getString(LANGUAGE_FILE.getPath())));
+        File langFile = new File(this.getDataFolder(), config.getString(LANGUAGE_FILE.getPath()));
+        if (!langFile.exists()) {
+            log.severe("Language file: " + langFile.getName() + "!  Disabling "
+                    + this.getDescription().getName());
+            pm.disablePlugin(this);
+            return;
+        }
+        lang = new Language(langFile);
 
         // Register command executor for main plugin command
 

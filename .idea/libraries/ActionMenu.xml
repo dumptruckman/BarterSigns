@@ -1,9 +1,0 @@
-<component name="libraryTable">
-  <library name="ActionMenu">
-    <CLASSES>
-      <root url="jar://$PROJECT_DIR$/../lib/ActionMenu/ActionMenu.jar!/" />
-    </CLASSES>
-    <JAVADOC />
-    <SOURCES />
-  </library>
-</component>

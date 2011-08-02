@@ -1,7 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
+<<<<<<< HEAD
     <list default="true" id="e6a0a674-04c6-4ec2-845a-55cfad861712" name="Default" comment="" />
+=======
+    <list default="true" id="e6a0a674-04c6-4ec2-845a-55cfad861712" name="Default" comment="">
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/plugin.yml" afterPath="$PROJECT_DIR$/src/plugin.yml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/libraries/Bukkit.xml" afterPath="$PROJECT_DIR$/.idea/libraries/Bukkit.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/CHANGELOG" afterPath="$PROJECT_DIR$/CHANGELOG" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/dumptruckman/bartersigns/BarterSignsPlugin.java" afterPath="$PROJECT_DIR$/src/com/dumptruckman/bartersigns/BarterSignsPlugin.java" />
+    </list>
+>>>>>>> 5550f88ecd4ab7a3e8c386817cc29e76750b34c1
     <ignored path="BarterSigns.iws" />
     <ignored path=".idea/workspace.xml" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -62,10 +72,8 @@
       <file leaf-file-name="BarterSignsPlugin.java" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/com/dumptruckman/bartersigns/BarterSignsPlugin.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="132" column="19" selection-start="5323" selection-end="5323" vertical-scroll-proportion="0.0">
-              <folding>
-                <element signature="imports" expanded="true" />
-              </folding>
+            <state line="80" column="80" selection-start="3209" selection-end="3209" vertical-scroll-proportion="0.0">
+              <folding />
             </state>
           </provider>
         </entry>
@@ -88,19 +96,10 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="ConfigIO.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/com/dumptruckman/bartersigns/config/ConfigIO.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
       <file leaf-file-name="Language.java" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/com/dumptruckman/bartersigns/locale/Language.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="3" column="42" selection-start="135" selection-end="135" vertical-scroll-proportion="0.0">
+            <state line="14" column="13" selection-start="353" selection-end="353" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
@@ -109,10 +108,8 @@
       <file leaf-file-name="BarterSign.java" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/com/dumptruckman/bartersigns/sign/BarterSign.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="238" column="13" selection-start="7290" selection-end="7290" vertical-scroll-proportion="0.0">
-              <folding>
-                <element signature="imports" expanded="true" />
-              </folding>
+            <state line="238" column="13" selection-start="7302" selection-end="7302" vertical-scroll-proportion="0.0">
+              <folding />
             </state>
           </provider>
         </entry>
@@ -120,7 +117,11 @@
       <file leaf-file-name="BarterSignManager.java" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/com/dumptruckman/bartersigns/sign/BarterSignManager.java">
           <provider selected="true" editor-type-id="text-editor">
+<<<<<<< HEAD
             <state line="79" column="47" selection-start="2876" selection-end="2876" vertical-scroll-proportion="0.0">
+=======
+            <state line="95" column="0" selection-start="3402" selection-end="3402" vertical-scroll-proportion="0.0">
+>>>>>>> 5550f88ecd4ab7a3e8c386817cc29e76750b34c1
               <folding />
             </state>
           </provider>
@@ -129,7 +130,11 @@
       <file leaf-file-name="CHANGELOG" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/CHANGELOG">
           <provider selected="true" editor-type-id="text-editor">
+<<<<<<< HEAD
             <state line="1" column="19" selection-start="31" selection-end="31" vertical-scroll-proportion="0.020757021">
+=======
+            <state line="1" column="122" selection-start="136" selection-end="136" vertical-scroll-proportion="0.023776224">
+>>>>>>> 5550f88ecd4ab7a3e8c386817cc29e76750b34c1
               <folding />
             </state>
           </provider>
@@ -158,13 +163,13 @@
         <option value="$PROJECT_DIR$/src/com/dumptruckman/bartersigns/menu/AlterStockMenuItem.java" />
         <option value="$PROJECT_DIR$/src/com/dumptruckman/bartersigns/menu/IncreaseSellableMenuItem.java" />
         <option value="$PROJECT_DIR$/src/com/dumptruckman/bartersigns/menu/AlterSellableMenuItem.java" />
-        <option value="$PROJECT_DIR$/CHANGELOG" />
         <option value="$PROJECT_DIR$/src/com/dumptruckman/bartersigns/config/ConfigIO.java" />
         <option value="$PROJECT_DIR$/src/com/dumptruckman/bartersigns/locale/Language.java" />
-        <option value="$PROJECT_DIR$/src/com/dumptruckman/bartersigns/BarterSignsPlugin.java" />
         <option value="$PROJECT_DIR$/src/com/dumptruckman/bartersigns/listener/BarterSignsBlockListener.java" />
         <option value="$PROJECT_DIR$/src/com/dumptruckman/bartersigns/sign/BarterSign.java" />
         <option value="$PROJECT_DIR$/src/com/dumptruckman/bartersigns/sign/BarterSignManager.java" />
+        <option value="$PROJECT_DIR$/src/com/dumptruckman/bartersigns/BarterSignsPlugin.java" />
+        <option value="$PROJECT_DIR$/CHANGELOG" />
       </list>
     </option>
   </component>
@@ -199,7 +204,6 @@
     </navigator>
     <panes>
       <pane id="Scope" />
-      <pane id="Favorites" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -368,6 +372,7 @@
           </PATH>
         </subPane>
       </pane>
+      <pane id="Favorites" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -387,10 +392,10 @@
     <property name="GenerateAntBuildDialog.enableUiFormCompile" value="true" />
     <property name="GoToClass.toSaveIncludeLibraries" value="false" />
     <property name="MemberChooser.showClasses" value="true" />
-    <property name="GoToClass.includeLibraries" value="false" />
     <property name="GenerateAntBuildDialog.backupFiles" value="true" />
-    <property name="options.splitter.details.proportions" value="0.2" />
+    <property name="GoToClass.includeLibraries" value="false" />
     <property name="options.searchVisible" value="true" />
+    <property name="options.splitter.details.proportions" value="0.2" />
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
@@ -398,6 +403,7 @@
       <recent name="C:\projects\BarterSigns\src\com\dumptruckman\bartersigns\config" />
     </key>
     <key name="MoveClassesOrPackagesDialog.RECENTS_KEY">
+      <recent name="com.dumptruckman.bartersigns" />
       <recent name="com.dumptruckman.bartersigns.listener" />
       <recent name="com.dumptruckman.bartersigns.sign" />
       <recent name="com.dumptruckman.bartersigns.entity" />
@@ -512,12 +518,15 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
+<<<<<<< HEAD
     <frame x="-8" y="-8" width="1696" height="1026" extended-state="6" />
+=======
+    <frame x="170" y="50" width="1447" height="935" extended-state="1" />
+>>>>>>> 5550f88ecd4ab7a3e8c386817cc29e76750b34c1
     <editor active="true" />
     <layout>
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32718894" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32949308" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
@@ -526,12 +535,17 @@
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="true" content_ui="tabs" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
+<<<<<<< HEAD
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.32944787" sideWeight="0.67281103" order="0" side_tool="false" content_ui="tabs" />
+=======
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.3294714" sideWeight="0.0" order="0" side_tool="false" content_ui="tabs" />
+>>>>>>> 5550f88ecd4ab7a3e8c386817cc29e76750b34c1
       <window_info id="Dependency Viewer" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Documentation" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="FLOATING" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" x="270" y="150" width="1247" height="735" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32718894" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
     </layout>
@@ -607,80 +621,71 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/com/dumptruckman/bartersigns/menu/AlterPaymentMenuItem.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="40" column="50" selection-start="1414" selection-end="1414" vertical-scroll-proportion="0.66865313">
-          <folding />
-        </state>
+        <state line="40" column="50" selection-start="1414" selection-end="1414" vertical-scroll-proportion="0.66865313" />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/com/dumptruckman/bartersigns/menu/AlterStockMenuItem.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="60" column="79" selection-start="2465" selection-end="2465" vertical-scroll-proportion="0.99284863">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/dumptruckman/bartersigns/menu/AlterSellableMenuItem.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="46" column="11" selection-start="1864" selection-end="1864" vertical-scroll-proportion="0.8307509">
-          <folding />
-        </state>
+        <state line="60" column="79" selection-start="2465" selection-end="2465" vertical-scroll-proportion="0.99284863" />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/com/dumptruckman/bartersigns/menu/MainMenuItem.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="37" column="0" selection-start="1004" selection-end="1004" vertical-scroll-proportion="0.6281287">
+        <state line="37" column="0" selection-start="1004" selection-end="1004" vertical-scroll-proportion="0.6281287" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/dumptruckman/bartersigns/listener/BarterSignsBlockListener.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="69" column="11" selection-start="2648" selection-end="2648" vertical-scroll-proportion="0.0" />
+      </provider>
+    </entry>
+<<<<<<< HEAD
+    <entry file="file://$PROJECT_DIR$/src/com/dumptruckman/bartersigns/config/ConfigIO.java">
+=======
+    <entry file="file://$PROJECT_DIR$/src/com/dumptruckman/bartersigns/sign/BarterSign.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="238" column="13" selection-start="7302" selection-end="7302" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/dumptruckman/bartersigns/sign/BarterSignManager.java">
+>>>>>>> 5550f88ecd4ab7a3e8c386817cc29e76750b34c1
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="95" column="0" selection-start="3402" selection-end="3402" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/com/dumptruckman/bartersigns/config/ConfigIO.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/dumptruckman/bartersigns/locale/Language.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="3" column="42" selection-start="135" selection-end="135" vertical-scroll-proportion="0.0">
+        <state line="34" column="14" selection-start="673" selection-end="673" vertical-scroll-proportion="0.74725276">
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/com/dumptruckman/bartersigns/config/ConfigPath.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="12" column="20" selection-start="364" selection-end="380" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
+        <state line="12" column="20" selection-start="364" selection-end="380" vertical-scroll-proportion="0.0" />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/com/dumptruckman/bartersigns/BarterSignsPlugin.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="132" column="19" selection-start="5323" selection-end="5323" vertical-scroll-proportion="0.0">
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/dumptruckman/bartersigns/listener/BarterSignsBlockListener.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="69" column="11" selection-start="2648" selection-end="2648" vertical-scroll-proportion="0.0">
+        <state line="80" column="80" selection-start="3209" selection-end="3209" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/dumptruckman/bartersigns/sign/BarterSign.java">
+    <entry file="file://$PROJECT_DIR$/src/com/dumptruckman/bartersigns/locale/Language.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="238" column="13" selection-start="7290" selection-end="7290" vertical-scroll-proportion="0.0">
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
+        <state line="14" column="13" selection-start="353" selection-end="353" vertical-scroll-proportion="0.0">
+          <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/dumptruckman/bartersigns/sign/BarterSignManager.java">
+    <entry file="file://$PROJECT_DIR$/CHANGELOG">
       <provider selected="true" editor-type-id="text-editor">
+<<<<<<< HEAD
         <state line="79" column="47" selection-start="2876" selection-end="2876" vertical-scroll-proportion="0.0">
           <folding />
         </state>
@@ -689,6 +694,9 @@
     <entry file="file://$PROJECT_DIR$/CHANGELOG">
       <provider selected="true" editor-type-id="text-editor">
         <state line="1" column="19" selection-start="31" selection-end="31" vertical-scroll-proportion="0.020757021">
+=======
+        <state line="1" column="122" selection-start="136" selection-end="136" vertical-scroll-proportion="0.023776224">
+>>>>>>> 5550f88ecd4ab7a3e8c386817cc29e76750b34c1
           <folding />
         </state>
       </provider>

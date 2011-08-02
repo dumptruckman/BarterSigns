@@ -1,2 +1,8 @@
+Version 1.0.2
+    Modified the process for extracting the language file.  Plugin should work better when the file is manually extracted.
+
+Version 1.0.1
+    Included the required dependencies in the plugin's main package.
+
 Version 1.0
     Public release!
