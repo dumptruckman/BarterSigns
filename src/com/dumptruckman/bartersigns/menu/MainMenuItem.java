@@ -24,6 +24,9 @@ public class MainMenuItem extends SignActionMenuItem {
 
     @Override
     public void onSelect(CommandSender sender) {
+        this.setLines(plugin.lang.lang(LanguagePath.SIGN_READY_SIGN.getPath(),
+                Integer.toString(barterSign.getSellableItem().getAmount()),
+                plugin.getShortItemName(barterSign.getSellableItem())));
         plugin.sendMessage(player, LanguagePath.OWNER_MESSAGE.getPath());
     }
 

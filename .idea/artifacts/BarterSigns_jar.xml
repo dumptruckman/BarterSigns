@@ -10,6 +10,7 @@
       <element id="file-copy" path="$PROJECT_DIR$/src/english.yml" />
       <element id="file-copy" path="$PROJECT_DIR$/src/plugin.yml" />
       <element id="file-copy" path="$PROJECT_DIR$/LICENSE.txt" />
+      <element id="file-copy" path="$PROJECT_DIR$/src/items.yml" />
     </root>
   </artifact>
 </component>

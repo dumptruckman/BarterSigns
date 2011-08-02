@@ -9,9 +9,9 @@
 
 sign:
     info:
-    - 'This sign sells &9%1.'
+    - 'Sign owner: &9%1'
     - 'Acceptable payment: &6%2'
-    - 'Left-click with an &6acceptable item&f to purchase from this sign.'
+    - 'Left-click with an &6acceptable item&f to make purchase.'
     help:
     - 'Left-click to'
     - 'view'
@@ -88,15 +88,15 @@ sign:
         sign:
         - '&2Barter Shop'
         - '(right-click)'
-        - 'Owner:'
-        - '&9%1'
+        - '&9Sells: %1'
+        - '&9%2'
         message:
         - '&eMake sure to stock this sign and set up forms of payment.'
     unfinishedsetup:
     - '&5%1 &8has not finished setting up this sign!'
     owner:
-    - '&8You may left-click this menu item to see what the sign &9sells&8/&6accepts.'
-    - '&8Holding shift while left-clicking this option will allow you to purchase from the sign.'
+    - '&8Left-click this menu item to see what the sign &9sells&8/&6accepts.'
+    - '&8As the sign owner, crouch left-click to purchase from the sign.'
     remove:
     - '&cYou may'
     - '&cdestroy the'
@@ -120,25 +120,12 @@ player:
     - '&8You do not have permission to access this sign.'
     help:
     - '&e===BarterSigns Help==='
-    - 'When you first set up a sign, it was set up to just sell 1 of what you were holding. Activating the correct menu option will change the amount sold.'
-    - 'Notice, it did not take any items from you.  You must stock the sign manually.'
-    - 'If you continue to right-click this sign you will discover all the menu options.'
-    - 'Menu options may do different things when you click them while sneaking. Try sneaking while viewing menu options.'
-    - 'To add the acceptable payment types, find the correct menu option and simply click with the item you wish in exchange for your goods until the amount suits you.'
-    - 'You may add more than 1 item to accept as payment.  However, each sign will only sell 1 item.'
-    
-    ===BarterSigns Help===
-BarterSigns is an automated trading post.
-The items/amount are configurable through the Sign-GUI(tm)
-Signs must be [RED]STOCKED[/RED] with items from your inventory.
- 
-USAGE:
-Right Click to Scroll through Options
-Left Click to Select Options
-Crouch acts as a modifier.
- 
-NOTE:
-As a sign-owner, you must use Crouch-LeftClick to use your own
-sign. Others will not have to do this.
+    - 'BarterSigns is an automated trading post.'
+    - 'The items/amount are configurable through the Sign-GUI(tm).'
+    - 'Signs must be &cSTOCKED&f with items from your inventory.'
+    - '&eUSAGE:'
+    - 'Right Click to Scroll through Options.'
+    - 'Left Click to Select Options'
+    - 'Crouch acts as a modifier.'
    
     

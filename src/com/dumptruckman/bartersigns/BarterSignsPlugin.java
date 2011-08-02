@@ -37,6 +37,7 @@ public class BarterSignsPlugin extends JavaPlugin {
 
     public Configuration config;
     public Configuration data;
+    private Configuration items;
     public Language lang;
     public BarterSignManager signManager;
     private int saveTaskId;
@@ -56,60 +57,34 @@ public class BarterSignsPlugin extends JavaPlugin {
                 (long) (config.getInt(DATA_SAVE.getPath(), (Integer) DATA_SAVE.getDefault()) * 20),
                 (long) (config.getInt(DATA_SAVE.getPath(), (Integer) DATA_SAVE.getDefault()) * 20));
 
-
         if (config.getString(LANGUAGE_FILE.getPath())
                 .equalsIgnoreCase(LANGUAGE_FILE.getDefault().toString())) {
             // Extracts default english language file
-            JarFile jar = null;
-            InputStream in = null;
-            OutputStream out = null;
-            try {
-                jar = new JarFile(BarterSignsPlugin.class.getProtectionDomain().getCodeSource().getLocation().getPath());
-                ZipEntry entry = jar.getEntry("english.yml");
-                File efile = new File(getDataFolder(), entry.getName());
-
-                in = new BufferedInputStream(jar.getInputStream(entry));
-                out = new BufferedOutputStream(new FileOutputStream(efile));
-                byte[] buffer = new byte[2048];
-                for (; ; ) {
-                    int nBytes = in.read(buffer);
-                    if (nBytes <= 0) break;
-                    out.write(buffer, 0, nBytes);
-                }
-                out.flush();
-            } catch (IOException e) {
-                log.warning("Could not extract default language file! Reason: " + e.getMessage());
-            } finally {
-                if (jar != null) {
-                    try {
-                        jar.close();
-                    } catch (IOException e) {
-                    }
-                }
-                if (in != null) {
-                    try {
-                        in.close();
-                    } catch (IOException e) {
-                    }
-                }
-                if (out != null) {
-                    try {
-                        out.close();
-                    } catch (IOException e) {
-                    }
-                }
-            }
+            extractFromJar("english.yml");
+        }
+        File itemFile = new File(this.getDataFolder(), "items.yml");
+        if (!itemFile.exists()) {
+            extractFromJar("items.yml");
         }
 
         // Load up language file
         File langFile = new File(this.getDataFolder(), config.getString(LANGUAGE_FILE.getPath()));
         if (!langFile.exists()) {
-            log.severe("Language file: " + langFile.getName() + "!  Disabling "
+            log.severe("Language file: " + langFile.getName() + " is missing!  Disabling "
                     + this.getDescription().getName());
             pm.disablePlugin(this);
             return;
         }
         lang = new Language(langFile);
+
+        // Load up item file
+        if (!itemFile.exists()) {
+            log.severe("items.yml is missing!  Disabling "
+                    + this.getDescription().getName());
+            pm.disablePlugin(this);
+            return;
+        }
+        items = new ConfigIO(itemFile).load();
 
         // Register command executor for main plugin command
 
@@ -151,6 +126,50 @@ public class BarterSignsPlugin extends JavaPlugin {
         config.getBoolean(SIGN_INDESTRUCTIBLE.getPath(), (Boolean) SIGN_INDESTRUCTIBLE.getDefault());
         config.getBoolean(SIGN_DROPS_ITEMS.getPath(), (Boolean) SIGN_DROPS_ITEMS.getDefault());
         config.save();
+    }
+
+    private void extractFromJar(String fileName) {
+        JarFile jar = null;
+            InputStream in = null;
+            OutputStream out = null;
+            try {
+                jar = new JarFile(BarterSignsPlugin.class.getProtectionDomain().getCodeSource().getLocation().getPath());
+                ZipEntry entry = jar.getEntry(fileName);
+                File efile = new File(getDataFolder(), entry.getName());
+
+                in = new BufferedInputStream(jar.getInputStream(entry));
+                out = new BufferedOutputStream(new FileOutputStream(efile));
+                byte[] buffer = new byte[2048];
+                for (; ; ) {
+                    int nBytes = in.read(buffer);
+                    if (nBytes <= 0) break;
+                    out.write(buffer, 0, nBytes);
+                }
+                out.flush();
+                in.close();
+                out.close();
+            } catch (IOException e) {
+                log.warning("Could not extract " + fileName + "! Reason: " + e.getMessage());
+            } finally {
+                if (jar != null) {
+                    try {
+                        jar.close();
+                    } catch (IOException e) {
+                    }
+                }
+                if (in != null) {
+                    try {
+                        in.close();
+                    } catch (IOException e) {
+                    }
+                }
+                if (out != null) {
+                    try {
+                        out.close();
+                    } catch (IOException e) {
+                    }
+                }
+            }
     }
 
     final public void saveConfig() {
@@ -223,10 +242,20 @@ public class BarterSignsPlugin extends JavaPlugin {
         if (withAmount) {
             item += s.getAmount() + " ";
         }
-        item += s.getType().toString();
-        if (s.getDurability() > 0) {
-            item += "(" + s.getDurability() + ")";
-        }
+        item += getShortItemName(s);
         return item;
+    }
+
+    public String getShortItemName(ItemStack item) {
+        String key = itemToDataString(item, false);
+        String name = items.getString(key);
+        if (name == null) {
+            name = items.getString(item.getTypeId() + ":0");
+        }
+        if (name == null) {
+            log.warning("Missing item name in items.yml");
+            name = "???";
+        }
+        return name;
     }
 }

@@ -127,7 +127,8 @@ public class BarterSign {
 
     public void setupMenu() {
         menu = new SignActionMenu(getBlock());
-        menu.addMenuItem(new MainMenuItem(plugin, this, plugin.lang.lang(SIGN_READY_SIGN.getPath(), getOwner())));
+        menu.addMenuItem(new MainMenuItem(plugin, this, plugin.lang.lang(SIGN_READY_SIGN.getPath(),
+                Integer.toString(getSellableItem().getAmount()), plugin.getShortItemName(getSellableItem()))));
         menu.addMenuItem(new HelpMenuItem(plugin, this));
         menu.addMenuItem(new AlterStockMenuItem(plugin, this));
         menu.addMenuItem(new AlterPaymentMenuItem(plugin, this));
@@ -177,24 +178,15 @@ public class BarterSign {
     }
 
     public void showInfo(Player player) {
-        ItemStack sellItem = getSellableItem();
-        String sellItemString = sellItem.getAmount() + " " + sellItem.getType().toString();
-        if (sellItem.getDurability() != 0) {
-            sellItemString += "(" + sellItem.getDurability() + ")";
-        }
         List<ItemStack> acceptItems = getAcceptableItems();
         String acceptItemsString = "";
         for (int i = 0; i < acceptItems.size(); i++) {
             if (i > 0) {
-                acceptItemsString += " or ";
+                acceptItemsString += " OR ";
             }
-            acceptItemsString += acceptItems.get(i).getAmount() + " "
-                    + acceptItems.get(i).getType().toString();
-            if (acceptItems.get(i).getDurability() != 0) {
-                acceptItemsString += "(" + acceptItems.get(i).getDurability() + ")";
-            }
+            acceptItemsString += plugin.itemToString(acceptItems.get(i));
         }
-        plugin.sendMessage(player, SIGN_INFO.getPath(), sellItemString, acceptItemsString);
+        plugin.sendMessage(player, SIGN_INFO.getPath(), getOwner(), acceptItemsString);
     }
 
     public String getPhase() {
