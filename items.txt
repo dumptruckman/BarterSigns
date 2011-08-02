@@ -1,0 +1,142 @@
+Stone
+Dirt
+Cobblestone
+Wood Planks
+Std. Sapling
+Brch. Sapling
+RdWd. Sapling
+Sand
+Gravel
+Gold Ore
+Iron Ore
+Std. Wood
+Brch. Wood
+RdWd. Wood
+Std. Leaves
+Brch. Leaves
+RdWd. Leaves
+Glass
+Lapis Block
+Dispenser
+Sandstone
+Jukebox
+Pwrd. Rail
+Detect. Rail
+Sticky Piston
+Normal Piston
+Red Woold
+Orange Wool
+Yellow Wool
+Lime Wool
+Green Wool
+Aqua G. Wool
+Cyan Wool
+Blue Wool
+Purple Wool
+Indigo Wool
+Violet Wool
+Magenta Wool
+Pink Wool
+Black Wool
+Gray Wool
+White Wool
+Yellow Flower
+Red Flower
+Brn. Mushroom
+Red Mushroom
+Gold Block
+Iron Block
+Stone H-Step
+Sand H-Step
+Wood H-Step
+Cbl. H-Step
+Brick Block
+TNT
+Bookshelf
+Msy.Cbl. Stone
+Obsidian
+Torch
+Wood Step
+Chest
+Diamond Block
+Crafting Table
+Furnace
+Ladder
+Minecart Rail
+Cbl. Step
+Lever
+Stn. Pressure
+Wood Pressure
+RdStone Torch
+Stone Btn.
+Snow Block
+Cactus
+Clay Block
+Record Player
+Fence
+Pumpkin
+Netherrack
+Soul Sand
+Lightstone
+Lit Pumpkin
+Trapdoor
+256: 'Iron Shovel'
+257: 'Iron Pick'
+258: 'Iron Axe'
+259: 'Flint & Steel'
+260: 'Apple'
+261: 'Bow'
+262: 'Arrow'
+263: 'Coal'
+264: 'Diamond'
+265: 'Iron Bar'
+266: 'Gold Bar'
+267: 'Iron Sword'
+268: 'Wood Sword'
+269: 'Wood Shovel'
+270: 'Wood Pick'
+271: 'Wood Axe'
+272: 'Stone Sword'
+273: 'Stone Shovel'
+274: 'Stone Pick'
+275: 'Stone Axe'
+276: 'Diamond Sword'
+277: 'Diamond Shovel'
+278: 'Diamond Pick'
+279: 'Diamond Axe'
+280: 'Stick'
+281: 'Bowl'
+282: 'Soup'
+283: 'Gold Sword'
+284: 'Gold Shovel'
+285: 'Gold Pick'
+286: 'Gold Axe'
+287: 'String'
+288: 'Feather'
+289: 'Suplhur'
+290: 'Wood Hoe'
+291: 'Stone Hoe'
+292: 'Iron Hoe'
+293: 'Diamond Hoe'
+294: 'Gold Hoe'
+295: 'Seeds'
+296: 'Wheat'
+297: 'Bread'
+298: 'Leather Helm'
+299: 'Leather Chest'
+300: 'Leather Pants'
+301: 'Leather Boots'
+302: 'Chain Helm'
+303: 'Chain Chest'
+304: 'Chain Pants'
+305: 'Chain Boots'
+306: 'Iron Helm'
+307: 'Iron Chest'
+308: 'Iron Pants'
+309: 'Iron Boots'
+310: 'Diamond Helm'
+311: 'Diamond Chest'
+312: 'Diamond Pants'
+313: 'Diamond Boots'
+314: 'Gold Helm'
+315: 'Gold Chest'

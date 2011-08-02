@@ -126,5 +126,19 @@ player:
     - 'Menu options may do different things when you click them while sneaking. Try sneaking while viewing menu options.'
     - 'To add the acceptable payment types, find the correct menu option and simply click with the item you wish in exchange for your goods until the amount suits you.'
     - 'You may add more than 1 item to accept as payment.  However, each sign will only sell 1 item.'
+    
+    ===BarterSigns Help===
+BarterSigns is an automated trading post.
+The items/amount are configurable through the Sign-GUI(tm)
+Signs must be [RED]STOCKED[/RED] with items from your inventory.
+ 
+USAGE:
+Right Click to Scroll through Options
+Left Click to Select Options
+Crouch acts as a modifier.
+ 
+NOTE:
+As a sign-owner, you must use Crouch-LeftClick to use your own
+sign. Others will not have to do this.
    
     
