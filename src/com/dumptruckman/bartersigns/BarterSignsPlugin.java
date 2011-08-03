@@ -57,11 +57,11 @@ public class BarterSignsPlugin extends JavaPlugin {
                 (long) (config.getInt(DATA_SAVE.getPath(), (Integer) DATA_SAVE.getDefault()) * 20),
                 (long) (config.getInt(DATA_SAVE.getPath(), (Integer) DATA_SAVE.getDefault()) * 20));
 
-        if (config.getString(LANGUAGE_FILE.getPath())
-                .equalsIgnoreCase(LANGUAGE_FILE.getDefault().toString())) {
+        //if (config.getString(LANGUAGE_FILE.getPath())
+        //        .equalsIgnoreCase(LANGUAGE_FILE.getDefault().toString())) {
             // Extracts default english language file
-            extractFromJar("english.yml");
-        }
+        extractFromJar("english.yml");
+        //}
         File itemFile = new File(this.getDataFolder(), "items.yml");
         if (!itemFile.exists()) {
             extractFromJar("items.yml");
@@ -133,7 +133,10 @@ public class BarterSignsPlugin extends JavaPlugin {
             InputStream in = null;
             OutputStream out = null;
             try {
-                jar = new JarFile(BarterSignsPlugin.class.getProtectionDomain().getCodeSource().getLocation().getPath());
+                String path = BarterSignsPlugin.class.getProtectionDomain().getCodeSource()
+                        .getLocation().getPath();
+                path = path.replaceAll("%20", " ");
+                jar = new JarFile(path);
                 ZipEntry entry = jar.getEntry(fileName);
                 File efile = new File(getDataFolder(), entry.getName());
 

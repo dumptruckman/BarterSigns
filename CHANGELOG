@@ -1,3 +1,6 @@
+Version 1.1.2
+    Fixed issue with the language and item files not being properly extracted from the plugin jar.
+    
 Version 1.1.1
     Fixed an NPE when trying to sneak while the sign is still waiting for you to tell it what to sell.
 
