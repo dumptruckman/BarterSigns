@@ -223,13 +223,13 @@ public class BarterSignsPlugin extends JavaPlugin {
         if (withAmount) {
             item += s.getAmount() + " ";
         }
-        item += s.getTypeId() + ":" + s.getDurability();
+        item += s.getTypeId() + "," + s.getDurability();
         return item;
     }
 
     public ItemStack stringToItem(String item) {
         String[] sellInfo = item.split("\\s");
-        String[] itemData = sellInfo[1].split(":");
+        String[] itemData = sellInfo[1].split(",");
         return new ItemStack(Integer.valueOf(itemData[0]), Integer.valueOf(sellInfo[0]), Short.valueOf(itemData[1]));
     }
 
@@ -250,7 +250,7 @@ public class BarterSignsPlugin extends JavaPlugin {
         String key = itemToDataString(item, false);
         String name = items.getString(key);
         if (name == null) {
-            name = items.getString(item.getTypeId() + ":0");
+            name = items.getString(item.getTypeId() + ",0");
         }
         if (name == null) {
             log.warning("Missing item name in items.yml");

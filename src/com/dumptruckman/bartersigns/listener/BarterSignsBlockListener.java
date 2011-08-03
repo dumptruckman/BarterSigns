@@ -2,6 +2,7 @@ package com.dumptruckman.bartersigns.listener;
 
 import com.dumptruckman.bartersigns.BarterSignsPlugin;
 import com.dumptruckman.bartersigns.config.ConfigPath;
+import com.dumptruckman.bartersigns.locale.Language;
 import com.dumptruckman.bartersigns.locale.LanguagePath;
 import com.dumptruckman.bartersigns.sign.BarterSign;
 import com.dumptruckman.bartersigns.sign.BarterSignManager;
@@ -24,9 +25,12 @@ public class BarterSignsBlockListener extends BlockListener {
         // Throw out unimportant events immediately
         if (event.isCancelled()) return;
         BarterSignManager.remove(event.getBlock());
-        if (!event.getLine(0).equalsIgnoreCase("[Barter]")) return;
+        if (!event.getLine(0).equalsIgnoreCase("[Barter]") && !event.getLine(0).equalsIgnoreCase("Barter Shop")) return;
         if (plugin.config.getBoolean(ConfigPath.USE_PERMS.getPath(), (Boolean) ConfigPath.USE_PERMS.getDefault())
-                && !event.getPlayer().hasPermission("bartersigns.create")) return;
+                && !event.getPlayer().hasPermission("bartersigns.create")) {
+            plugin.sendMessage(event.getPlayer(), LanguagePath.NO_PERMISSION.getPath());
+            return;
+        }
 
         BarterSign barterSign = BarterSignManager.getBarterSignFromBlock(event.getBlock());
         if (barterSign == null) {
@@ -78,7 +82,7 @@ public class BarterSignsBlockListener extends BlockListener {
                         event.getPlayer().sendBlockChange(barterSign.getLocation(), 0, (byte) 0);
                         barterSign.showMenu(null);
                     }
-                }, 300L);
+                }, 20L);
             } else {
                 plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
                     @Override
@@ -88,7 +92,7 @@ public class BarterSignsBlockListener extends BlockListener {
                                 LanguagePath.SIGN_STOCK_SETUP.getPath(), barterSign.getOwner());
                         barterSign.getBlock().getState().update(true);
                     }
-                }, 300L);
+                }, 20L);
             }
         }
     }
