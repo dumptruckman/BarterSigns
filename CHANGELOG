@@ -1,3 +1,6 @@
+Version 1.1.1
+    Fixed an NPE when trying to sneak while the sign is still waiting for you to tell it what to sell.
+
 Version 1.1
     Made the sign help short and concise.  No more wall-o-text! (Thanks, LordNed!)
     The main sign text now shows what the sign sells.  The sign info now shows the owner instead of the sold item.

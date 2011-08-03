@@ -97,6 +97,7 @@ public class BarterSignsPlayerListener extends PlayerListener {
         if (!(block.getState() instanceof Sign)) return;
         BarterSign barterSign = BarterSignManager.getBarterSignFromBlock(block);
         if (barterSign == null) return;
+        if (!BarterSign.SignPhase.READY.equalTo(barterSign.getPhase())) return;
         if (barterSign.getMenuIndex() > 0) {
             barterSign.setMenuIndex(player, barterSign.getMenuIndex());
         }
