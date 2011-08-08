@@ -1,0 +1,131 @@
+# English language file.  If you translate these messages, please provide a copy
+# of your translations on the forum page!  Do not modify this file, your changes
+# will be overwritten.  If you'd like to change the english version make a file
+# named english2.yml or something.
+#
+# Use & to indicate color codes
+# Use %1, %2, %3, to indicate position of variables.. This is of course limited
+# to specific message
+
+sign:
+    info:
+    - 'Angebot: &9%1'
+    - 'Zahlungsmittel: &6%2'
+    - 'Klicke Links mit dem &6akzeptablem Zahlungsmittel&f um den Kauf zu tätigen.'
+    help:
+    - 'Öinksklick'
+    - 'für'
+    - 'BarterSigns'
+    - 'Hilfe'
+    stock:
+        setup:
+        - '&5%1'
+        - 'L-Klick mit'
+        - 'dem Item, dass'
+        - 'zu verkaufen ist'
+        - 'Halte das Item, dass du verkaufen willst und klicke Links auf das Schild.'
+        set:
+        - 'Dieses Schild wird &9%1 %2 verkaufen.'
+        insufficient:
+        - '&cNicht vorrätig!'
+        add:
+        - 'L-Klick um'
+        - '&2Lager  zu.'
+        - 'füllen. Lager:'
+        - '&3%1'
+        remove:
+        - 'L-Klick um
+        - '&4Lager zu.'
+        - 'Lehren. Lager:'
+        - '&3%1'
+        limit:
+        - '&8Dieses Schild kann nicht mehr aufnehemen!.'
+    collect:
+        leftover:
+        - '&8Einige Items konnten nicht eingesammelt werden, da dein Inventar voll ist!'
+    revenue:
+        collect:
+        - 'L-Klick um die'
+        - '&6Einnahmen zu'
+        - '&6sehen'
+        - ' '
+        empty:
+        - '&8Keine Einnahmen abzuholen!'
+        collected:
+        - 'Du hast &6%1 erhalten!'
+    payment:
+        add:
+        - 'L-Klick mit dem'
+        - 'Item, dass du als'
+        - '&2Zahlung annimmst'
+        - '&6%1'
+        added:
+        - '%1 als Zahlungsmittel hinzuefügt'
+        - 'Wenn du mehr als eines willst, klicke nochmals Links auf das Schild.'
+        remove:
+        - 'L-Klivk mit'
+        - 'Zahlungsmittel'
+        - '&4zum entfernen'
+        - '&6%1'
+        removed:
+        - '&6%1 &fals Zahlungsmittel entfernt!'
+        notcontains:
+        - '&8Dieses Schild beinhaltet nicht dieses Item!'
+    sellable:
+        increase:
+        - 'L-Klick um die'
+        - '&2Verkaufseinheit'
+        - 'zu erhöhen'
+        - '&9%1'
+        decrease:
+        - 'L-Klick um die'
+        - '&4Verkaufseinheit'
+        - 'zu vermindern'
+        - '&9%1'
+        minimum:
+        - '&8Du kannst den Betrag nicht kleiner als 1 machen!'
+    ready:
+        sign:
+        - '&2Barter Shop'
+        - '(R-Klick)'
+        - '&9Verkauft: %1'
+        - '&9%2'
+        message:
+        - '&eFülle das Lager des Schilds auf und lege ein Zahlungsmittel fest.'
+    unfinishedsetup:
+    - '&5%1 &8hat sein Schild nicht fertig eingestellt!'
+    owner:
+    - '&8Linksklick in diesem Menüpunkt, um zu sehen, was dein Schild &9verkauft&8/&6annimmt.'
+    - '&8Als Besitzer, ducke dich, um zu kaufen.'
+    remove:
+    - '&cJetzt kannst'
+    - '&cdu das'
+    - '&cSchild'
+    - '&czerstören!'
+    purchase:
+    - 'L-Klick für'
+    - '&eKauf &0von'
+    - 'diesem Schild'
+    - ' '
+player:
+    nohelditem:
+    - '&8Du musst ein Item in der Hand halten!'
+    insufficientamount:
+    - '&4Du hast nicht genug %1!'
+    unacceptableitem:
+    - '&8Das Item, dass du hälst wird nicht als Zahlungsmittel akzeptiert.'
+    purchased:
+    - 'du hast &9%1 &ffür &6%2&f getauscht!'
+    nopermission:
+    - '&8Zugang verweigert: Keine Rechte dafür!'
+    help:
+    - '&e===BarterSigns Help==='
+    - 'BarterSigns is an automated trading post.'
+    - 'The items/amount are configurable through the Sign-GUI(tm).'
+    - 'Signs must be &cSTOCKED&f with items from your inventory.'
+    - '&eUSAGE:'
+    - 'Right Click to Scroll through Options.'
+    - 'Left Click to Select Options'
+    - 'Crouch acts as a modifier.'
+   
+    
