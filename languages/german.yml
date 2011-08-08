@@ -1,4 +1,4 @@
-# English language file.  If you translate these messages, please provide a copy
+ï»¿# English language file.  If you translate these messages, please provide a copy
 # of your translations on the forum page!  Do not modify this file, your changes
 # will be overwritten.  If you'd like to change the english version make a file
 # named english2.yml or something.
@@ -11,30 +11,30 @@ sign:
     info:
     - 'Angebot: &9%1'
     - 'Zahlungsmittel: &6%2'
-    - 'Klicke Links mit dem &6akzeptablem Zahlungsmittel&f um den Kauf zu tätigen.'
+    - 'Klicke Links mit dem &6akzeptablem Zahlungsmittel&f um den Kauf zu tÃ¤tigen.'
     help:
-    - 'Öinksklick'
-    - 'für'
+    - 'Linksklick'
+    - 'fÃ¼r'
     - 'BarterSigns'
-    - 'Hilfe'
+    - '&eHilfe&0.'
     stock:
         setup:
         - '&5%1'
         - 'L-Klick mit'
         - 'dem Item, dass'
-        - 'zu verkaufen ist'
+        - 'zu verk. ist'
         - 'Halte das Item, dass du verkaufen willst und klicke Links auf das Schild.'
         set:
         - 'Dieses Schild wird &9%1 %2 verkaufen.'
         insufficient:
-        - '&cNicht vorrätig!'
+        - '&cNicht vorrÃ¤tig!'
         add:
         - 'L-Klick um'
         - '&2Lager  zu.'
-        - 'füllen. Lager:'
+        - 'fÃ¼llen. Lager:'
         - '&3%1'
         remove:
-        - 'L-Klick um
+        - 'L-Klick um'
         - '&4Lager zu.'
         - 'Lehren. Lager:'
         - '&3%1'
@@ -56,14 +56,14 @@ sign:
     payment:
         add:
         - 'L-Klick mit dem'
-        - 'Item, dass du als'
-        - '&2Zahlung annimmst'
+        - 'Item, dass die'
+        - '&2Zahlung wird'
         - '&6%1'
         added:
-        - '%1 als Zahlungsmittel hinzuefügt'
+        - '%1 als Zahlungsmittel hinzuefÃ¼gt'
         - 'Wenn du mehr als eines willst, klicke nochmals Links auf das Schild.'
         remove:
-        - 'L-Klivk mit'
+        - 'L-Klick mit'
         - 'Zahlungsmittel'
         - '&4zum entfernen'
         - '&6%1'
@@ -75,7 +75,7 @@ sign:
         increase:
         - 'L-Klick um die'
         - '&2Verkaufseinheit'
-        - 'zu erhöhen'
+        - 'zu erhÃ¶hen'
         - '&9%1'
         decrease:
         - 'L-Klick um die'
@@ -91,19 +91,19 @@ sign:
         - '&9Verkauft: %1'
         - '&9%2'
         message:
-        - '&eFülle das Lager des Schilds auf und lege ein Zahlungsmittel fest.'
+        - '&eFÃ¼lle das Lager des Schilds auf und lege ein Zahlungsmittel fest.'
     unfinishedsetup:
     - '&5%1 &8hat sein Schild nicht fertig eingestellt!'
     owner:
-    - '&8Linksklick in diesem Menüpunkt, um zu sehen, was dein Schild &9verkauft&8/&6annimmt.'
+    - '&8Linksklick in diesem MenÃ¼punkt, um zu sehen, was dein Schild &9verkauft&8/&6annimmt.'
     - '&8Als Besitzer, ducke dich, um zu kaufen.'
     remove:
     - '&cJetzt kannst'
     - '&cdu das'
     - '&cSchild'
-    - '&czerstören!'
+    - '&czerstÃ¶ren!'
     purchase:
-    - 'L-Klick für'
+    - 'L-Klick fÃ¼r'
     - '&eKauf &0von'
     - 'diesem Schild'
     - ' '
@@ -113,19 +113,19 @@ player:
     insufficientamount:
     - '&4Du hast nicht genug %1!'
     unacceptableitem:
-    - '&8Das Item, dass du hälst wird nicht als Zahlungsmittel akzeptiert.'
+    - '&8Das Item, dass du hÃ¤lst wird nicht als Zahlungsmittel akzeptiert.'
     purchased:
-    - 'du hast &9%1 &ffür &6%2&f getauscht!'
+    - 'du hast &9%1 &ffÃ¼r &6%2&f getauscht!'
     nopermission:
-    - '&8Zugang verweigert: Keine Rechte dafür!'
+    - '&8Zugang verweigert: Keine Rechte dafÃ¼r!'
     help:
     - '&e===BarterSigns Help==='
-    - 'BarterSigns is an automated trading post.'
-    - 'The items/amount are configurable through the Sign-GUI(tm).'
-    - 'Signs must be &cSTOCKED&f with items from your inventory.'
-    - '&eUSAGE:'
-    - 'Right Click to Scroll through Options.'
-    - 'Left Click to Select Options'
-    - 'Crouch acts as a modifier.'
+    - 'BarterSigns ist automatisierter Tauschhandel.'
+    - 'Die Item, ... sind im Sign-GUI(tm) konfigurierbar.'
+    - 'Schilder muessen &caufgefÃ¼llt&f werden fÃ¼r den Handel.'
+    - '&eBenutzung:'
+    - 'Rechtsklck um durch die Optionen tu scrollen.'
+    - 'Linksklick um die aktuelle Option auszuwaehlen'
+    - 'Ducken um weitere Optionen verwenden zu koennen.'
    
     
