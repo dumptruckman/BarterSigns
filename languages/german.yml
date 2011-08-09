@@ -6,17 +6,21 @@
 # Use & to indicate color codes
 # Use %1, %2, %3, to indicate position of variables.. This is of course limited
 # to specific message
+#
+# For BarterSigns v1.1.2
+# Version 2
+# Made by MrPikPik and xGhOsTkiLLeRx
 
 sign:
     info:
-    - 'Angebot: &9%1'
+    - 'Anbieter: &9%1'
     - 'Zahlungsmittel: &6%2'
-    - 'Klicke Links mit dem &6akzeptablem Zahlungsmittel&f um den Kauf zu tätigen.'
+    - 'Linksklick mit dem &6akzeptablem Zahlungsmittel&f um den Kauf zutätigen.'
     help:
     - 'Linksklick'
     - 'für'
     - 'BarterSigns'
-    - '&eHilfe&0.'
+    - '&eHilfe.'
     stock:
         setup:
         - '&5%1'
@@ -25,43 +29,43 @@ sign:
         - 'zu verk. ist'
         - 'Halte das Item, dass du verkaufen willst und klicke Links auf das Schild.'
         set:
-        - 'Dieses Schild wird &9%1 %2 verkaufen.'
+        - 'Dieses Schild wird &9%1 %2 &fverkaufen.'
         insufficient:
         - '&cNicht vorrätig!'
         add:
         - 'L-Klick um'
-        - '&2Lager  zu.'
+        - '&2Lager  zu'
         - 'füllen. Lager:'
         - '&3%1'
         remove:
-        - 'L-Klick um'
-        - '&4Lager zu.'
-        - 'Lehren. Lager:'
+        - 'L-Klick zur'
+        - '&4Lagerleerung'
+        - 'Lager:'
         - '&3%1'
         limit:
-        - '&8Dieses Schild kann nicht mehr aufnehemen!.'
+        - '&8Dieses Schild kann nicht mehr aufnehemen!'
     collect:
         leftover:
         - '&8Einige Items konnten nicht eingesammelt werden, da dein Inventar voll ist!'
     revenue:
         collect:
         - 'L-Klick um die'
-        - '&6Einnahmen zu'
-        - '&6sehen'
+        - '&6Einnahmen'
+        - '&6einzusammeln'
         - ' '
         empty:
         - '&8Keine Einnahmen abzuholen!'
         collected:
-        - 'Du hast &6%1 erhalten!'
+        - 'Du hast &6%1 &ferhalten!'
     payment:
         add:
         - 'L-Klick mit dem'
-        - 'Item, dass die'
-        - '&2Zahlung wird'
+        - 'Item, mit dem'
+        - 'du &2zahlst'
         - '&6%1'
         added:
-        - '%1 als Zahlungsmittel hinzuefügt'
-        - 'Wenn du mehr als eines willst, klicke nochmals Links auf das Schild.'
+        - '%1 als Zahlungsmittel hinzugefügt'
+        - 'Wenn du mehr als eines willst, klicke nochmals mit Links auf das Schild.'
         remove:
         - 'L-Klick mit'
         - 'Zahlungsmittel'
@@ -74,13 +78,13 @@ sign:
     sellable:
         increase:
         - 'L-Klick um die'
-        - '&2Verkaufseinheit'
-        - 'zu erhöhen'
+        - 'Verkaufseinheit'
+        - '&2zu erhöhen'
         - '&9%1'
         decrease:
         - 'L-Klick um die'
-        - '&4Verkaufseinheit'
-        - 'zu vermindern'
+        - 'Verkaufseinheit'
+        - '&4zu mindern'
         - '&9%1'
         minimum:
         - '&8Du kannst den Betrag nicht kleiner als 1 machen!'
@@ -101,10 +105,10 @@ sign:
     - '&cJetzt kannst'
     - '&cdu das'
     - '&cSchild'
-    - '&czerstören!'
+    - '&czerstoeren!'
     purchase:
     - 'L-Klick für'
-    - '&eKauf &0von'
+    - '&eKauf &fvon'
     - 'diesem Schild'
     - ' '
 player:
@@ -115,17 +119,15 @@ player:
     unacceptableitem:
     - '&8Das Item, dass du hälst wird nicht als Zahlungsmittel akzeptiert.'
     purchased:
-    - 'du hast &9%1 &ffür &6%2&f getauscht!'
+    - 'Du hast &9%1 &ffür &6%2&f getauscht!'
     nopermission:
     - '&8Zugang verweigert: Keine Rechte dafür!'
     help:
-    - '&e===BarterSigns Help==='
+    - '&e===BarterSigns Hilfe==='
     - 'BarterSigns ist automatisierter Tauschhandel.'
-    - 'Die Item, ... sind im Sign-GUI(tm) konfigurierbar.'
-    - 'Schilder muessen &caufgefüllt&f werden für den Handel.'
+    - 'Die Items, ... sind im Sign-GUI(tm) konfigurierbar.'
+    - 'Schilder müssen für den Handel &caufgefüllt&f werden.'
     - '&eBenutzung:'
-    - 'Rechtsklck um durch die Optionen tu scrollen.'
-    - 'Linksklick um die aktuelle Option auszuwaehlen'
-    - 'Ducken um weitere Optionen verwenden zu koennen.'
-   
-    
+    - 'Rechtsklick um durch die Optionen tu scrollen.'
+    - 'Linksklick um die aktuelle Option auszuwählen'
+    - 'Ducken um weitere Optionen verwenden zu können.'
