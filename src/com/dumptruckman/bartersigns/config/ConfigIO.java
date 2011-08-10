@@ -10,7 +10,7 @@ import org.bukkit.util.config.Configuration;
  */
 public class ConfigIO {
 
-    private Configuration data;
+    private CommentedConfiguration data;
 
     public ConfigIO(File file) {
         if(!file.exists()) {
@@ -18,10 +18,10 @@ public class ConfigIO {
                 file.createNewFile();
             } catch (IOException e) { }
         }
-        this.data = new Configuration(file);
+        this.data = new CommentedConfiguration(file);
     }
 
-    public ConfigIO(Configuration data) {
+    public ConfigIO(CommentedConfiguration data) {
         this.data = data;
     }
 
@@ -31,7 +31,7 @@ public class ConfigIO {
         }
     }
 
-    public Configuration load() {
+    public CommentedConfiguration load() {
         data.load();
         return data;
     }

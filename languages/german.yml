@@ -74,12 +74,12 @@ sign:
     sellable:
         increase:
         - 'L-Klick um die'
-        - '&2Verkaufseinheit'
+        - '&2Verk.einh.'
         - 'zu erhöhen'
         - '&9%1'
         decrease:
         - 'L-Klick um die'
-        - '&4Verkaufseinheit'
+        - '&4Verk.einh.'
         - 'zu vermindern'
         - '&9%1'
         minimum:

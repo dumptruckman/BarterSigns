@@ -1,5 +1,6 @@
 package com.dumptruckman.bartersigns;
 
+import com.dumptruckman.bartersigns.config.CommentedConfiguration;
 import com.dumptruckman.bartersigns.listener.BarterSignsBlockListener;
 import com.dumptruckman.bartersigns.listener.BarterSignsEntityListener;
 import com.dumptruckman.bartersigns.listener.BarterSignsPlayerListener;
@@ -35,8 +36,8 @@ public class BarterSignsPlugin extends JavaPlugin {
 
     private final BarterSignsBlockListener blockListener = new BarterSignsBlockListener(this);
 
-    public Configuration config;
-    public Configuration data;
+    public CommentedConfiguration config;
+    public CommentedConfiguration data;
     private Configuration items;
     public Language lang;
     public BarterSignManager signManager;
@@ -88,7 +89,6 @@ public class BarterSignsPlugin extends JavaPlugin {
 
         // Register command executor for main plugin command
 
-
         // Register event listeners
         pm.registerEvent(Type.SIGN_CHANGE, blockListener, Priority.Normal, this);
         pm.registerEvent(Type.BLOCK_PLACE, blockListener, Priority.Highest, this);
@@ -121,58 +121,62 @@ public class BarterSignsPlugin extends JavaPlugin {
             config.setProperty("settings.languagefile", "english.yml");
         }
         config.getInt(DATA_SAVE.getPath(), (Integer) DATA_SAVE.getDefault());
+        config.addComment(DATA_SAVE.getPath(), "This is how often (in seconds) user data is saved.");
         config.getBoolean(USE_PERMS.getPath(), (Boolean) USE_PERMS.getDefault());
+        config.addComment(USE_PERMS.getPath(), "This will enable/disable use of SuperPerms.",
+                "If disabled, all users may create/use signs and OPs will be able to manage every sign.");
         config.getInt(SIGN_STORAGE_LIMIT.getPath(), (Integer)SIGN_STORAGE_LIMIT.getDefault());
         config.getBoolean(SIGN_INDESTRUCTIBLE.getPath(), (Boolean) SIGN_INDESTRUCTIBLE.getDefault());
+        config.addComment(SIGN_INDESTRUCTIBLE.getPath(), "test");
         config.getBoolean(SIGN_DROPS_ITEMS.getPath(), (Boolean) SIGN_DROPS_ITEMS.getDefault());
         config.save();
     }
 
     private void extractFromJar(String fileName) {
         JarFile jar = null;
-            InputStream in = null;
-            OutputStream out = null;
-            try {
-                String path = BarterSignsPlugin.class.getProtectionDomain().getCodeSource()
-                        .getLocation().getPath();
-                path = path.replaceAll("%20", " ");
-                jar = new JarFile(path);
-                ZipEntry entry = jar.getEntry(fileName);
-                File efile = new File(getDataFolder(), entry.getName());
+        InputStream in = null;
+        OutputStream out = null;
+        try {
+            String path = BarterSignsPlugin.class.getProtectionDomain().getCodeSource()
+                    .getLocation().getPath();
+            path = path.replaceAll("%20", " ");
+            jar = new JarFile(path);
+            ZipEntry entry = jar.getEntry(fileName);
+            File efile = new File(getDataFolder(), entry.getName());
 
-                in = new BufferedInputStream(jar.getInputStream(entry));
-                out = new BufferedOutputStream(new FileOutputStream(efile));
-                byte[] buffer = new byte[2048];
-                for (; ; ) {
-                    int nBytes = in.read(buffer);
-                    if (nBytes <= 0) break;
-                    out.write(buffer, 0, nBytes);
-                }
-                out.flush();
-                in.close();
-                out.close();
-            } catch (IOException e) {
-                log.warning("Could not extract " + fileName + "! Reason: " + e.getMessage());
-            } finally {
-                if (jar != null) {
-                    try {
-                        jar.close();
-                    } catch (IOException e) {
-                    }
-                }
-                if (in != null) {
-                    try {
-                        in.close();
-                    } catch (IOException e) {
-                    }
-                }
-                if (out != null) {
-                    try {
-                        out.close();
-                    } catch (IOException e) {
-                    }
+            in = new BufferedInputStream(jar.getInputStream(entry));
+            out = new BufferedOutputStream(new FileOutputStream(efile));
+            byte[] buffer = new byte[2048];
+            for (; ; ) {
+                int nBytes = in.read(buffer);
+                if (nBytes <= 0) break;
+                out.write(buffer, 0, nBytes);
+            }
+            out.flush();
+            in.close();
+            out.close();
+        } catch (IOException e) {
+            log.warning("Could not extract " + fileName + "! Reason: " + e.getMessage());
+        } finally {
+            if (jar != null) {
+                try {
+                    jar.close();
+                } catch (IOException e) {
                 }
             }
+            if (in != null) {
+                try {
+                    in.close();
+                } catch (IOException e) {
+                }
+            }
+            if (out != null) {
+                try {
+                    out.close();
+                } catch (IOException e) {
+                }
+            }
+        }
     }
 
     final public void saveConfig() {
