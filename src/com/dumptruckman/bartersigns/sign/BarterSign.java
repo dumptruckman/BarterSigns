@@ -34,6 +34,7 @@ public class BarterSign {
     private String name;
     private World world;
     private SignActionMenu menu;
+    private String network;
 
     private ItemStack sellableItem = null;
     private List<ItemStack> acceptableItems = null;
@@ -84,6 +85,14 @@ public class BarterSign {
 
     public String getName() {
         return name;
+    }
+
+    public String getNetwork() {
+        return plugin.config.getString(name + ".network");
+    }
+
+    public void removeNetwork() {
+        plugin.config.removeProperty(name + ".network");
     }
 
     public Block getBlock() {
