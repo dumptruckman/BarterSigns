@@ -1,0 +1,26 @@
+Version 1.1.3
+<<<<<<< HEAD
+    Fixed some sign text that was too long due to color codes.
+    Added a commented config.
+=======
+    Fixed some over looked item name length issues. (And suphlur (sp) is now Gunpowder).  This change requries you to delete your old item.yml
+>>>>>>> d33fe42e5a0b5be299624ba53ae3138f333fad41
+
+Version 1.1.2
+    Fixed issue with the language and item files not being properly extracted from the plugin jar.
+    
+Version 1.1.1
+    Fixed an NPE when trying to sneak while the sign is still waiting for you to tell it what to sell.
+
+Version 1.1
+    Made the sign help short and concise.  No more wall-o-text! (Thanks, LordNed!)
+    The main sign text now shows what the sign sells.  The sign info now shows the owner instead of the sold item.
+
+Version 1.0.2
+    Modified the process for extracting the language file.  Plugin should work better when the file is manually extracted.
+
+Version 1.0.1
+    Included the required dependencies in the plugin's main package.
+
+Version 1.0
+    Public release!
