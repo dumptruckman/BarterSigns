@@ -11,6 +11,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 
@@ -49,22 +50,60 @@ public class AlterStockMenuItem extends SignActionMenuItem {
 
     public void run() {
         if (!player.isSneaking()) {
+            // Add stock
             int limit = plugin.config.getInt(ConfigPath.SIGN_STORAGE_LIMIT.getPath(),
                     (Integer) ConfigPath.SIGN_STORAGE_LIMIT.getDefault());
 
-            if (limit != 0 && barterSign.getStock() == limit) {
-                plugin.sendMessage(player, LanguagePath.SIGN_STOCK_LIMIT.getPath());
-                return;
+            // Check if sign is already at/over limit
+            if (plugin.stockLimitUsesStacks()) {
+                if (limit != 0 && barterSign.getStock()/barterSign.getSellableItem().getType().getMaxStackSize() >= limit) {
+                    plugin.sendMessage(player, LanguagePath.SIGN_STOCK_LIMIT.getPath());
+                    return;
+                }
+            } else {
+                if (limit != 0 && barterSign.getStock() >= limit) {
+                    plugin.sendMessage(player, LanguagePath.SIGN_STOCK_LIMIT.getPath());
+                    return;
+                }
             }
+
             if (InventoryTools.remove(player.getInventory(), barterSign.getSellableItem().getType(),
                     barterSign.getSellableItem().getDurability(), barterSign.getSellableItem().getAmount())) {
+                // The sellable item was removed from the player's inventory
+                
                 barterSign.setStock(barterSign.getStock() + barterSign.getSellableItem().getAmount());
-                if (limit != 0 && barterSign.getStock() > limit) {
-                    barterSign.getWorld().dropItem(barterSign.getLocation(),
-                            new ItemStack(barterSign.getSellableItem().getType(), barterSign.getSellableItem().getAmount(),
+                if (limit != 0) {
+                    if ((plugin.stockLimitUsesStacks()
+                                && barterSign.getStock()/barterSign.getSellableItem().getType().getMaxStackSize() > limit)) {
+                        int overBy = (barterSign.getStock()/barterSign.getSellableItem().getType().getMaxStackSize()) - limit;
+                        for (int i = 0; i < overBy; i++) {
+                            HashMap<Integer, ItemStack> leftover = player.getInventory().addItem(new ItemStack(
+                                    barterSign.getSellableItem().getType(),
+                                    barterSign.getSellableItem().getType().getMaxStackSize(),
                                     barterSign.getSellableItem().getDurability()));
-                    barterSign.setStock(limit);
-                    plugin.sendMessage(player, LanguagePath.SIGN_STOCK_LIMIT.getPath());
+                            barterSign.spawnItemsAtSign(leftover);
+                        }
+                        barterSign.setStock(limit);
+                        plugin.sendMessage(player, LanguagePath.SIGN_STOCK_LIMIT.getPath());
+                    }
+                    if (!plugin.stockLimitUsesStacks()
+                                && barterSign.getStock() > limit) {
+                        int overBy = barterSign.getStock() - limit;
+                        HashMap<Integer, ItemStack> leftover = null;
+                        if (plugin.enforceMaxStackSize()) {
+                            List<ItemStack> items = InventoryTools.getSeparatedItems(new ItemStack(
+                                    barterSign.getSellableItem().getType(), overBy,
+                                    barterSign.getSellableItem().getDurability()));
+                            leftover = player.getInventory().addItem(items.toArray(new ItemStack[items.size()]));
+                        } else {
+                            leftover = player.getInventory().addItem(new ItemStack(
+                                    barterSign.getSellableItem().getType(), overBy,
+                                    barterSign.getSellableItem().getDurability()));
+                        }
+                        barterSign.spawnItemsAtSign(leftover);
+                        barterSign.setStock(limit);
+                        plugin.sendMessage(player, LanguagePath.SIGN_STOCK_LIMIT.getPath());
+                    }
                 }
                 this.setLines(plugin.lang.lang(LanguagePath.SIGN_MENU_ADD_STOCK.getPath(), barterSign.getStock().toString()));
                 barterSign.showMenu(player);
@@ -73,14 +112,23 @@ public class AlterStockMenuItem extends SignActionMenuItem {
                 plugin.sendMessage(player, LanguagePath.PLAYER_INSUFFICIENT_AMOUNT.getPath(), item);
             }
         } else {
+            // Remove stock
             if (barterSign.getStock() > 0) { //barterSign.getSellableItem().getAmount()
                 int amount = barterSign.getSellableItem().getAmount();
                 if (barterSign.getStock() < amount) {
                     amount = barterSign.getStock();
                 }
-                HashMap<Integer, ItemStack> itemsLeftOver = player.getInventory().addItem(
-                        new ItemStack(barterSign.getSellableItem().getType(), amount,
-                                barterSign.getSellableItem().getDurability()));
+                HashMap<Integer, ItemStack> itemsLeftOver = null;
+                if (plugin.enforceMaxStackSize()) {
+                    List<ItemStack> items = InventoryTools.getSeparatedItems(
+                            new ItemStack(barterSign.getSellableItem().getType(), amount,
+                            barterSign.getSellableItem().getDurability()));
+                    itemsLeftOver = player.getInventory().addItem(items.toArray(new ItemStack[items.size()]));
+                } else {
+                    itemsLeftOver = player.getInventory().addItem(
+                            new ItemStack(barterSign.getSellableItem().getType(), amount,
+                            barterSign.getSellableItem().getDurability()));
+                }
                 int amountLeftOver = 0;
                 for (Map.Entry<Integer, ItemStack> item : itemsLeftOver.entrySet()) {
                     amountLeftOver += item.getValue().getAmount();

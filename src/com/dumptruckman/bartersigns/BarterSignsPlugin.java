@@ -16,7 +16,6 @@ import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.util.config.Configuration;
 
-import javax.xml.crypto.Data;
 import java.io.*;
 import java.util.List;
 import java.util.jar.JarFile;
@@ -117,17 +116,25 @@ public class BarterSignsPlugin extends JavaPlugin {
         config = new ConfigIO(new File(this.getDataFolder(), "config.yml")).load();
         data = new ConfigIO(new File(this.getDataFolder(), "data.yml")).load();
 
+        config.setHeader("# You must reload the server for changes here to take effect");
+        config.addComment("settings.languagefile", "This is where you specify the language file you wish to use.");
         if (config.getString("settings.languagefile") == null) {
             config.setProperty("settings.languagefile", "english.yml");
         }
-        config.getInt(DATA_SAVE.getPath(), (Integer) DATA_SAVE.getDefault());
         config.addComment(DATA_SAVE.getPath(), "This is how often (in seconds) user data is saved.");
-        config.getBoolean(USE_PERMS.getPath(), (Boolean) USE_PERMS.getDefault());
+        config.getInt(DATA_SAVE.getPath(), (Integer) DATA_SAVE.getDefault());
         config.addComment(USE_PERMS.getPath(), "This will enable/disable use of SuperPerms.",
                 "If disabled, all users may create/use signs and OPs will be able to manage every sign.");
-        config.getInt(SIGN_STORAGE_LIMIT.getPath(), (Integer)SIGN_STORAGE_LIMIT.getDefault());
+        config.getBoolean(USE_PERMS.getPath(), (Boolean) USE_PERMS.getDefault());
+        config.addComment(SIGN_STORAGE_LIMIT.getPath(), "This is the total amount of stock the sign can hold");
+        config.getInt(SIGN_STORAGE_LIMIT.getPath(), (Integer) SIGN_STORAGE_LIMIT.getDefault());
+        config.addComment(SIGN_ENFORCE_MAX_STACK_SIZE.getPath(), "This will make all items dispensed by the sign obey max stack size.");
+        config.getBoolean(SIGN_ENFORCE_MAX_STACK_SIZE.getPath(), (Boolean) SIGN_ENFORCE_MAX_STACK_SIZE.getDefault());
+        config.addComment(SIGN_USE_NUM_STACKS.getPath(), "This will cause the stock limit to be in number of stacks.");
+        config.getBoolean(SIGN_USE_NUM_STACKS.getPath(), (Boolean) SIGN_USE_NUM_STACKS.getDefault());
+        config.addComment(SIGN_INDESTRUCTIBLE.getPath(), "This will make the signs completely indestructible except by owners/admin");
         config.getBoolean(SIGN_INDESTRUCTIBLE.getPath(), (Boolean) SIGN_INDESTRUCTIBLE.getDefault());
-        config.addComment(SIGN_INDESTRUCTIBLE.getPath(), "test");
+        config.addComment(SIGN_DROPS_ITEMS.getPath(), "This will cause the sign to drop all items it contains upon breaking");
         config.getBoolean(SIGN_DROPS_ITEMS.getPath(), (Boolean) SIGN_DROPS_ITEMS.getDefault());
         config.save();
     }
@@ -264,5 +271,13 @@ public class BarterSignsPlugin extends JavaPlugin {
             name = "???";
         }
         return name;
+    }
+
+    public boolean enforceMaxStackSize() {
+        return config.getBoolean(SIGN_ENFORCE_MAX_STACK_SIZE.getPath(), (Boolean) SIGN_ENFORCE_MAX_STACK_SIZE.getDefault());
+    }
+
+    public boolean stockLimitUsesStacks() {
+        return config.getBoolean(SIGN_USE_NUM_STACKS.getPath(), (Boolean) SIGN_USE_NUM_STACKS.getDefault());
     }
 }

@@ -11,12 +11,14 @@ import org.bukkit.block.BlockState;
 import org.bukkit.block.Sign;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import sun.plugin2.main.client.PluginEmbeddedFrame;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static com.dumptruckman.bartersigns.config.ConfigPath.SIGN_ENFORCE_MAX_STACK_SIZE;
 import static com.dumptruckman.bartersigns.locale.LanguagePath.*;
 
 /**
@@ -35,6 +37,7 @@ public class BarterSign {
     private World world;
     private SignActionMenu menu;
     private String network;
+    private Location location;
 
     private ItemStack sellableItem = null;
     private List<ItemStack> acceptableItems = null;
@@ -129,6 +132,7 @@ public class BarterSign {
     }
 
     public void init(Player player) {
+        this.location = block.getLocation();
         plugin.data.setProperty(name + ".owner", player.getName());
         activateStockPhase(player);
         BarterSignManager.add(this);
@@ -182,9 +186,9 @@ public class BarterSign {
         return world;
     }
 
-    public Location getLocation() {
-        return block.getLocation();
-    }
+    //public Location getLocation() {
+    //    return block.getLocation();
+    //}
 
     public void showInfo(Player player) {
         List<ItemStack> acceptItems = getAcceptableItems();
@@ -227,6 +231,18 @@ public class BarterSign {
         return plugin.data.getString(name + ".owner");
     }
 
+    public Location getLocation() {
+        return location;
+    }
+
+    public void spawnItemsAtSign(HashMap<Integer, ItemStack> items) {
+        if (items != null && !items.isEmpty()) {
+            for (Map.Entry<Integer, ItemStack> item : items.entrySet()) {
+                getBlock().getWorld().dropItem(getLocation(), item.getValue());
+            }
+        }
+    }
+
     public void buy(Player player) {
         if (getStock() >= getSellableItem().getAmount()) {
             ItemStack playerItem = player.getItemInHand();
@@ -241,19 +257,20 @@ public class BarterSign {
             if (acceptItem != null) {
                 if (InventoryTools.remove(player.getInventory(), acceptItem.getType(),
                         acceptItem.getDurability(), acceptItem.getAmount())) {
-                    HashMap<Integer, ItemStack> leftover = player.getInventory().addItem(
-                            new ItemStack(getSellableItem().getType(),
-                                    getSellableItem().getAmount(), getSellableItem().getDurability()));
+
+                    HashMap<Integer, ItemStack> leftover = null;
+                    if (plugin.enforceMaxStackSize()) {
+                        List<ItemStack> items = InventoryTools.getSeparatedItems(getSellableItem());
+                        leftover = player.getInventory().addItem(items.toArray(new ItemStack[items.size()]));
+                    } else {
+                        leftover = player.getInventory().addItem(new ItemStack(getSellableItem().getType(),
+                                getSellableItem().getAmount(), getSellableItem().getDurability()));
+                    }
+                    spawnItemsAtSign(leftover);
                     setStock(getStock() - getSellableItem().getAmount());
                     setRevenue(acceptItem, getRevenue(acceptItem) + acceptItem.getAmount());
                     plugin.sendMessage(player, PLAYER_PURCHASE.getPath(), plugin.itemToString(sellableItem),
                             plugin.itemToString(acceptItem));
-                    if (!leftover.isEmpty()) {
-                        Location loc = player.getLocation();
-                        for (Map.Entry<Integer, ItemStack> item : leftover.entrySet()) {
-                            player.getWorld().dropItem(loc, item.getValue());
-                        }
-                    }
                 } else {
                     plugin.sendMessage(player, PLAYER_INSUFFICIENT_AMOUNT.getPath(),
                             plugin.itemToString(acceptItem, false));

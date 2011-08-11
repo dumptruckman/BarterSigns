@@ -2,6 +2,7 @@ package com.dumptruckman.bartersigns.menu;
 
 import com.dumptruckman.bartersigns.actionmenu.SignActionMenuItem;
 import com.dumptruckman.bartersigns.BarterSignsPlugin;
+import com.dumptruckman.bartersigns.inventory.InventoryTools;
 import com.dumptruckman.bartersigns.locale.LanguagePath;
 import com.dumptruckman.bartersigns.sign.BarterSign;
 import org.bukkit.inventory.ItemStack;
@@ -32,10 +33,19 @@ public class CollectRevenueMenuItem extends SignActionMenuItem {
         for (ItemStack acceptItem : acceptItems) {
             if (barterSign.getRevenue(acceptItem) > 0) {
                 if (!hasRevenue) hasRevenue = true;
-                HashMap<Integer, ItemStack> itemsLeftOver = player.getInventory().addItem(new ItemStack(
-                        acceptItem.getType(),
-                        barterSign.getRevenue(acceptItem),
-                        acceptItem.getDurability()));
+                HashMap<Integer, ItemStack> itemsLeftOver = null;
+                if (plugin.enforceMaxStackSize()) {
+                    List<ItemStack> items = InventoryTools.getSeparatedItems(new ItemStack(
+                            acceptItem.getType(),
+                            barterSign.getRevenue(acceptItem),
+                            acceptItem.getDurability()));
+                    itemsLeftOver = player.getInventory().addItem(items.toArray(new ItemStack[items.size()]));
+                } else {
+                    itemsLeftOver = player.getInventory().addItem(new ItemStack(
+                            acceptItem.getType(),
+                            barterSign.getRevenue(acceptItem),
+                            acceptItem.getDurability()));
+                }
                 int amountLeftOver = 0;
                 for (Map.Entry<Integer, ItemStack> item : itemsLeftOver.entrySet()) {
                     amountLeftOver += item.getValue().getAmount();

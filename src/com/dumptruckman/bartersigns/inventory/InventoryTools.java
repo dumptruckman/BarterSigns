@@ -4,7 +4,9 @@ import org.bukkit.Material;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -54,5 +56,18 @@ public class InventoryTools {
             return true;
         }
         return false;
+    }
+
+    public static List<ItemStack> getSeparatedItems(ItemStack item) {
+        List<ItemStack> items = new ArrayList<ItemStack>();
+        int numStacks = item.getAmount() / item.getType().getMaxStackSize();
+        int remainingAmount = item.getAmount() % item.getType().getMaxStackSize();
+        for (int i = 0; i < numStacks; i++) {
+            items.add(new ItemStack(item.getType(), item.getType().getMaxStackSize(), item.getDurability()));
+        }
+        if (remainingAmount > 0) {
+            items.add(new ItemStack(item.getType(), remainingAmount, item.getDurability()));
+        }
+        return items;
     }
 }
