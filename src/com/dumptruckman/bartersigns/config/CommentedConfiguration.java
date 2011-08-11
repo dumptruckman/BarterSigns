@@ -30,7 +30,6 @@ public class CommentedConfiguration extends Configuration {
             String[] yamlContents =
                     FileMgmt.convertFileToString(file).split("[" + System.getProperty("line.separator") + "]");
 
-            System.out.println(comments);
             String newContents = "";
             boolean commentedPath = false;
             String currentPath = "";
@@ -84,7 +83,6 @@ public class CommentedConfiguration extends Configuration {
                 }
                 String comment = "";
                 if (!commentedPath) {
-                    System.out.println("depth: "+depth+ " path: " +currentPath);
                     comment = comments.get(currentPath);
                     commentedPath = true;
                 }
