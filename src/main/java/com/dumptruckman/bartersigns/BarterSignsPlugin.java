@@ -268,7 +268,10 @@ public class BarterSignsPlugin extends JavaPlugin {
         }
         if (name == null) {
             log.warning("Missing item name in items.yml");
-            name = "???";
+            name = Integer.toString(item.getTypeId());
+            if (item.getDurability() > 0) {
+                name += "," + item.getDurability();
+            }
         }
         return name;
     }

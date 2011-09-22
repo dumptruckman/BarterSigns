@@ -11,7 +11,6 @@ import org.bukkit.block.BlockState;
 import org.bukkit.block.Sign;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
-import sun.plugin2.main.client.PluginEmbeddedFrame;
 
 import java.util.ArrayList;
 import java.util.HashMap;
