@@ -48,7 +48,7 @@ sign:
         - 'Left click to'
         - '&6Collect'
         - '&6revenue'
-        - ' '
+        - '%1 stack%2'
         empty:
         - '&8There is no revenue to collect!'
         collected:

@@ -427,6 +427,15 @@ public class BarterSign {
         return amount;
     }
 
+    public Integer getRevenueStackCount() {
+        int stacks = 0;
+        for (String itemS : plugin.data.getStringList(name + ".revenue", new ArrayList<String>())) {
+            ItemStack item = plugin.stringToItem(itemS);
+            stacks += item.getAmount() / item.getMaxStackSize() + (item.getAmount() % item.getMaxStackSize() > 0 ? 1 : 0);
+        }
+        return stacks;
+    }
+
     public void setRevenue(ItemStack item, int revenue) {
         plugin.data.setProperty(name + ".revenue." + plugin.itemToDataString(item, false), revenue);
     }

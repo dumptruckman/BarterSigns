@@ -21,9 +21,17 @@ public class CollectRevenueMenuItem extends SignActionMenuItem {
     private BarterSign barterSign;
 
     public CollectRevenueMenuItem(BarterSignsPlugin plugin, BarterSign barterSign) {
-        super(plugin.lang.lang(LanguagePath.SIGN_REVENUE_COLLECT.getPath()));
+        super(plugin.lang.lang(LanguagePath.SIGN_REVENUE_COLLECT.getPath(), barterSign.getRevenueStackCount().toString(), barterSign.getRevenueStackCount() > 0 ? "s" : ""));
         this.plugin = plugin;
         this.barterSign = barterSign;
+    }
+
+    public void update() {
+        String s = "";
+        Integer stacks = barterSign.getRevenueStackCount();
+        if (stacks > 0) s = "s";
+        setLines(plugin.lang.lang(LanguagePath.SIGN_REVENUE_COLLECT.getPath(),
+                stacks.toString(), s));
     }
 
     public void run() {
