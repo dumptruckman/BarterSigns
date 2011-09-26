@@ -1,11 +1,13 @@
 Version 1.2
     Fixed some sign text that was too long due to color codes.
     Added a commented config.
-    Fixed some over looked item name length issues. (And suphlur (sp) is now Gunpowder).  This change requries you to delete your old item.yml.
+    Fixed some over looked item name length issues. (And suphlur (sp) is now Gunpowder).  This change requires you to delete your old item.yml.
     Added a new option to enforce max stack sizes.
         This causes any items sold to be split into multiple stacks if the amount is greater than that item's max stack size.  No more stacks of 64 soup!
         This also causes the sign stock limit to be a number of item stacks instead of total item amount.
     Added a revenue stack count to the revenue menu item.
+    Added a config option to override other sign plugins when operating a BarterSigns sign.
+    Changed the default use/create permissions to true for when using permissions.
 
 Version 1.1.2
     Fixed issue with the language and item files not being properly extracted from the plugin jar.
