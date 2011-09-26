@@ -91,7 +91,7 @@ public class BarterSignsPlugin extends JavaPlugin {
         // Register event listeners
         pm.registerEvent(Type.SIGN_CHANGE, blockListener, Priority.Normal, this);
         pm.registerEvent(Type.BLOCK_PLACE, blockListener, Priority.Highest, this);
-        pm.registerEvent(Type.PLAYER_INTERACT, new BarterSignsPlayerListener(this), Priority.Normal, this);
+        pm.registerEvent(Type.PLAYER_INTERACT, new BarterSignsPlayerListener(this), Priority.Lowest, this);
         pm.registerEvent(Type.PLAYER_TOGGLE_SNEAK, new BarterSignsPlayerListener(this), Priority.Normal, this);
         pm.registerEvent(Type.BLOCK_DAMAGE, blockListener, Priority.Highest, this);
         pm.registerEvent(Type.BLOCK_BREAK, blockListener, Priority.Highest, this);
@@ -136,6 +136,9 @@ public class BarterSignsPlugin extends JavaPlugin {
         config.getBoolean(SIGN_INDESTRUCTIBLE.getPath(), (Boolean) SIGN_INDESTRUCTIBLE.getDefault());
         config.addComment(SIGN_DROPS_ITEMS.getPath(), "This will cause the sign to drop all items it contains upon breaking");
         config.getBoolean(SIGN_DROPS_ITEMS.getPath(), (Boolean) SIGN_DROPS_ITEMS.getDefault());
+
+        config.addComment(PLUGINS_OVERRIDE.getPath(), "This will cause BarterSigns signs to work regardless of other plugins and may cancel the effect of those plugins.", "Please keep in mind this is ONLY for signs IN USE by BarterSigns.");
+        config.getBoolean(PLUGINS_OVERRIDE.getPath(), (Boolean) PLUGINS_OVERRIDE.getDefault());
         config.save();
     }
 

@@ -29,11 +29,14 @@ public class BarterSignsPlayerListener extends PlayerListener {
     }
 
     public void onPlayerInteract(PlayerInteractEvent event) {
-        if (event.isCancelled()) return;
         if (!(event.getClickedBlock().getState() instanceof Sign)) return;
 
         BarterSign barterSign = BarterSignManager.getBarterSignFromBlock(event.getClickedBlock());
         if (barterSign == null) return;
+
+        if (plugin.config.getBoolean(ConfigPath.PLUGINS_OVERRIDE.getPath(), (Boolean) ConfigPath.PLUGINS_OVERRIDE.getDefault())) {
+            event.setCancelled(true);
+        }
 
         Player player = event.getPlayer();
         if (plugin.config.getBoolean(ConfigPath.USE_PERMS.getPath(), (Boolean) ConfigPath.USE_PERMS.getDefault())) {

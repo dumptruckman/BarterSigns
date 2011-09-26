@@ -12,7 +12,10 @@ public enum ConfigPath {
     SIGN_INDESTRUCTIBLE("signs.indestructible", true),
     SIGN_ENFORCE_MAX_STACK_SIZE("signs.enforcemaxstacksize", true),
     SIGN_USE_NUM_STACKS("signs.storagelimitisnumberofstacks", true),
-    SIGN_DROPS_ITEMS("signs.dropitemsonbreak", true),;
+    SIGN_DROPS_ITEMS("signs.dropitemsonbreak", true),
+
+    PLUGINS_OVERRIDE("plugins.override", true),
+    ;
 
     private String path;
     private Object def;
