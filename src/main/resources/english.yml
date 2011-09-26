@@ -108,6 +108,8 @@ sign:
     - 'from this sign'
     - ' '
 player:
+    shopplotonly:
+    - '&cYou must put your signs in a shop plot!'
     nohelditem:
     - '&8You must be holding an item!'
     insufficientamount:

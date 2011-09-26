@@ -4,9 +4,11 @@ import com.dumptruckman.bartersigns.config.CommentedConfiguration;
 import com.dumptruckman.bartersigns.listener.BarterSignsBlockListener;
 import com.dumptruckman.bartersigns.listener.BarterSignsEntityListener;
 import com.dumptruckman.bartersigns.listener.BarterSignsPlayerListener;
+import com.dumptruckman.bartersigns.listener.BarterSignsServerListener;
 import com.dumptruckman.bartersigns.sign.BarterSignManager;
 import com.dumptruckman.bartersigns.config.ConfigIO;
 import com.dumptruckman.bartersigns.locale.Language;
+import com.palmergames.bukkit.towny.Towny;
 import org.bukkit.block.Sign;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -40,6 +42,7 @@ public class BarterSignsPlugin extends JavaPlugin {
     private Configuration items;
     public Language lang;
     public BarterSignManager signManager;
+    public Towny towny = null;
     private int saveTaskId;
 
     final public void onEnable() {
@@ -99,6 +102,7 @@ public class BarterSignsPlugin extends JavaPlugin {
         pm.registerEvent(Type.BLOCK_FADE, blockListener, Priority.Highest, this);
         pm.registerEvent(Type.BLOCK_BURN, blockListener, Priority.Highest, this);
         pm.registerEvent(Type.ENTITY_EXPLODE, new BarterSignsEntityListener(this), Priority.Highest, this);
+        pm.registerEvent(Type.PLUGIN_ENABLE, new BarterSignsServerListener(this), Priority.Normal, this);
 
         // Display enable message/version info
         log.info(this.getDescription().getName() + " " + getDescription().getVersion() + " enabled.");
@@ -139,6 +143,9 @@ public class BarterSignsPlugin extends JavaPlugin {
 
         config.addComment(PLUGINS_OVERRIDE.getPath(), "This will cause BarterSigns signs to work regardless of other plugins and may cancel the effect of those plugins.", "Please keep in mind this is ONLY for signs IN USE by BarterSigns.");
         config.getBoolean(PLUGINS_OVERRIDE.getPath(), (Boolean) PLUGINS_OVERRIDE.getDefault());
+        config.addComment(TOWNY_SHOP_PLOTS.getPath(), "If Towny is in use, this will make it so BarterSigns may only be placed in a Towny Shop Plot.");
+        config.getBoolean(TOWNY_SHOP_PLOTS.getPath(), (Boolean) TOWNY_SHOP_PLOTS.getDefault());
+
         config.save();
     }
 

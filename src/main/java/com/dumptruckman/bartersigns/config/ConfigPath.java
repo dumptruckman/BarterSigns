@@ -15,6 +15,7 @@ public enum ConfigPath {
     SIGN_DROPS_ITEMS("signs.dropitemsonbreak", true),
 
     PLUGINS_OVERRIDE("plugins.override", true),
+    TOWNY_SHOP_PLOTS("plugins.towny.shop_plot_only", true),
     ;
 
     private String path;

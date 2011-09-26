@@ -19,6 +19,7 @@
     <orderEntry type="library" name="Maven: com.google.guava:guava-annotations:r03" level="project" />
     <orderEntry type="library" name="Maven: com.google.guava:guava-primitives:r03" level="project" />
     <orderEntry type="library" name="Maven: com.google.guava:guava-base:r03" level="project" />
+    <orderEntry type="library" name="Maven: com.palmergames:Towny:1.0" level="project" />
   </component>
 </module>
 

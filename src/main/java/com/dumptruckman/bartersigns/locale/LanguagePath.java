@@ -38,7 +38,10 @@ public enum LanguagePath {
     OWNER_MESSAGE("sign.owner"),
     REMOVE_SIGN("sign.remove"),
     NO_PERMISSION("player.nopermission"),
-    SIGN_PURCHASE("sign.purchase"),;
+    SIGN_PURCHASE("sign.purchase"),
+
+    SHOP_PLOT_ONLY("player.shopplotonly"),
+    ;
 
     private String path;
 
