@@ -1,3 +1,6 @@
+Version 1.2.1
+    Added support for Towny's shop plots.
+
 Version 1.2
     Fixed some sign text that was too long due to color codes.
     Added a commented config.
