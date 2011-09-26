@@ -5,6 +5,7 @@ import com.dumptruckman.bartersigns.BarterSignsPlugin;
 import com.dumptruckman.bartersigns.inventory.InventoryTools;
 import com.dumptruckman.bartersigns.locale.LanguagePath;
 import com.dumptruckman.bartersigns.sign.BarterSign;
+import org.bukkit.command.CommandSender;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.ArrayList;
@@ -32,6 +33,13 @@ public class CollectRevenueMenuItem extends SignActionMenuItem {
         if (stacks > 0) s = "s";
         setLines(plugin.lang.lang(LanguagePath.SIGN_REVENUE_COLLECT.getPath(),
                 stacks.toString(), s));
+        barterSign.showMenu(player);
+    }
+
+    @Override
+    public void onSelect(CommandSender sender) {
+        super.onSelect(sender);
+        update();
     }
 
     public void run() {
@@ -82,5 +90,6 @@ public class CollectRevenueMenuItem extends SignActionMenuItem {
             }
             plugin.sendMessage(player, LanguagePath.SIGN_REVENUE_COLLECTED.getPath(), items);
         }
+        update();
     }
 }

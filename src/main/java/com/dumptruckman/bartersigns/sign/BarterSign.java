@@ -4,6 +4,7 @@ import com.dumptruckman.bartersigns.actionmenu.SignActionMenu;
 import com.dumptruckman.bartersigns.BarterSignsPlugin;
 import com.dumptruckman.bartersigns.inventory.InventoryTools;
 import com.dumptruckman.bartersigns.menu.*;
+import com.sun.servicetag.SystemEnvironment;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.block.Block;
@@ -429,9 +430,11 @@ public class BarterSign {
 
     public Integer getRevenueStackCount() {
         int stacks = 0;
-        for (String itemS : plugin.data.getStringList(name + ".revenue", new ArrayList<String>())) {
-            ItemStack item = plugin.stringToItem(itemS);
-            stacks += item.getAmount() / item.getMaxStackSize() + (item.getAmount() % item.getMaxStackSize() > 0 ? 1 : 0);
+        for (ItemStack item : this.getAcceptableItems()) {
+            int revenue = getRevenue(item);
+            int maxStackSize = item.getMaxStackSize();
+            if (maxStackSize == -1) maxStackSize = 64;
+            stacks += revenue / maxStackSize + (revenue % maxStackSize > 0 ? 1 : 0);
         }
         return stacks;
     }
