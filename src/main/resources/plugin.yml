@@ -12,7 +12,7 @@ permissions:
         default: op
     bartersigns.create:
         description: Allows user to create Barter Signs
-        default: false
+        default: true
     bartersigns.use:
         description: Allows user to use Barter Signs
-        default: false
+        default: true
