@@ -3,6 +3,8 @@ main: com.dumptruckman.bartersigns.BarterSignsPlugin
 version: 1.2.1
 author: dumptruckman
 
+softdepend: [Towny]
+
 permissions:
     bartersigns.admin:
         description: Allows user to access the owner menu of every sign.

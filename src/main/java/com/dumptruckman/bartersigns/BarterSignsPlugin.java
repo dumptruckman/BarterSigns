@@ -4,7 +4,6 @@ import com.dumptruckman.bartersigns.config.CommentedConfiguration;
 import com.dumptruckman.bartersigns.listener.BarterSignsBlockListener;
 import com.dumptruckman.bartersigns.listener.BarterSignsEntityListener;
 import com.dumptruckman.bartersigns.listener.BarterSignsPlayerListener;
-import com.dumptruckman.bartersigns.listener.BarterSignsServerListener;
 import com.dumptruckman.bartersigns.sign.BarterSignManager;
 import com.dumptruckman.bartersigns.config.ConfigIO;
 import com.dumptruckman.bartersigns.locale.Language;
@@ -89,6 +88,11 @@ public class BarterSignsPlugin extends JavaPlugin {
         }
         items = new ConfigIO(itemFile).load();
 
+        // Check for Towny
+        try {
+            towny = (Towny)pm.getPlugin("Towny");
+        } catch (Exception ignore) {}
+
         // Register command executor for main plugin command
 
         // Register event listeners
@@ -102,7 +106,6 @@ public class BarterSignsPlugin extends JavaPlugin {
         pm.registerEvent(Type.BLOCK_FADE, blockListener, Priority.Highest, this);
         pm.registerEvent(Type.BLOCK_BURN, blockListener, Priority.Highest, this);
         pm.registerEvent(Type.ENTITY_EXPLODE, new BarterSignsEntityListener(this), Priority.Highest, this);
-        pm.registerEvent(Type.PLUGIN_ENABLE, new BarterSignsServerListener(this), Priority.Normal, this);
 
         // Display enable message/version info
         log.info(this.getDescription().getName() + " " + getDescription().getVersion() + " enabled.");
