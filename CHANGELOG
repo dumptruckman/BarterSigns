@@ -1,3 +1,6 @@
+Version 1.2.2
+    Added usage statistics.
+
 Version 1.2.1
     Added support for Towny's shop plots.
     Fixed some NPEs related to the new override config option.

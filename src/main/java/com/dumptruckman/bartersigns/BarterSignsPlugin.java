@@ -8,6 +8,8 @@ import com.dumptruckman.bartersigns.sign.BarterSignManager;
 import com.dumptruckman.bartersigns.config.ConfigIO;
 import com.dumptruckman.bartersigns.locale.Language;
 import com.palmergames.bukkit.towny.Towny;
+import org.blockface.bukkitstats.CallHome;
+import org.bukkit.Bukkit;
 import org.bukkit.block.Sign;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -107,10 +109,12 @@ public class BarterSignsPlugin extends JavaPlugin {
         pm.registerEvent(Type.BLOCK_BURN, blockListener, Priority.Highest, this);
         pm.registerEvent(Type.ENTITY_EXPLODE, new BarterSignsEntityListener(this), Priority.Highest, this);
 
+        signManager = new BarterSignManager(this);
+
+        CallHome.load(this);
+        
         // Display enable message/version info
         log.info(this.getDescription().getName() + " " + getDescription().getVersion() + " enabled.");
-
-        signManager = new BarterSignManager(this);
     }
 
     final public void onDisable() {
