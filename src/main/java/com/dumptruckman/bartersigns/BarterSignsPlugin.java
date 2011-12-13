@@ -111,7 +111,7 @@ public class BarterSignsPlugin extends JavaPlugin {
 
         signManager = new BarterSignManager(this);
 
-        CallHome.load(this);
+        //CallHome.load(this);
         
         // Display enable message/version info
         log.info(this.getDescription().getName() + " " + getDescription().getVersion() + " enabled.");
