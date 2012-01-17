@@ -206,6 +206,10 @@ public class BarterSign {
         return plugin.data.getString(name + ".phase");
     }
 
+    public boolean isReady() {
+        return SignPhase.READY.equalTo(getPhase());
+    }
+
     public void setPhase(SignPhase phase) {
         plugin.data.setProperty(name + ".phase", phase.toString());
     }

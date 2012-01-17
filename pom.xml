@@ -2,16 +2,12 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.dumptruckman.bartersigns</groupId>
     <artifactId>BarterSigns</artifactId>
-    <version>1.2.3</version>
+    <version>1.2.4</version>
     <name>BarterSigns</name>
     <repositories>
         <repository>
             <id>bukkit-repo</id>
             <url>http://repo.bukkit.org/artifactory/repo</url>
-        </repository>
-        <repository>
-            <id>blockface-repo</id>
-            <url>http://repo.blockface.org/repository</url>
         </repository>
     </repositories>
     <build>
@@ -38,7 +34,7 @@
         <dependency>
             <groupId>com.palmergames</groupId>
             <artifactId>Towny</artifactId>
-            <version>1.0</version>
+            <version>0.78.0.0</version>
             <type>jar</type>
             <scope>compile</scope>
         </dependency>

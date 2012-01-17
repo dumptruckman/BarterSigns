@@ -1,6 +1,6 @@
 name: BarterSigns
 main: com.dumptruckman.bartersigns.BarterSignsPlugin
-version: 1.2.3
+version: 1.2.4
 author: dumptruckman
 
 softdepend: [Towny]

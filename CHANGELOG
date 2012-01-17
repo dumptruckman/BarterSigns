@@ -1,3 +1,7 @@
+Version 1.2.4
+    Fixed compatibility with Towny.
+    Fixed NPE when breaking signs still in the setup phase.
+
 Version 1.2.3
     Added new version of usage statistics so that Bukkit version stats are also sent.
 

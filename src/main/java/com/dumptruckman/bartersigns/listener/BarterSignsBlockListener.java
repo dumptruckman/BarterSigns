@@ -2,14 +2,10 @@ package com.dumptruckman.bartersigns.listener;
 
 import com.dumptruckman.bartersigns.BarterSignsPlugin;
 import com.dumptruckman.bartersigns.config.ConfigPath;
-import com.dumptruckman.bartersigns.locale.Language;
 import com.dumptruckman.bartersigns.locale.LanguagePath;
 import com.dumptruckman.bartersigns.sign.BarterSign;
 import com.dumptruckman.bartersigns.sign.BarterSignManager;
-import com.palmergames.bukkit.towny.Towny;
-import com.palmergames.bukkit.towny.object.Coord;
 import com.palmergames.bukkit.towny.object.TownBlockType;
-import com.palmergames.bukkit.towny.object.TownyUniverse;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.block.Sign;
@@ -41,7 +37,7 @@ public class BarterSignsBlockListener extends BlockListener {
         if (plugin.towny != null && plugin.config.getBoolean(ConfigPath.TOWNY_SHOP_PLOTS.getPath(), (Boolean)ConfigPath.TOWNY_SHOP_PLOTS.getDefault())) {
             Location loc = event.getBlock().getLocation();
             try {
-                if (plugin.towny.getTownyUniverse().getWorld(loc.getWorld().getName()).getTownBlock(loc.getBlockX(), loc.getBlockZ()).getType() != TownBlockType.COMMERCIAL) {
+                if (plugin.towny.getTownyUniverse().getTownBlock(loc).getType() != TownBlockType.COMMERCIAL) {
                     plugin.sendMessage(event.getPlayer(), LanguagePath.SHOP_PLOT_ONLY.getPath());
                     return;
                 }
@@ -80,6 +76,8 @@ public class BarterSignsBlockListener extends BlockListener {
         }
         final BarterSign barterSign = sign;
 
+        if (!barterSign.isReady()) return;
+        
         if (barterSign.getMenuIndex() != barterSign.REMOVE) {
             event.setCancelled(true);
         }

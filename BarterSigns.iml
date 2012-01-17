@@ -11,15 +11,7 @@
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" name="Maven: org.bukkit:bukkit:0.0.1-SNAPSHOT" level="project" />
-    <orderEntry type="library" name="Maven: org.yaml:snakeyaml:1.7" level="project" />
-    <orderEntry type="library" name="Maven: com.googlecode.json-simple:json-simple:1.1" level="project" />
-    <orderEntry type="library" name="Maven: org.avaje:ebean:2.7.3" level="project" />
-    <orderEntry type="library" name="Maven: javax.persistence:persistence-api:1.0" level="project" />
-    <orderEntry type="library" name="Maven: com.google.guava:guava-collections:r03" level="project" />
-    <orderEntry type="library" name="Maven: com.google.guava:guava-annotations:r03" level="project" />
-    <orderEntry type="library" name="Maven: com.google.guava:guava-primitives:r03" level="project" />
-    <orderEntry type="library" name="Maven: com.google.guava:guava-base:r03" level="project" />
-    <orderEntry type="library" name="Maven: com.palmergames:Towny:1.0" level="project" />
+    <orderEntry type="library" name="Maven: com.palmergames:Towny:0.78.0.0" level="project" />
   </component>
 </module>
 
