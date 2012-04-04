@@ -8,6 +8,9 @@ import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.Sign;
 import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
+import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerListener;
@@ -20,7 +23,7 @@ import static com.dumptruckman.bartersigns.locale.LanguagePath.*;
 /**
  * @author dumptruckman
  */
-public class BarterSignsPlayerListener extends PlayerListener {
+public class BarterSignsPlayerListener implements Listener {
 
     private BarterSignsPlugin plugin;
 
@@ -28,6 +31,7 @@ public class BarterSignsPlayerListener extends PlayerListener {
         this.plugin = plugin;
     }
 
+    @EventHandler(priority = EventPriority.LOWEST)
     public void onPlayerInteract(PlayerInteractEvent event) {
         if (event.getClickedBlock() == null) return;
         if (!(event.getClickedBlock().getState() instanceof Sign)) return;
@@ -96,6 +100,7 @@ public class BarterSignsPlayerListener extends PlayerListener {
         }
     }
 
+    @EventHandler
     public void onPlayerToggleSneak(PlayerToggleSneakEvent event) {
         Player player = event.getPlayer();
         Block block = player.getTargetBlock(null, 5);

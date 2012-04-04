@@ -5,6 +5,9 @@ import com.dumptruckman.bartersigns.config.ConfigPath;
 import com.dumptruckman.bartersigns.sign.BarterSign;
 import org.bukkit.block.Block;
 import org.bukkit.block.Sign;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
+import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityExplodeEvent;
 import org.bukkit.event.entity.EntityListener;
 
@@ -14,7 +17,7 @@ import java.util.List;
 /**
  * @author dumptruckman
  */
-public class BarterSignsEntityListener extends EntityListener {
+public class BarterSignsEntityListener implements Listener {
 
     private BarterSignsPlugin plugin;
 
@@ -22,7 +25,7 @@ public class BarterSignsEntityListener extends EntityListener {
         this.plugin = plugin;
     }
 
-    @Override
+    @EventHandler(priority = EventPriority.HIGHEST)
     public void onEntityExplode(EntityExplodeEvent event) {
         if (event.isCancelled()) return;
 

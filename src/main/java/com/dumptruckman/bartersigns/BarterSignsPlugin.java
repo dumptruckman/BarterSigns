@@ -1,6 +1,6 @@
 package com.dumptruckman.bartersigns;
 
-import com.dumptruckman.bartersigns.config.CommentedConfiguration;
+import com.dumptruckman.bartersigns.config.CommentedYamlConfiguration;
 import com.dumptruckman.bartersigns.listener.BarterSignsBlockListener;
 import com.dumptruckman.bartersigns.listener.BarterSignsEntityListener;
 import com.dumptruckman.bartersigns.listener.BarterSignsPlayerListener;
@@ -10,12 +10,12 @@ import com.dumptruckman.bartersigns.locale.Language;
 import com.palmergames.bukkit.towny.Towny;
 import org.bukkit.block.Sign;
 import org.bukkit.command.CommandSender;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.block.SignChangeEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.bukkit.util.config.Configuration;
 
 import java.io.*;
 import java.util.List;
@@ -24,8 +24,6 @@ import java.util.logging.Logger;
 import java.util.zip.ZipEntry;
 
 import static com.dumptruckman.bartersigns.config.ConfigPath.*;
-import static org.bukkit.event.Event.Priority;
-import static org.bukkit.event.Event.Type;
 
 /**
  * @author dumptruckman
@@ -34,11 +32,9 @@ public class BarterSignsPlugin extends JavaPlugin {
 
     public static final Logger log = Logger.getLogger("Minecraft.BarterSigns");
 
-    private final BarterSignsBlockListener blockListener = new BarterSignsBlockListener(this);
-
-    public CommentedConfiguration config;
-    public CommentedConfiguration data;
-    private Configuration items;
+    public CommentedYamlConfiguration config;
+    public CommentedYamlConfiguration data;
+    private FileConfiguration items;
     public Language lang;
     public BarterSignManager signManager;
     public Towny towny = null;
@@ -96,16 +92,9 @@ public class BarterSignsPlugin extends JavaPlugin {
         // Register command executor for main plugin command
 
         // Register event listeners
-        pm.registerEvent(Type.SIGN_CHANGE, blockListener, Priority.Normal, this);
-        pm.registerEvent(Type.BLOCK_PLACE, blockListener, Priority.Highest, this);
-        pm.registerEvent(Type.PLAYER_INTERACT, new BarterSignsPlayerListener(this), Priority.Lowest, this);
-        pm.registerEvent(Type.PLAYER_TOGGLE_SNEAK, new BarterSignsPlayerListener(this), Priority.Normal, this);
-        pm.registerEvent(Type.BLOCK_DAMAGE, blockListener, Priority.Highest, this);
-        pm.registerEvent(Type.BLOCK_BREAK, blockListener, Priority.Highest, this);
-        pm.registerEvent(Type.BLOCK_PHYSICS, blockListener, Priority.Highest, this);
-        pm.registerEvent(Type.BLOCK_FADE, blockListener, Priority.Highest, this);
-        pm.registerEvent(Type.BLOCK_BURN, blockListener, Priority.Highest, this);
-        pm.registerEvent(Type.ENTITY_EXPLODE, new BarterSignsEntityListener(this), Priority.Highest, this);
+        pm.registerEvents(new BarterSignsBlockListener(this), this);
+        pm.registerEvents(new BarterSignsPlayerListener(this), this);
+        pm.registerEvents(new BarterSignsEntityListener(this), this);
 
         signManager = new BarterSignManager(this);
         

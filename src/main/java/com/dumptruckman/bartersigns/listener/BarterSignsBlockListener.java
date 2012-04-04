@@ -9,12 +9,15 @@ import com.palmergames.bukkit.towny.object.TownBlockType;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.block.Sign;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
+import org.bukkit.event.Listener;
 import org.bukkit.event.block.*;
 
 /**
  * @author dumptruckman
  */
-public class BarterSignsBlockListener extends BlockListener {
+public class BarterSignsBlockListener implements Listener {
 
     private BarterSignsPlugin plugin;
 
@@ -22,6 +25,7 @@ public class BarterSignsBlockListener extends BlockListener {
         this.plugin = plugin;
     }
 
+    @EventHandler
     public void onSignChange(SignChangeEvent event) {
         // Throw out unimportant events immediately
         if (event.isCancelled()) return;
@@ -53,6 +57,7 @@ public class BarterSignsBlockListener extends BlockListener {
                 plugin.lang.lang(LanguagePath.SIGN_STOCK_SETUP.getPath(), event.getPlayer().getName()));
     }
 
+    @EventHandler(priority = EventPriority.HIGHEST)
     public void onBlockPlace(BlockPlaceEvent event) {
         if (event.isCancelled()) return;
         Block block = event.getBlockAgainst();
@@ -61,7 +66,7 @@ public class BarterSignsBlockListener extends BlockListener {
         event.setCancelled(true);
     }
 
-    @Override
+    @EventHandler(priority = EventPriority.HIGHEST)
     public void onBlockBreak(final BlockBreakEvent event) {
         //if (event.isCancelled()) return;
 
@@ -88,7 +93,7 @@ public class BarterSignsBlockListener extends BlockListener {
             return;
         }
 
-        if (!event.isCancelled()) {
+        if (event.isCancelled()) {
             if (BarterSign.SignPhase.READY.equalTo(barterSign.getPhase())) {
                 plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
                     @Override
@@ -111,7 +116,7 @@ public class BarterSignsBlockListener extends BlockListener {
         }
     }
 
-    @Override
+    @EventHandler(priority = EventPriority.HIGHEST)
     public void onBlockDamage(BlockDamageEvent event) {
         //if (event.isCancelled()) return;
 
@@ -130,7 +135,7 @@ public class BarterSignsBlockListener extends BlockListener {
         }
     }
 
-    @Override
+    @EventHandler(priority = EventPriority.HIGHEST)
     public void onBlockBurn(BlockBurnEvent event) {
         if (event.isCancelled()) return;
 
@@ -151,7 +156,7 @@ public class BarterSignsBlockListener extends BlockListener {
         }
     }
 
-    @Override
+    @EventHandler(priority = EventPriority.HIGHEST)
     public void onBlockFade(BlockFadeEvent event) {
         if (event.isCancelled()) return;
 
@@ -172,7 +177,7 @@ public class BarterSignsBlockListener extends BlockListener {
         }
     }
 
-    @Override
+    @EventHandler(priority = EventPriority.HIGHEST)
     public void onBlockPhysics(BlockPhysicsEvent event) {
         if (event.isCancelled()) return;
 

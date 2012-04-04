@@ -10,7 +10,7 @@ import org.bukkit.util.config.Configuration;
  */
 public class ConfigIO {
 
-    private CommentedConfiguration data;
+    private CommentedYamlConfiguration data;
 
     public ConfigIO(File file) {
         if(!file.exists()) {
@@ -18,10 +18,10 @@ public class ConfigIO {
                 file.createNewFile();
             } catch (IOException e) { }
         }
-        this.data = new CommentedConfiguration(file);
+        this.data = new CommentedYamlConfiguration(file);
     }
 
-    public ConfigIO(CommentedConfiguration data) {
+    public ConfigIO(CommentedYamlConfiguration data) {
         this.data = data;
     }
 
@@ -31,7 +31,7 @@ public class ConfigIO {
         }
     }
 
-    public CommentedConfiguration load() {
+    public CommentedYamlConfiguration load() {
         data.load();
         return data;
     }

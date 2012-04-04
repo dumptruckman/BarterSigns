@@ -11,6 +11,7 @@
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" name="Maven: org.bukkit:bukkit:1.1-R1-SNAPSHOT" level="project" />
+    <orderEntry type="library" name="Maven: org.bukkit:bukkit:1.2.4-R1.0" level="project" />
     <orderEntry type="library" name="Maven: com.palmergames.bukkit:Towny:0.78.0.0" level="project" />
   </component>
 </module>
