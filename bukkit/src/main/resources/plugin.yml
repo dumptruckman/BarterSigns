@@ -5,16 +5,10 @@ author: dumptruckman
 
 softdepend: [Towny]
 
-permissions:
-    bartersigns.admin:
-        description: Allows user to access the owner menu of every sign.
-        children:
-            bartersigns.create: true
-            bartersigns.use: true
-        default: op
-    bartersigns.create:
-        description: Allows user to create Barter Signs
-        default: true
-    bartersigns.use:
-        description: Allows user to use Barter Signs
-        default: true
+commands:
+  bs:
+    description: The base command for BarterSigns
+    usage: /<command>
+  barter:
+    description: The base command for BarterSigns
+    usage: /<command>
