@@ -22,6 +22,7 @@ class DefaultBarterSign extends AbstractYamlConfig<BarterSign> implements Barter
 
     private BlockLocation location;
     private Menu menu;
+    private MenuItem openShopMenuItem;
 
     DefaultBarterSign(BukkitPlugin plugin, File configFile, BlockLocation loc) throws IOException, IllegalArgumentException {
         super(plugin, false, configFile, BarterSign.class);
@@ -43,25 +44,29 @@ class DefaultBarterSign extends AbstractYamlConfig<BarterSign> implements Barter
         MenuItem item = new SimpleMenuItem();
         item.setText(plugin.getMessager().getMessage(Language.SIGN_HEADER_1, get(OWNER)));
         item.setSelectable(false);
-        menu.getModel().add(item);
+        getMenu().getModel().add(item);
         item = new SimpleMenuItem();
         item.setText(plugin.getMessager().getMessage(Language.SIGN_HEADER_2, get(OWNER)));
         item.setSelectable(false);
-        menu.getModel().add(item);
+        getMenu().getModel().add(item);
         item = new SimpleMenuItem();
         item.setText(plugin.getMessager().getMessage(Language.SIGN_HEADER_3, get(OWNER)));
         item.setSelectable(false);
-        menu.getModel().add(item);
+        getMenu().getModel().add(item);
 
-        item = new SimpleMenuItem();
-        item.setText(plugin.getMessager().getMessage(Language.SIGN_OPEN_SHOP));
-        item.getMenuItemListeners().add(new OpenShopListener(this));
-        menu.getModel().add(item);
+        openShopMenuItem = new SimpleMenuItem();
+        openShopMenuItem.setText(plugin.getMessager().getMessage(Language.SIGN_OPEN_SHOP));
+        openShopMenuItem.getMenuItemListeners().add(new OpenShopListener(this));
+        getMenu().getModel().add(openShopMenuItem);
     }
 
     @Override
     public Menu getMenu() {
         return menu;
+    }
+
+    public MenuItem getOpenShopMenuItem() {
+        return openShopMenuItem;
     }
 
     @Override
