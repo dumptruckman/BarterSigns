@@ -1,7 +1,7 @@
 package com.dumptruckman.bartersigns.menu;
 
-import com.dumptruckman.bartersigns.actionmenu.SignActionMenuItem;
 import com.dumptruckman.bartersigns.BarterSignsPlugin;
+import com.dumptruckman.bartersigns.actionmenu.SignActionMenuItem;
 import com.dumptruckman.bartersigns.config.ConfigPath;
 import com.dumptruckman.bartersigns.inventory.InventoryTools;
 import com.dumptruckman.bartersigns.locale.LanguagePath;
@@ -51,7 +51,7 @@ public class AlterStockMenuItem extends SignActionMenuItem {
     public void run() {
         if (!player.isSneaking()) {
             // Add stock
-            int limit = plugin.config.getInt(ConfigPath.SIGN_STORAGE_LIMIT.getPath(),
+            int limit = plugin.config.getConfig().getInt(ConfigPath.SIGN_STORAGE_LIMIT.getPath(),
                     (Integer) ConfigPath.SIGN_STORAGE_LIMIT.getDefault());
 
             // Check if sign is already at/over limit

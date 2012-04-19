@@ -9,7 +9,6 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityExplodeEvent;
-import org.bukkit.event.entity.EntityListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,7 +34,7 @@ public class BarterSignsEntityListener implements Listener {
             if (block.getState() instanceof Sign) {
                 if (BarterSign.exists(plugin, block)) {
                     barterSigns.add(plugin.signManager.getBarterSignFromBlock(block));
-                    if (plugin.config.getBoolean(ConfigPath.SIGN_INDESTRUCTIBLE.getPath(),
+                    if (plugin.config.getConfig().getBoolean(ConfigPath.SIGN_INDESTRUCTIBLE.getPath(),
                             (Boolean) ConfigPath.SIGN_INDESTRUCTIBLE.getDefault())) {
                         event.setCancelled(true);
                         return;
@@ -44,7 +43,7 @@ public class BarterSignsEntityListener implements Listener {
             }
         }
 
-        if (plugin.config.getBoolean(ConfigPath.SIGN_DROPS_ITEMS.getPath(),
+        if (plugin.config.getConfig().getBoolean(ConfigPath.SIGN_DROPS_ITEMS.getPath(),
                 (Boolean) ConfigPath.SIGN_DROPS_ITEMS.getDefault())) {
             for (BarterSign sign : barterSigns) {
                 sign.drop();

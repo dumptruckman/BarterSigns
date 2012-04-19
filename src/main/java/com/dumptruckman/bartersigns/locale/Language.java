@@ -1,12 +1,13 @@
 package com.dumptruckman.bartersigns.locale;
 
 import com.dumptruckman.bartersigns.font.Font;
-import com.dumptruckman.bartersigns.config.ConfigIO;
+import org.bukkit.command.CommandSender;
+import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.configuration.file.YamlConfiguration;
+
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
-import org.bukkit.command.CommandSender;
-import org.bukkit.util.config.Configuration;
 
 /**
  *
@@ -14,14 +15,14 @@ import org.bukkit.util.config.Configuration;
  */
 public class Language {
 
-    Configuration language;
+    FileConfiguration language;
 
     /**
      * Loads up the language File into the Configuration
      * @param langFile
      */
     public Language(File langFile) {
-        language = new ConfigIO(langFile).load();
+        language = YamlConfiguration.loadConfiguration(langFile);
     }
 
     /**
@@ -35,12 +36,12 @@ public class Language {
      */
     public List<String> lang(String path, String... args) {
         // Gets the messages for the path submitted
-        List<Object> list = language.getList(path);
+        List<String> list = language.getStringList(path);
 
         List<String> message = new ArrayList<String>();
         // Parse each item in list
         for (int i = 0; i < list.size(); i++) {
-            String temp = list.get(i).toString();
+            String temp = list.get(i);
             // Replaces & with the Section character
             temp = temp.replaceAll("&", Character.toString((char)167));
             // If there are arguments, %n notations in the message will be

@@ -4,20 +4,27 @@ import com.dumptruckman.bartersigns.config.CommentedYamlConfiguration;
 import com.dumptruckman.bartersigns.listener.BarterSignsBlockListener;
 import com.dumptruckman.bartersigns.listener.BarterSignsEntityListener;
 import com.dumptruckman.bartersigns.listener.BarterSignsPlayerListener;
-import com.dumptruckman.bartersigns.sign.BarterSignManager;
-import com.dumptruckman.bartersigns.config.ConfigIO;
 import com.dumptruckman.bartersigns.locale.Language;
+import com.dumptruckman.bartersigns.sign.BarterSignManager;
 import com.palmergames.bukkit.towny.Towny;
 import org.bukkit.block.Sign;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.block.SignChangeEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import java.io.*;
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.util.Arrays;
 import java.util.List;
 import java.util.jar.JarFile;
 import java.util.logging.Logger;
@@ -52,8 +59,8 @@ public class BarterSignsPlugin extends JavaPlugin {
 
         // Start save timer
         saveTaskId = getServer().getScheduler().scheduleSyncRepeatingTask(this, new BarterSignsSaveTimer(this),
-                (long) (config.getInt(DATA_SAVE.getPath(), (Integer) DATA_SAVE.getDefault()) * 20),
-                (long) (config.getInt(DATA_SAVE.getPath(), (Integer) DATA_SAVE.getDefault()) * 20));
+                (long) (config.getConfig().getInt(DATA_SAVE.getPath(), (Integer) DATA_SAVE.getDefault()) * 20),
+                (long) (config.getConfig().getInt(DATA_SAVE.getPath(), (Integer) DATA_SAVE.getDefault()) * 20));
 
         //if (config.getString(LANGUAGE_FILE.getPath())
         //        .equalsIgnoreCase(LANGUAGE_FILE.getDefault().toString())) {
@@ -66,7 +73,7 @@ public class BarterSignsPlugin extends JavaPlugin {
         }
 
         // Load up language file
-        File langFile = new File(this.getDataFolder(), config.getString(LANGUAGE_FILE.getPath()));
+        File langFile = new File(this.getDataFolder(), config.getConfig().getString(LANGUAGE_FILE.getPath()));
         if (!langFile.exists()) {
             log.severe("Language file: " + langFile.getName() + " is missing!  Disabling "
                     + this.getDescription().getName());
@@ -82,7 +89,7 @@ public class BarterSignsPlugin extends JavaPlugin {
             pm.disablePlugin(this);
             return;
         }
-        items = new ConfigIO(itemFile).load();
+        items = YamlConfiguration.loadConfiguration(itemFile);
 
         // Check for Towny
         try {
@@ -109,34 +116,36 @@ public class BarterSignsPlugin extends JavaPlugin {
     }
 
     final public void reload(boolean announce) {
-        config = new ConfigIO(new File(this.getDataFolder(), "config.yml")).load();
-        data = new ConfigIO(new File(this.getDataFolder(), "data.yml")).load();
+        config = new CommentedYamlConfiguration(new File(getDataFolder(), "config.yml"), true);
+        config.load();
+        data = new CommentedYamlConfiguration(new File(this.getDataFolder(), "data.yml"), false);
+        data.load();
 
-        config.setHeader("# You must reload the server for changes here to take effect");
-        config.addComment("settings.languagefile", "This is where you specify the language file you wish to use.");
-        if (config.getString("settings.languagefile") == null) {
-            config.setProperty("settings.languagefile", "english.yml");
+        config.getConfig().options().header("# You must reload the server for changes here to take effect");
+        config.addComment("settings.languagefile", Arrays.asList("# This is where you specify the language file you wish to use."));
+        if (config.getConfig().getString("settings.languagefile") == null) {
+            config.getConfig().set("settings.languagefile", "english.yml");
         }
-        config.addComment(DATA_SAVE.getPath(), "This is how often (in seconds) user data is saved.");
-        config.getInt(DATA_SAVE.getPath(), (Integer) DATA_SAVE.getDefault());
-        config.addComment(USE_PERMS.getPath(), "This will enable/disable use of SuperPerms.",
-                "If disabled, all users may create/use signs and OPs will be able to manage every sign.");
-        config.getBoolean(USE_PERMS.getPath(), (Boolean) USE_PERMS.getDefault());
-        config.addComment(SIGN_STORAGE_LIMIT.getPath(), "This is the total amount of stock the sign can hold");
-        config.getInt(SIGN_STORAGE_LIMIT.getPath(), (Integer) SIGN_STORAGE_LIMIT.getDefault());
-        config.addComment(SIGN_ENFORCE_MAX_STACK_SIZE.getPath(), "This will make all items dispensed by the sign obey max stack size.");
-        config.getBoolean(SIGN_ENFORCE_MAX_STACK_SIZE.getPath(), (Boolean) SIGN_ENFORCE_MAX_STACK_SIZE.getDefault());
-        config.addComment(SIGN_USE_NUM_STACKS.getPath(), "This will cause the stock limit to be in number of stacks.");
-        config.getBoolean(SIGN_USE_NUM_STACKS.getPath(), (Boolean) SIGN_USE_NUM_STACKS.getDefault());
-        config.addComment(SIGN_INDESTRUCTIBLE.getPath(), "This will make the signs completely indestructible except by owners/admin");
-        config.getBoolean(SIGN_INDESTRUCTIBLE.getPath(), (Boolean) SIGN_INDESTRUCTIBLE.getDefault());
-        config.addComment(SIGN_DROPS_ITEMS.getPath(), "This will cause the sign to drop all items it contains upon breaking");
-        config.getBoolean(SIGN_DROPS_ITEMS.getPath(), (Boolean) SIGN_DROPS_ITEMS.getDefault());
+        config.addComment(DATA_SAVE.getPath(), Arrays.asList("# This is how often (in seconds) user data is saved."));
+        config.getConfig().getInt(DATA_SAVE.getPath(), (Integer) DATA_SAVE.getDefault());
+        config.addComment(USE_PERMS.getPath(), Arrays.asList("# This will enable/disable use of SuperPerms.",
+                "# If disabled, all users may create/use signs and OPs will be able to manage every sign."));
+        config.getConfig().getBoolean(USE_PERMS.getPath(), (Boolean) USE_PERMS.getDefault());
+        config.addComment(SIGN_STORAGE_LIMIT.getPath(), Arrays.asList("# This is the total amount of stock the sign can hold"));
+        config.getConfig().getInt(SIGN_STORAGE_LIMIT.getPath(), (Integer) SIGN_STORAGE_LIMIT.getDefault());
+        config.addComment(SIGN_ENFORCE_MAX_STACK_SIZE.getPath(), Arrays.asList("# This will make all items dispensed by the sign obey max stack size."));
+        config.getConfig().getBoolean(SIGN_ENFORCE_MAX_STACK_SIZE.getPath(), (Boolean) SIGN_ENFORCE_MAX_STACK_SIZE.getDefault());
+        config.addComment(SIGN_USE_NUM_STACKS.getPath(), Arrays.asList("# This will cause the stock limit to be in number of stacks."));
+        config.getConfig().getBoolean(SIGN_USE_NUM_STACKS.getPath(), (Boolean) SIGN_USE_NUM_STACKS.getDefault());
+        config.addComment(SIGN_INDESTRUCTIBLE.getPath(), Arrays.asList("# This will make the signs completely indestructible except by owners/admin"));
+        config.getConfig().getBoolean(SIGN_INDESTRUCTIBLE.getPath(), (Boolean) SIGN_INDESTRUCTIBLE.getDefault());
+        config.addComment(SIGN_DROPS_ITEMS.getPath(), Arrays.asList("# This will cause the sign to drop all items it contains upon breaking"));
+        config.getConfig().getBoolean(SIGN_DROPS_ITEMS.getPath(), (Boolean) SIGN_DROPS_ITEMS.getDefault());
 
-        config.addComment(PLUGINS_OVERRIDE.getPath(), "This will cause BarterSigns signs to work regardless of other plugins and may cancel the effect of those plugins.", "Please keep in mind this is ONLY for signs IN USE by BarterSigns.");
-        config.getBoolean(PLUGINS_OVERRIDE.getPath(), (Boolean) PLUGINS_OVERRIDE.getDefault());
-        config.addComment(TOWNY_SHOP_PLOTS.getPath(), "If Towny is in use, this will make it so BarterSigns may only be placed in a Towny Shop Plot.");
-        config.getBoolean(TOWNY_SHOP_PLOTS.getPath(), (Boolean) TOWNY_SHOP_PLOTS.getDefault());
+        config.addComment(PLUGINS_OVERRIDE.getPath(), Arrays.asList("# This will cause BarterSigns signs to work regardless of other plugins and may cancel the effect of those plugins.", "# Please keep in mind this is ONLY for signs IN USE by BarterSigns."));
+        config.getConfig().getBoolean(PLUGINS_OVERRIDE.getPath(), (Boolean) PLUGINS_OVERRIDE.getDefault());
+        config.addComment(TOWNY_SHOP_PLOTS.getPath(), Arrays.asList("# If Towny is in use, this will make it so BarterSigns may only be placed in a Towny Shop Plot."));
+        config.getConfig().getBoolean(TOWNY_SHOP_PLOTS.getPath(), (Boolean) TOWNY_SHOP_PLOTS.getDefault());
 
         config.save();
     }
@@ -189,11 +198,11 @@ public class BarterSignsPlugin extends JavaPlugin {
     }
 
     final public void saveConfig() {
-        new ConfigIO(config).save();
+        config.save();
     }
 
     final public void saveData() {
-        new ConfigIO(data).save();
+        data.save();
     }
 
     final public void saveFiles() {
@@ -279,10 +288,10 @@ public class BarterSignsPlugin extends JavaPlugin {
     }
 
     public boolean enforceMaxStackSize() {
-        return config.getBoolean(SIGN_ENFORCE_MAX_STACK_SIZE.getPath(), (Boolean) SIGN_ENFORCE_MAX_STACK_SIZE.getDefault());
+        return config.getConfig().getBoolean(SIGN_ENFORCE_MAX_STACK_SIZE.getPath(), (Boolean) SIGN_ENFORCE_MAX_STACK_SIZE.getDefault());
     }
 
     public boolean stockLimitUsesStacks() {
-        return config.getBoolean(SIGN_USE_NUM_STACKS.getPath(), (Boolean) SIGN_USE_NUM_STACKS.getDefault());
+        return config.getConfig().getBoolean(SIGN_USE_NUM_STACKS.getPath(), (Boolean) SIGN_USE_NUM_STACKS.getDefault());
     }
 }

@@ -12,7 +12,13 @@ import org.bukkit.block.Sign;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
-import org.bukkit.event.block.*;
+import org.bukkit.event.block.BlockBreakEvent;
+import org.bukkit.event.block.BlockBurnEvent;
+import org.bukkit.event.block.BlockDamageEvent;
+import org.bukkit.event.block.BlockFadeEvent;
+import org.bukkit.event.block.BlockPhysicsEvent;
+import org.bukkit.event.block.BlockPlaceEvent;
+import org.bukkit.event.block.SignChangeEvent;
 
 /**
  * @author dumptruckman
@@ -32,13 +38,13 @@ public class BarterSignsBlockListener implements Listener {
         BarterSignManager.remove(event.getBlock());
         if (!event.getLine(0).equalsIgnoreCase("[Barter]") && !event.getLine(0).equalsIgnoreCase("Barter Shop")) return;
 
-        if (plugin.config.getBoolean(ConfigPath.USE_PERMS.getPath(), (Boolean) ConfigPath.USE_PERMS.getDefault())
+        if (plugin.config.getConfig().getBoolean(ConfigPath.USE_PERMS.getPath(), (Boolean) ConfigPath.USE_PERMS.getDefault())
                 && !event.getPlayer().hasPermission("bartersigns.create")) {
             plugin.sendMessage(event.getPlayer(), LanguagePath.NO_PERMISSION.getPath());
             return;
         }
 
-        if (plugin.towny != null && plugin.config.getBoolean(ConfigPath.TOWNY_SHOP_PLOTS.getPath(), (Boolean)ConfigPath.TOWNY_SHOP_PLOTS.getDefault())) {
+        if (plugin.towny != null && plugin.config.getConfig().getBoolean(ConfigPath.TOWNY_SHOP_PLOTS.getPath(), (Boolean) ConfigPath.TOWNY_SHOP_PLOTS.getDefault())) {
             Location loc = event.getBlock().getLocation();
             try {
                 if (plugin.towny.getTownyUniverse().getTownBlock(loc).getType() != TownBlockType.COMMERCIAL) {
@@ -87,7 +93,7 @@ public class BarterSignsBlockListener implements Listener {
             event.setCancelled(true);
         }
 
-        if (!event.isCancelled() && plugin.config.getBoolean(ConfigPath.SIGN_DROPS_ITEMS.getPath(),
+        if (!event.isCancelled() && plugin.config.getConfig().getBoolean(ConfigPath.SIGN_DROPS_ITEMS.getPath(),
                 (Boolean) ConfigPath.SIGN_DROPS_ITEMS.getDefault())) {
             barterSign.drop();
             return;
@@ -144,10 +150,10 @@ public class BarterSignsBlockListener implements Listener {
 
         if (!BarterSign.exists(plugin, block)) return;
 
-        event.setCancelled(plugin.config.getBoolean(ConfigPath.SIGN_INDESTRUCTIBLE.getPath(),
+        event.setCancelled(plugin.config.getConfig().getBoolean(ConfigPath.SIGN_INDESTRUCTIBLE.getPath(),
                 (Boolean) ConfigPath.SIGN_INDESTRUCTIBLE.getDefault()));
 
-        if (!event.isCancelled() && plugin.config.getBoolean(ConfigPath.SIGN_DROPS_ITEMS.getPath(),
+        if (!event.isCancelled() && plugin.config.getConfig().getBoolean(ConfigPath.SIGN_DROPS_ITEMS.getPath(),
                 (Boolean) ConfigPath.SIGN_DROPS_ITEMS.getDefault())) {
             BarterSign barterSign = BarterSignManager.getBarterSignFromBlock(event.getBlock());
             if (barterSign == null) {
@@ -165,10 +171,10 @@ public class BarterSignsBlockListener implements Listener {
 
         if (!BarterSign.exists(plugin, block)) return;
 
-        event.setCancelled(plugin.config.getBoolean(ConfigPath.SIGN_INDESTRUCTIBLE.getPath(),
+        event.setCancelled(plugin.config.getConfig().getBoolean(ConfigPath.SIGN_INDESTRUCTIBLE.getPath(),
                 (Boolean) ConfigPath.SIGN_INDESTRUCTIBLE.getDefault()));
 
-        if (!event.isCancelled() && plugin.config.getBoolean(ConfigPath.SIGN_DROPS_ITEMS.getPath(),
+        if (!event.isCancelled() && plugin.config.getConfig().getBoolean(ConfigPath.SIGN_DROPS_ITEMS.getPath(),
                 (Boolean) ConfigPath.SIGN_DROPS_ITEMS.getDefault())) {
             BarterSign barterSign = BarterSignManager.getBarterSignFromBlock(event.getBlock());
             if (barterSign == null) {
@@ -188,7 +194,7 @@ public class BarterSignsBlockListener implements Listener {
 
         event.setCancelled(true);
 
-        if (!event.isCancelled() && plugin.config.getBoolean(ConfigPath.SIGN_DROPS_ITEMS.getPath(),
+        if (!event.isCancelled() && plugin.config.getConfig().getBoolean(ConfigPath.SIGN_DROPS_ITEMS.getPath(),
                 (Boolean) ConfigPath.SIGN_DROPS_ITEMS.getDefault())) {
             BarterSign barterSign = BarterSignManager.getBarterSignFromBlock(event.getBlock());
             if (barterSign == null) {

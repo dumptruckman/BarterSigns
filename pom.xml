@@ -2,7 +2,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.dumptruckman</groupId>
     <artifactId>BarterSigns</artifactId>
-    <version>1.2.6</version>
+    <version>1.2.5-fix</version>
     <name>BarterSigns</name>
     <repositories>
         <repository>
@@ -27,14 +27,14 @@
         <dependency>
             <groupId>org.bukkit</groupId>
             <artifactId>bukkit</artifactId>
-            <version>1.2.4-R1.0</version>
+            <version>1.2.5-R1.0</version>
             <type>jar</type>
             <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>com.palmergames.bukkit</groupId>
             <artifactId>Towny</artifactId>
-            <version>0.78.0.0</version>
+            <version>0.80.0.9</version>
             <type>jar</type>
             <scope>compile</scope>
         </dependency>

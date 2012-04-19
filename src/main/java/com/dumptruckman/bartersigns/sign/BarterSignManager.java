@@ -2,13 +2,16 @@ package com.dumptruckman.bartersigns.sign;
 
 import com.dumptruckman.bartersigns.BarterSignsPlugin;
 import com.dumptruckman.bartersigns.locale.LanguagePath;
+import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.block.Sign;
+import org.bukkit.configuration.ConfigurationSection;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * @author dumptruckman
@@ -30,15 +33,21 @@ public class BarterSignManager {
     }
 
     final public void updateSigns() {
-        List<String> keys = plugin.data.getKeys("signs");
+        ConfigurationSection signsSection = plugin.data.getConfig().getConfigurationSection("signs");
+        if (signsSection == null) return;
+        Set<String> keys = signsSection.getKeys(false);
         if (keys == null) return;
         for (String world : keys) {
-            for (String loc : plugin.data.getKeys("signs." + world)) {
+            ConfigurationSection signSection = plugin.data.getConfig().getConfigurationSection("signs." + world);
+            if (signSection == null) continue;
+            for (String loc : signSection.getKeys(false)) {
                 String[] locArray = loc.split(",");
                 int x = Integer.valueOf(locArray[0]);
                 int y = Integer.valueOf(locArray[1]);
                 int z = Integer.valueOf(locArray[2]);
-                Block block = plugin.getServer().getWorld(world).getBlockAt(x, y, z);
+                World bWorld = plugin.getServer().getWorld(world);
+                if (bWorld == null) continue;
+                Block block = bWorld.getBlockAt(x, y, z);
                 BarterSign barterSign = new BarterSign(plugin, block);
                 if (block.getState() instanceof Sign) {
                     add(barterSign);
@@ -59,7 +68,7 @@ public class BarterSignManager {
 
     public static BarterSign getBarterSignFromBlock(Block block) {
         String name = BarterSign.genName(block);
-        if (plugin.data.getNode(name) != null) {
+        if (plugin.data.getConfig().get(name) != null) {
             List<Object> signData = activeSigns.get(name);
             if (signData != null) {
                 return (BarterSign) signData.get(BARTER_SIGN);
@@ -78,7 +87,7 @@ public class BarterSignManager {
 
     public static void remove(Block block) {
         if (BarterSign.exists(plugin, block)) {
-            plugin.data.removeProperty(BarterSign.genName(block));
+            plugin.data.getConfig().set(BarterSign.genName(block), null);
             cancelSignRefresh(BarterSign.genName(block));
             activeSigns.remove(block.toString());
         }

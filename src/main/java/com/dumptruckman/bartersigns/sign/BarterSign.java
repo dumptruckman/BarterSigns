@@ -1,10 +1,15 @@
 package com.dumptruckman.bartersigns.sign;
 
-import com.dumptruckman.bartersigns.actionmenu.SignActionMenu;
 import com.dumptruckman.bartersigns.BarterSignsPlugin;
+import com.dumptruckman.bartersigns.actionmenu.SignActionMenu;
 import com.dumptruckman.bartersigns.inventory.InventoryTools;
-import com.dumptruckman.bartersigns.menu.*;
-import com.sun.servicetag.SystemEnvironment;
+import com.dumptruckman.bartersigns.menu.AlterPaymentMenuItem;
+import com.dumptruckman.bartersigns.menu.AlterSellableMenuItem;
+import com.dumptruckman.bartersigns.menu.AlterStockMenuItem;
+import com.dumptruckman.bartersigns.menu.CollectRevenueMenuItem;
+import com.dumptruckman.bartersigns.menu.HelpMenuItem;
+import com.dumptruckman.bartersigns.menu.MainMenuItem;
+import com.dumptruckman.bartersigns.menu.RemoveSignMenuItem;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.block.Block;
@@ -18,7 +23,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static com.dumptruckman.bartersigns.config.ConfigPath.SIGN_ENFORCE_MAX_STACK_SIZE;
 import static com.dumptruckman.bartersigns.locale.LanguagePath.*;
 
 /**
@@ -62,7 +66,7 @@ public class BarterSign {
     }
 
     public static boolean exists(BarterSignsPlugin plugin, Block block) {
-        return (plugin.data.getNode(genName(block)) != null);
+        return (plugin.data.getConfig().get(genName(block)) != null);
     }
 
     public void drop() {
@@ -83,7 +87,7 @@ public class BarterSign {
     }
 
     public void removeFromData() {
-        plugin.data.removeProperty(name);
+        plugin.data.getConfig().set(name, null);
     }
 
     public String getName() {
@@ -91,11 +95,11 @@ public class BarterSign {
     }
 
     public String getNetwork() {
-        return plugin.config.getString(name + ".network");
+        return plugin.config.getConfig().getString(name + ".network");
     }
 
     public void removeNetwork() {
-        plugin.config.removeProperty(name + ".network");
+        plugin.config.getConfig().set(name + ".network", null);
     }
 
     public Block getBlock() {
@@ -128,12 +132,12 @@ public class BarterSign {
     }
 
     public boolean exists() {
-        return (plugin.data.getNode(name) != null);
+        return (plugin.data.getConfig().get(name) != null);
     }
 
     public void init(Player player) {
         this.location = block.getLocation();
-        plugin.data.setProperty(name + ".owner", player.getName());
+        plugin.data.getConfig().set(name + ".owner", player.getName());
         activateStockPhase(player);
         BarterSignManager.add(this);
     }
@@ -203,7 +207,7 @@ public class BarterSign {
     }
 
     public String getPhase() {
-        return plugin.data.getString(name + ".phase");
+        return plugin.data.getConfig().getString(name + ".phase");
     }
 
     public boolean isReady() {
@@ -211,7 +215,7 @@ public class BarterSign {
     }
 
     public void setPhase(SignPhase phase) {
-        plugin.data.setProperty(name + ".phase", phase.toString());
+        plugin.data.getConfig().set(name + ".phase", phase.toString());
     }
 
     public void activateStockPhase(Player player) {
@@ -232,7 +236,7 @@ public class BarterSign {
     }
 
     public String getOwner() {
-        return plugin.data.getString(name + ".owner");
+        return plugin.data.getConfig().getString(name + ".owner");
     }
 
     public Location getLocation() {
@@ -288,7 +292,7 @@ public class BarterSign {
     }
 
     public void setSellableItem(Player player, ItemStack item) {
-        plugin.data.setProperty(name + ".sells", plugin.itemToDataString(item));
+        plugin.data.getConfig().set(name + ".sells", plugin.itemToDataString(item));
         String itemName = plugin.itemToString(item, false);
         initSellableItem();
         plugin.sendMessage(player, SIGN_STOCK_SET.getPath(), Integer.toString(item.getAmount()), itemName);
@@ -298,7 +302,7 @@ public class BarterSign {
         List<String> items = getAcceptableItemsString();
         item.setAmount(1);
         items.add(plugin.itemToDataString(item));
-        plugin.data.setProperty(name + ".accepts", items);
+        plugin.data.getConfig().set(name + ".accepts", items);
         initAcceptableItems();
         plugin.sendMessage(player, SIGN_PAYMENT_ADDED.getPath(), plugin.itemToString(item));
     }
@@ -309,7 +313,7 @@ public class BarterSign {
         List<String> items = getAcceptableItemsString();
         int index = indexOfAcceptableItemsString(plugin.itemToDataString(item));
         items.remove(index);
-        plugin.data.setProperty(name + ".accepts", items);
+        plugin.data.getConfig().set(name + ".accepts", items);
         plugin.sendMessage(player, SIGN_PAYMENT_REMOVED.getPath(), plugin.itemToString(item));
     }
 
@@ -320,7 +324,7 @@ public class BarterSign {
         item.setAmount(getAcceptableItems().get(index).getAmount() + 1);
         acceptableItems.set(index, item);
         items.set(stringIndex, plugin.itemToDataString(item));
-        plugin.data.setProperty(name + ".accepts", items);
+        plugin.data.getConfig().set(name + ".accepts", items);
         return item.getAmount();
     }
 
@@ -331,19 +335,19 @@ public class BarterSign {
         item.setAmount(getAcceptableItems().get(index).getAmount() - 1);
         acceptableItems.set(index, item);
         items.set(stringIndex, plugin.itemToDataString(item));
-        plugin.data.setProperty(name + ".accepts", items);
+        plugin.data.getConfig().set(name + ".accepts", items);
         return item.getAmount();
     }
 
     public int increaseSellableItemAmount() {
         sellableItem.setAmount(sellableItem.getAmount() + 1);
-        plugin.data.setProperty(name + ".sells", plugin.itemToDataString(sellableItem));
+        plugin.data.getConfig().set(name + ".sells", plugin.itemToDataString(sellableItem));
         return sellableItem.getAmount();
     }
 
     public int decreaseSellableItemAmount() {
         sellableItem.setAmount(sellableItem.getAmount() - 1);
-        plugin.data.setProperty(name + ".sells", plugin.itemToDataString(sellableItem));
+        plugin.data.getConfig().set(name + ".sells", plugin.itemToDataString(sellableItem));
         return sellableItem.getAmount();
     }
 
@@ -352,7 +356,7 @@ public class BarterSign {
     }
 
     public String getSellableItemString() {
-        return plugin.data.getString(name + ".sells");
+        return plugin.data.getConfig().getString(name + ".sells");
     }
 
     private void initSellableItem() {
@@ -366,7 +370,7 @@ public class BarterSign {
     }
 
     public List<String> getAcceptableItemsString() {
-        List<Object> items = plugin.data.getList(name + ".accepts");
+        List items = plugin.data.getConfig().getList(name + ".accepts");
         if (items == null) items = new ArrayList<Object>();
         List<String> string = new ArrayList<String>();
         for (Object o : items) {
@@ -420,15 +424,15 @@ public class BarterSign {
     }
 
     public Integer getStock() {
-        return plugin.data.getInt(name + ".stock", 0);
+        return plugin.data.getConfig().getInt(name + ".stock", 0);
     }
 
     public void setStock(int stock) {
-        plugin.data.setProperty(name + ".stock", stock);
+        plugin.data.getConfig().set(name + ".stock", stock);
     }
 
     public Integer getRevenue(ItemStack item) {
-        Integer amount = plugin.data.getInt(name + ".revenue." + plugin.itemToDataString(item, false), 0);
+        Integer amount = plugin.data.getConfig().getInt(name + ".revenue." + plugin.itemToDataString(item, false), 0);
         return amount;
     }
 
@@ -444,6 +448,6 @@ public class BarterSign {
     }
 
     public void setRevenue(ItemStack item, int revenue) {
-        plugin.data.setProperty(name + ".revenue." + plugin.itemToDataString(item, false), revenue);
+        plugin.data.getConfig().set(name + ".revenue." + plugin.itemToDataString(item, false), revenue);
     }
 }
