@@ -3,6 +3,7 @@ package com.dumptruckman.bartersigns.listener;
 import com.dumptruckman.bartersigns.BarterSignsPlugin;
 import com.dumptruckman.bartersigns.config.ConfigPath;
 import com.dumptruckman.bartersigns.sign.BarterSign;
+import com.dumptruckman.bartersigns.sign.BarterSignManager;
 import org.bukkit.block.Block;
 import org.bukkit.block.Sign;
 import org.bukkit.event.EventHandler;
@@ -33,7 +34,7 @@ public class BarterSignsEntityListener implements Listener {
         for (Block block : blocks) {
             if (block.getState() instanceof Sign) {
                 if (BarterSign.exists(plugin, block)) {
-                    barterSigns.add(plugin.signManager.getBarterSignFromBlock(block));
+                    barterSigns.add(BarterSignManager.getBarterSignFromBlock(block));
                     if (plugin.config.getConfig().getBoolean(ConfigPath.SIGN_INDESTRUCTIBLE.getPath(),
                             (Boolean) ConfigPath.SIGN_INDESTRUCTIBLE.getDefault())) {
                         event.setCancelled(true);
