@@ -136,8 +136,8 @@ public class BarterSignsBlockListener implements Listener {
         if (barterSign == null) {
             barterSign = new BarterSign(plugin, block);
         }
-        if (!BarterSign.SignPhase.READY.equalTo(barterSign.getPhase())
-                || barterSign.getMenuIndex() != barterSign.REMOVE) {
+        if (!barterSign.isReady()) return;
+        if (barterSign.getMenuIndex() != barterSign.REMOVE) {
             event.setCancelled(true);
         }
     }
